@@ -22,17 +22,17 @@ public class ProcessTest extends TestCase
         this.process = new Process( PROCESS_NAME,
                                     PROCESS_DESCRIPTION );
 
-        this.node1 = new Node( this.process,
-                               "node-1",
-                               "node one" );
+        this.node1 = new MockNode( this.process,
+                                   "node-1",
+                                   "node one" );
+        
+        this.node2 = new MockNode( this.process,
+                                   "node-2",
+                                   "node two" );
 
-        this.node2 = new Node( this.process,
-                               "node-2",
-                               "node two" );
-
-        this.node3 = new Node( this.process,
-                               "node-3",
-                               "node three" );
+        this.node3 = new MockNode( this.process,
+                                   "node-3",
+                                   "node three" );
     }
 
     public void tearDown()

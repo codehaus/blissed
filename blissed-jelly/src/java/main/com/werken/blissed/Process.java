@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Process.java,v 1.1.1.1 2002-07-02 14:28:07 werken Exp $
+ $Id: Process.java,v 1.2 2002-07-02 15:40:12 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -46,8 +46,18 @@ package com.werken.blissed;
  
  */
 
+import com.werken.blissed.event.ProcessListener;
+import com.werken.blissed.event.ProcessStartedEvent;
+import com.werken.blissed.event.ProcessFinishedEvent;
+
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Collections;
 
 /** A graph of nodes and transitions in the form of a
  *  state machine.
@@ -75,6 +85,12 @@ public class Process implements Named, Described
     /** Finish node. */
     private Finish finish;
 
+    /** All active workslips in this process. */
+    private Set activeWorkSlips;
+
+    /** Process listeners. */
+    private List listeners;
+
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
@@ -94,6 +110,10 @@ public class Process implements Named, Described
 
         this.start  = new Start( this );
         this.finish = new Finish( this );
+
+        this.activeWorkSlips = new HashSet();
+
+        this.listeners = Collections.EMPTY_LIST;
     }
 
     // ------------------------------------------------------------
@@ -173,7 +193,100 @@ public class Process implements Named, Described
         WorkSlip workSlip = new WorkSlip( this,
                                           parent );
 
+        this.activeWorkSlips.add( workSlip );
+
+        getStart().accept( workSlip );
+
         return workSlip;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    //     Event-listener management
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+    /** Add a <code>ProcessListener</code> to this process.
+     *
+     *  @param listern The listenr to add.
+     */
+    public void addProcessListener(ProcessListener listener)
+    {
+        if ( this.listeners == Collections.EMPTY_LIST )
+        {
+            this.listeners = new ArrayList();
+        }
+
+        this.listeners.add( listener );
+    }
+
+    /** Remove a <code>ProcessListener</code> from this process.
+     *
+     *  @param listern The listenr to remove.
+     */
+    public void removeProcessListener(ProcessListener listener)
+    {
+        this.listeners.remove( listener );
+    }
+
+    /** Retrieve the <b>live</b> list of <code>ProcessListeners</code>s
+     *  for this process.
+     *
+     *  <p>
+     *  The returned <b>live</b> list is directly backed by the process.
+     *  Change made to the list are immediately reflected internally
+     *  within the process.
+     *  </p>
+     *
+     *  @return The <code>List</code> of <code>ProcessListener</code>s.
+     */
+    public List getProcessListeners()
+    {
+        return this.listeners;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    //     Event firing
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+    /** Fire an event indicating that an instance of this
+     *  process has started.
+     *
+     *  @param workSlip The started process instance context.
+     */
+    void fireProcessStarted(WorkSlip workSlip)
+    {
+        ProcessStartedEvent event = new ProcessStartedEvent( this,
+                                                             workSlip );
+        
+        Iterator listenerIter = getProcessListeners().iterator();
+        ProcessListener eachListener = null;
+        
+        while ( listenerIter.hasNext() )
+        {
+            eachListener = (ProcessListener) listenerIter.next();
+            
+            eachListener.processStarted( event );
+        }
+    }
+
+    /** Fire an event indicating that an instance of this
+     *  process has finished.
+     *
+     *  @param workSlip The finished process instance context.
+     */
+    void fireProcessFinished(WorkSlip workSlip)
+    {
+        ProcessFinishedEvent event = new ProcessFinishedEvent( this,
+                                                               workSlip );
+
+        Iterator listenerIter = getProcessListeners().iterator();
+        ProcessListener eachListener = null;
+
+        while ( listenerIter.hasNext() )
+        {
+            eachListener = (ProcessListener) listenerIter.next();
+            
+            eachListener.processFinished( event );
+        }
     }
  
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

@@ -1,7 +1,7 @@
-package com.werken.blissed;
+package com.werken.blissed.event;
 
 /*
- $Id: Start.java,v 1.2 2002-07-02 15:40:12 werken Exp $
+ $Id: ProcessFinishedEvent.java,v 1.1 2002-07-02 15:40:12 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -46,67 +46,20 @@ package com.werken.blissed;
  
  */
 
-/** Entry-point start node of a <code>Process</code>.
- *
- *  @see Process#start
- *
- *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
- */
-public class Start extends Node
+import com.werken.blissed.Process;
+import com.werken.blissed.WorkSlip;
+
+import java.util.EventObject;
+
+public class ProcessFinishedEvent extends ProcessEvent 
 {
+    private WorkSlip workSlip;
 
-    // ------------------------------------------------------------
-    //     Instance members
-    // ------------------------------------------------------------
-
-    /** The initial transition. */
-    private Transition transition;
-
-    // ------------------------------------------------------------
-    //     Constructors
-    // ------------------------------------------------------------
-
-    /** Construct.
-     *
-     *  @param process The process.
-     */
-    Start(Process process)
+    public ProcessFinishedEvent(Process process,
+                                WorkSlip workSlip)
     {
         super( process,
-               "blissed.start",
-               "start for " + process.getName() );
-               
-    }
-
-    // ------------------------------------------------------------
-    //     Instance methods
-    // ------------------------------------------------------------
-
-    /** Set the initial transition.
-     *
-     *  @param transition The transition.
-     */
-    public void setTransition(Transition transition)
-    {
-        this.transition  = transition;
-    }
-
-    /** Retrieve the initial transition.
-     *
-     *  @return The transition.
-     */
-    public Transition getTransition()
-    {
-        return this.transition;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    //     com.werken.blissed.Node
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-    public void accept(WorkSlip workSlip)
-    {
-        getProcess().fireProcessStarted( workSlip );
+               workSlip );
     }
 }
 

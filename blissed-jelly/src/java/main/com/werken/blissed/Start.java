@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Start.java,v 1.1.1.1 2002-07-02 14:28:08 werken Exp $
+ $Id: Start.java,v 1.2 2002-07-02 15:40:12 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -98,6 +98,15 @@ public class Start extends Node
     public Transition getTransition()
     {
         return this.transition;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    //     com.werken.blissed.Node
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+    public void accept(WorkSlip workSlip)
+    {
+        getProcess().fireProcessStarted( workSlip );
     }
 }
 

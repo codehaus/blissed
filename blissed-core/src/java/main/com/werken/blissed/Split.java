@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Split.java,v 1.1.1.1 2002-07-02 14:28:07 werken Exp $
+ $Id: Split.java,v 1.2 2002-07-02 15:40:12 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -48,6 +48,7 @@ package com.werken.blissed;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /** A node that splits the flow into parallel flows.
  *
@@ -119,5 +120,22 @@ public class Split extends Node
     public List getDestinations()
     {
         return this.destinations;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    //     com.werken.blissed.Node
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+    public void accept(WorkSlip workSlip)
+    {
+        Iterator destIter = getDestinations().iterator();
+        Node     eachDest = null;
+
+        while ( destIter.hasNext() )
+        {
+            eachDest = (Node) destIter.next();
+
+            eachDest.accept( workSlip.createSplitWorkSlip() );
+        }
     }
 }
