@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Transition.java,v 1.8 2002-07-04 22:56:53 werken Exp $
+ $Id: Transition.java,v 1.9 2002-07-05 04:15:04 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -205,6 +205,8 @@ public class Transition implements Described
 
             eachListen.transitionFollowed( event );
         }
+
+        context.fireTransitionFollowed( event );
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

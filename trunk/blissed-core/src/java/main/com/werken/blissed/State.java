@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: State.java,v 1.11 2002-07-05 03:57:12 werken Exp $
+ $Id: State.java,v 1.12 2002-07-05 04:15:04 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -299,6 +299,8 @@ public class State extends Node
             
             eachListener.stateEntered( event );
         }
+
+        context.fireStateEntered( event );
     }
 
     /** Fire an event indicating that a context has exited 
@@ -320,6 +322,8 @@ public class State extends Node
             
             eachListener.stateExited( event );
         }
+
+        context.fireStateExited( event );
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

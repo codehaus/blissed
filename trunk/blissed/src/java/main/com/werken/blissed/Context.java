@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
-  $Id: Context.java,v 1.2 2002-07-04 22:56:53 werken Exp $
+  $Id: Context.java,v 1.3 2002-07-05 04:15:04 werken Exp $
 
   Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -47,6 +47,11 @@ package com.werken.blissed;
 */
 
 import com.werken.blissed.event.ContextListener;
+import com.werken.blissed.event.ProcessStartedEvent;
+import com.werken.blissed.event.ProcessFinishedEvent;
+import com.werken.blissed.event.StateEnteredEvent;
+import com.werken.blissed.event.StateExitedEvent;
+import com.werken.blissed.event.TransitionFollowedEvent;
 
 import java.util.Date;
 import java.util.Map;
@@ -56,11 +61,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 
 /** Data for an instance of a <code>Process</code>.
  *
- *  @see Process
- *  @see Process#start
+ *  @see Process#spawn
+ *  @see Process#accept
  * 
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
@@ -315,5 +321,86 @@ public class Context implements Named
     public List getContextListeners()
     {
         return this.listeners;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    //     Event firing
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
+    //         Process
+    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
+
+    void fireProcessStarted(ProcessStartedEvent event)
+    {
+        Iterator listenerIter = getContextListeners().iterator();
+        ContextListener eachListener = null;
+        
+        while ( listenerIter.hasNext() )
+        {
+            eachListener = (ContextListener) listenerIter.next();
+            
+            eachListener.processStarted( event );
+        }
+    }
+
+    void fireProcessFinished(ProcessFinishedEvent event)
+    {
+        Iterator listenerIter = getContextListeners().iterator();
+        ContextListener eachListener = null;
+
+        while ( listenerIter.hasNext() )
+        {
+            eachListener = (ContextListener) listenerIter.next();
+            
+            eachListener.processFinished( event );
+        }
+    }
+
+    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
+    //         State
+    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
+
+    void fireStateEntered(StateEnteredEvent event)
+    {
+        Iterator listenerIter = getContextListeners().iterator();
+        ContextListener eachListener = null;
+        
+        while ( listenerIter.hasNext() )
+        {
+            eachListener = (ContextListener) listenerIter.next();
+            
+            eachListener.stateEntered( event );
+        }
+    }
+
+    void fireStateExited(StateExitedEvent event)
+    {
+        Iterator listenerIter = getContextListeners().iterator();
+        ContextListener eachListener = null;
+
+        while ( listenerIter.hasNext() )
+        {
+            eachListener = (ContextListener) listenerIter.next();
+            
+            eachListener.stateExited( event );
+        }
+    }
+
+    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
+    //         Transition
+    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
+
+    void fireTransitionFollowed(TransitionFollowedEvent event)
+    {
+        Iterator listenIter = getContextListeners().iterator();
+        ContextListener eachListen = null;
+
+        while ( listenIter.hasNext() )
+        {
+            eachListen = (ContextListener) listenIter.next();
+
+            eachListen.transitionFollowed( event );
+        }
     }
 }

@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Process.java,v 1.10 2002-07-05 03:57:12 werken Exp $
+ $Id: Process.java,v 1.11 2002-07-05 04:15:04 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -315,6 +315,8 @@ public class Process implements Named, Described, Activity
             
             eachListener.processStarted( event );
         }
+
+        context.fireProcessStarted( event );
     }
 
     /** Fire an event indicating that an instance of this
@@ -336,6 +338,8 @@ public class Process implements Named, Described, Activity
             
             eachListener.processFinished( event );
         }
+
+        context.fireProcessFinished( event );
     }
  
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
