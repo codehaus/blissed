@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: SpawnProcessTag.java,v 1.3 2002-07-18 20:56:20 bob Exp $
+ $Id: DoActivityTag.java,v 1.1 2002-07-18 20:56:20 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -46,39 +46,26 @@ package com.werken.blissed.jelly;
  
  */
 
-import com.werken.blissed.Process;
+import com.werken.blissed.State;
 import com.werken.blissed.Context;
+import com.werken.blissed.Activity;
+import com.werken.blissed.NoOpActivity;
 import com.werken.blissed.ActivityException;
-import com.werken.blissed.InvalidMotionException;
 
+import org.apache.commons.jelly.Script;
 import org.apache.commons.jelly.XMLOutput;
 import org.apache.commons.jelly.JellyContext;
 import org.apache.commons.jelly.JellyException;
-import org.apache.commons.jelly.MissingAttributeException;
 
-/** Spawn a new process.
- *
- *  <p>
- *  This may be used to spawn both top-level and child processes.
- *  In both cases, a new <code>Thread</code> is created for execution
- *  of the process.
- *  </p>
- *
- *  <p>
- *  The <code>Thread</code> for the process may terminate before the
- *  <code>Process</code> itself, if execution stalls.  
- *  </p>
+/** Create an activity.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class SpawnProcessTag extends BlissedTagSupport 
+public class DoActivityTag extends BlissedTagSupport
 {
     // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------
-
-    /** Name of the process to spawn. */
-    private String name;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -86,58 +73,14 @@ public class SpawnProcessTag extends BlissedTagSupport
 
     /** Construct.
      */
-    public SpawnProcessTag()
+    public DoActivityTag()
     {
-        // intentionally left blank
     }
 
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
 
-    /** Set the name of the process to spawn.
-     *
-     *  @param name The name of the process.
-     */
-    public void setName(String name)
-    {
-        this.name = name;
-    }
-
-    /** Accept the context into the process.
-     *
-     *  @param process The process.
-     *  @param blissedContext The blissed context.
-     *
-     *  @throws InvalidMotionException If an invalid motion occurs.
-     *  @throws ActivityException If an error occurs while performing an activity.
-     */
-    void accept(Process process,
-                Context blissedContext) throws InvalidMotionException, ActivityException
-    {
-        JellyContext jellyContext = null;
-
-        if (blissedContext.getParent() == null)
-        {
-            jellyContext = getContext();
-        }
-        else
-        {
-            jellyContext = new JellyContext( getContext() );
-
-            jellyContext.setExport( false );
-            jellyContext.setInherit( true );
-        }
-
-        jellyContext.setVariable( "blissed.context",
-                                  blissedContext );
-
-        blissedContext.setVariable( "jelly.context",
-                                    jellyContext);
-
-        process.accept( blissedContext );
-          
-    }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     //     org.apache.commons.jelly.Tag
@@ -150,61 +93,46 @@ public class SpawnProcessTag extends BlissedTagSupport
      *
      *  @throws Exception if an error occurs.
      */
-    public void doTag(XMLOutput output) throws Exception
+    public void doTag(final XMLOutput output) throws Exception
     {
-        if ( this.name == null )
+        StateTag stateTag = (StateTag) findAncestorWithClass( StateTag.class );
+
+        if ( stateTag == null )
         {
-            throw new MissingAttributeException( "name" );
+            throw new JellyException( "Unable to locate a state." );
         }
 
-        invokeBody( output );
+        State state = stateTag.getState();
 
-        final Process process = getProcess( this.name );
-
-        if ( process == null )
+        if ( state.getActivity() != null
+             &&
+             ! ( state.getActivity() instanceof NoOpActivity ) )
         {
-            throw new JellyException( "No such process \"" + this.name + "\"" );
+            throw new JellyException( "Activity already defined for state \""
+                                      + state.getName()
+                                      + "\"" );
         }
 
-        Context parent = (Context) getContext().getVariable( "blissed.context" );
-
-        Context tmpContext = null;
-
-        if ( parent == null )
-        {
-            tmpContext = process.spawn();
-        }
-        else
-        {
-            tmpContext = process.spawn( parent );
-        }
-
-        final Context context = tmpContext;
-
-        Thread thread = new Thread() {
-                public void run()
+        final Script script = getBody();
+        
+        Activity activity = new Activity() {
+                public void perform(Context context) throws ActivityException
                 {
+                    JellyContext jellyContext = (JellyContext) context.getVariable( "jelly.context" );
+
                     try
                     {
-                        accept( process,
-                                context );
-                    }
-                    catch (InvalidMotionException e)
-                    {
-                        e.printStackTrace();
-                    }
-                    catch (ActivityException e)
-                    {
-                        e.printStackTrace();
+                        script.run( jellyContext,
+                                    output );
                     }
                     catch (Exception e)
                     {
                         e.printStackTrace();
+                        throw new ActivityException( e );
                     }
                 }
             };
-        
-        thread.start();
-    }
 
+        state.setActivity( activity );
+    }
 }
