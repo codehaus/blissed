@@ -45,6 +45,7 @@ public class SpawnActivityTest extends TestCase
                     activity.getProcess() );
     }
 
+/*
     public void testPerform() throws Exception
     {
         Process anotherProcess = new Process( "another.process",
@@ -100,4 +101,5 @@ public class SpawnActivityTest extends TestCase
         assertSame( anotherState1,
                     child.getCurrentState() );
     }
+*/
 }

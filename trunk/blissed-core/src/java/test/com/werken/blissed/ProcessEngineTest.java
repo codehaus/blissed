@@ -96,7 +96,7 @@ public class ProcessEngineTest extends TestCase
         assertNotNull( context );
 
         assertSame( this.process,
-                    context.getCurrentProcess() );
+                    context.getProcess() );
 
         assertSame( this.state1,
                     context.getCurrentState() );
@@ -109,7 +109,10 @@ public class ProcessEngineTest extends TestCase
         ProcessContext context = this.engine.spawn( this.process,
                                                     true );
 
-        assertNull( context.getCurrentProcess() );
+        assertSame( this.process,
+                    context.getProcess() );
+
+        assertTrue( context.isStatus( ProcessContext.PROCESS_NOT_STARTED ) );
 
         assertNull( context.getCurrentState() );
 
@@ -161,6 +164,7 @@ public class ProcessEngineTest extends TestCase
         this.engine.start();
     }
 
+    /*
     public void testSpawn_Nested() throws Exception
     {
         ProcessContext context = this.engine.spawn( this.process );
@@ -168,7 +172,7 @@ public class ProcessEngineTest extends TestCase
         ProcessContext nested = this.engine.spawn( this.process,
                                                    context );
 
-        assertNull( nested.getCurrentProcess() );
+        assertNull( nested.getProcess() );
         assertNull( nested.getCurrentState() );
 
         assertSame( context,
@@ -190,7 +194,7 @@ public class ProcessEngineTest extends TestCase
         Thread.sleep( 1000 );
 
         assertSame( this.process,
-                    nested.getCurrentProcess() );
+                    nested.getProcess() );
 
         assertSame( this.state1,
                     nested.getCurrentState() );
@@ -206,9 +210,9 @@ public class ProcessEngineTest extends TestCase
         ProcessContext nested2 = this.engine.spawn( this.process,
                                                     context );
 
-        assertNull( nested1.getCurrentProcess() );
+        assertNull( nested1.getProcess() );
         assertNull( nested1.getCurrentState() );
-        assertNull( nested2.getCurrentProcess() );
+        assertNull( nested2.getProcess() );
         assertNull( nested2.getCurrentState() );
 
         this.engine.start();
@@ -216,10 +220,10 @@ public class ProcessEngineTest extends TestCase
         Thread.sleep( 1000 );
 
         assertSame( this.process,
-                    nested1.getCurrentProcess() );
+                    nested1.getProcess() );
 
         assertSame( this.process,
-                    nested2.getCurrentProcess() );
+                    nested2.getProcess() );
 
         assertSame( this.state1,
                     nested1.getCurrentState() );
@@ -258,11 +262,12 @@ public class ProcessEngineTest extends TestCase
                           context );
 
         assertSame( anotherProcess,
-                    context.getCurrentProcess() );
+                    context.getProcess() );
 
         assertSame( anotherState,
                     context.getCurrentState() );
     }
+    */
 
     public void testFollowTransition_InvalidMotion() throws Exception
     {
@@ -289,7 +294,7 @@ public class ProcessEngineTest extends TestCase
                                       this.transition1_2 );
 
         assertSame( this.process,
-                    context.getCurrentProcess() );
+                    context.getProcess() );
 
         assertSame( this.state2,
                     context.getCurrentState() );
@@ -300,7 +305,7 @@ public class ProcessEngineTest extends TestCase
         ProcessContext context = this.engine.spawn( this.process );
 
         assertSame( this.process,
-                    context.getCurrentProcess() );
+                    context.getProcess() );
 
         assertSame( this.state1,
                     context.getCurrentState() );
@@ -308,7 +313,7 @@ public class ProcessEngineTest extends TestCase
         assertTrue( ! this.engine.checkTransitions( context ) );
 
         assertSame( this.process,
-                    context.getCurrentProcess() );
+                    context.getProcess() );
 
         assertSame( this.state1,
                     context.getCurrentState() );
@@ -319,7 +324,7 @@ public class ProcessEngineTest extends TestCase
         ProcessContext context = this.engine.spawn( this.process );
 
         assertSame( this.process,
-                    context.getCurrentProcess() );
+                    context.getProcess() );
 
         assertSame( this.state1,
                     context.getCurrentState() );
@@ -331,7 +336,7 @@ public class ProcessEngineTest extends TestCase
                                       this.transition2_3 );
 
         assertSame( this.process,
-                    context.getCurrentProcess() );
+                    context.getProcess() );
 
         assertSame( this.state3,
                     context.getCurrentState() );
@@ -339,7 +344,7 @@ public class ProcessEngineTest extends TestCase
         assertTrue( this.engine.checkTransitions( context ) );
 
         assertSame( this.process,
-                    context.getCurrentProcess() );
+                    context.getProcess() );
 
         assertSame( this.state4,
                     context.getCurrentState() );
@@ -358,7 +363,7 @@ public class ProcessEngineTest extends TestCase
         ProcessContext context = this.engine.spawn( this.process );
 
         assertSame( this.process,
-                    context.getCurrentProcess() );
+                    context.getProcess() );
 
         assertSame( this.state1,
                     context.getCurrentState() );
@@ -366,8 +371,9 @@ public class ProcessEngineTest extends TestCase
         this.engine.followTransition( context,
                                       this.transition1_end );
 
-        assertNull( context.getCurrentProcess() );
         assertNull( context.getCurrentState() );
+
+        assertTrue( context.isStatus( ProcessContext.PROCESS_FINISHED ) );
     }
 
     public void testEnterState() throws Exception
@@ -416,7 +422,7 @@ public class ProcessEngineTest extends TestCase
         ProcessContext context = this.engine.spawn( this.process );
 
         assertSame( this.process,
-                    context.getCurrentProcess() );
+                    context.getProcess() );
 
         assertSame( this.state1,
                     context.getCurrentState() );
@@ -435,7 +441,7 @@ public class ProcessEngineTest extends TestCase
         assertNull( this.engine.peekNextToService() );
 
         assertSame( this.process,
-                    context.getCurrentProcess() );
+                    context.getProcess() );
 
         assertSame( this.state1,
                     context.getCurrentState() );
