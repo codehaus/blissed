@@ -30,7 +30,6 @@
   </repository>
 
   <developers>
-
     <developer>
       <name>bob mcwhirter</name>
       <id>werken</id>
@@ -40,7 +39,6 @@
       <email>bob@eng.werken.com</email>
       <organization>The Werken Company</organization>
     </developer>
-
   </developers>
 
   <dependencies>
