@@ -1,7 +1,7 @@
 package com.werken.blissed.event;
 
 /*
- $Id: StateEnteredEvent.java,v 1.5 2002-07-07 05:09:16 werken Exp $
+ $Id: ActivityListener.java,v 1.1 2002-07-07 05:09:16 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -46,28 +46,26 @@ package com.werken.blissed.event;
  
  */
 
-import com.werken.blissed.State;
-import com.werken.blissed.Context;
+import java.util.EventListener;
 
-/** Event indicating a state was entered by a given context.
+/** Interface for receiving <code>ActivityEvent</code>s.
+ *
+ *  @see ActivityEvent
+ *  @see com.werken.blissed.Activity
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class StateEnteredEvent extends StateEvent
+public interface ActivityListener extends EventListener
 {
-    // ------------------------------------------------------------
-    //     Constructors
-    // ------------------------------------------------------------
-
-    /** Construct.
+    /** Receive notification of a context starting an activity.
      *
-     *  @param state The state event source.
-     *  @param context The context context.
+     *  @param event The activity-started event.
      */
-    public StateEnteredEvent(State state,
-                             Context context)
-    {
-        super( state,
-               context );
-    }
+    void activityStarted(ActivityStartedEvent event);
+
+    /** Receive notification of a context finishing an activity.
+     *
+     *  @param event The activity-finished event.
+     */
+    void activityFinished(ActivityFinishedEvent event);
 }

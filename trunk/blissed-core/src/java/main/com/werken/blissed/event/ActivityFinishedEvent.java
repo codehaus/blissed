@@ -1,7 +1,7 @@
 package com.werken.blissed.event;
 
 /*
- $Id: StateEnteredEvent.java,v 1.5 2002-07-07 05:09:16 werken Exp $
+ $Id: ActivityFinishedEvent.java,v 1.1 2002-07-07 05:09:16 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -46,14 +46,16 @@ package com.werken.blissed.event;
  
  */
 
-import com.werken.blissed.State;
+import com.werken.blissed.Activity;
 import com.werken.blissed.Context;
 
-/** Event indicating a state was entered by a given context.
+/** Event indicating an activity was finished for a given context.
+ *
+ *  @see Activity
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class StateEnteredEvent extends StateEvent
+public class ActivityFinishedEvent extends ActivityEvent
 {
     // ------------------------------------------------------------
     //     Constructors
@@ -61,13 +63,13 @@ public class StateEnteredEvent extends StateEvent
 
     /** Construct.
      *
-     *  @param state The state event source.
-     *  @param context The context context.
+     *  @param activity The node activity source.
+     *  @param context The context.
      */
-    public StateEnteredEvent(State state,
-                             Context context)
+    public ActivityFinishedEvent(Activity activity,
+                                 Context context)
     {
-        super( state,
+        super( activity,
                context );
     }
 }
