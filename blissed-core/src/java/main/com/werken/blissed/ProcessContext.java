@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: ProcessContext.java,v 1.1 2002-09-16 04:17:26 bob Exp $
+ $Id: ProcessContext.java,v 1.2 2002-09-16 05:27:15 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -46,19 +46,15 @@ package com.werken.blissed;
  
  */
 
-import java.util.Date;
 import java.util.Set;
 import java.util.HashSet;
-import java.util.List;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 
 /** Context for an instance of a <code>Process</code>.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ProcessContext.java,v 1.1 2002-09-16 04:17:26 bob Exp $
+ *  @version $Id: ProcessContext.java,v 1.2 2002-09-16 05:27:15 bob Exp $
  */
 public class ProcessContext 
 {

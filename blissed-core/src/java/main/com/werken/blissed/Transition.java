@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Transition.java,v 1.16 2002-09-16 04:17:26 bob Exp $
+ $Id: Transition.java,v 1.17 2002-09-16 05:27:15 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -45,11 +45,6 @@ package com.werken.blissed;
  OF THE POSSIBILITY OF SUCH DAMAGE.
  
  */
-
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Collections;
 
 /** An arc between two <code>State</code>s.
  *

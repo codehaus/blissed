@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: State.java,v 1.19 2002-09-16 04:17:26 bob Exp $
+ $Id: State.java,v 1.20 2002-09-16 05:27:15 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -52,8 +52,6 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.HashSet;
-import java.util.Collections;
-import java.util.Iterator;
 
 /** A <code>Activity</code>-bearing state in the process graph.
  *

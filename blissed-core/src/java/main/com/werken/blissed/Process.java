@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Process.java,v 1.23 2002-09-16 04:17:26 bob Exp $
+ $Id: Process.java,v 1.24 2002-09-16 05:27:15 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -54,10 +54,7 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.HashSet;
-import java.util.List;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Collections;
 
 /** A graph of nodes and transitions in the form of a
  *  state machine.
@@ -231,11 +228,22 @@ public class Process implements Named, Described, DirectedGraph
     //     org.apache.commons.graph.DirectedGraph
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
+    /** Retrieve all vertices (states).
+     *
+     *  @return Set of all vertices (states).
+     */
     public Set getVertices()
     {
         return new HashSet( this.states.values() );
     }
 
+    /** Retrieve all edges (transitions) from a given vertex (state).
+     *
+     *  @param vertex The vertex (state).
+     *
+     *  @return The set of all inbound and outbound edges (transitions)
+     *          for the vertex.
+     */
     public Set getEdges(Vertex vertex)
     {
         Set edges = new HashSet();
@@ -246,6 +254,12 @@ public class Process implements Named, Described, DirectedGraph
         return edges;
     }
 
+    /** Retrieve all vertices (states) connected by an edge (transition)
+     *
+     *  @param edge The edge (transition).
+     *
+     *  @return The set of vertices (states) connected by the edge (transition).
+     */
     public Set getVertices(Edge edge)
     {
         Set vertices = new HashSet( 2 );
@@ -256,6 +270,10 @@ public class Process implements Named, Described, DirectedGraph
         return vertices;
     }
 
+    /** Reteieve all edges (transitions).
+     *
+     *  @return SEt of all edges (transitions).
+     */
     public Set getEdges()
     {
         Iterator stateIter = this.states.values().iterator();
@@ -273,21 +291,45 @@ public class Process implements Named, Described, DirectedGraph
         return edges;
     }
 
+    /** Retrieve all inbound edges (transitions) for a vertex (state).
+     *
+     *  @param vertex The vertex (state).
+     *
+     *  @return The set of all inbound edges (transitions).
+     */
     public Set getInbound(Vertex vertex)
     {
         return ((State)vertex).getInboundTransitions();
     }
 
+    /** Retrieve all outbound edges (transitions) for a vertex (state).
+     *
+     *  @param vertex The vertex (state).
+     *
+     *  @return The set of all outbound edges (transitions).
+     */
     public Set getOutbound(Vertex vertex)
     {
         return new HashSet( ((State)vertex).getTransitions() );
     }
 
+    /** Retrieve the source vertex (state) of an edge (transition).
+     *
+     *  @param edge The edge (transition).
+     *
+     *  @return The source vertex (state).
+     */
     public Vertex getSource(Edge edge)
     {
         return ((Transition)edge).getOrigin();
     }
 
+    /** Retrieve the target vertex (state) of an edge (transition).
+     *
+     *  @param edge The edge (transition).
+     *
+     *  @return THe target vertex (state).
+     */
     public Vertex getTarget(Edge edge)
     {
         return ((Transition)edge).getDestination();

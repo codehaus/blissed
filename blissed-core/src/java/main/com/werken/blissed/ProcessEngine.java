@@ -1,28 +1,103 @@
 package com.werken.blissed;
 
+/*
+ $Id: ProcessEngine.java,v 1.2 2002-09-16 05:27:15 bob Exp $
+
+ Copyright 2002 (C) The Werken Company. All Rights Reserved.
+ 
+ Redistribution and use of this software and associated documentation
+ ("Software"), with or without modification, are permitted provided
+ that the following conditions are met:
+
+ 1. Redistributions of source code must retain copyright
+    statements and notices.  Redistributions must also contain a
+    copy of this document.
+ 
+ 2. Redistributions in binary form must reproduce the
+    above copyright notice, this list of conditions and the
+    following disclaimer in the documentation and/or other
+    materials provided with the distribution.
+ 
+ 3. The name "blissed" must not be used to endorse or promote
+    products derived from this Software without prior written
+    permission of The Werken Company.  For written permission,
+    please contact bob@werken.com.
+ 
+ 4. Products derived from this Software may not be called "blissed"
+    nor may "blissed" appear in their names without prior written
+    permission of The Werken Company. blissed is a registered
+    trademark of The Werken Company.
+ 
+ 5. Due credit should be given to the blissed Project
+    (http://blissed.werken.com/).
+ 
+ THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS
+ ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
+ NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+ FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL
+ THE WERKEN COMPANY OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+ INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+ OF THE POSSIBILITY OF SUCH DAMAGE.
+ 
+ */
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Iterator;
 
+/** Process controller engine.
+ *
+ *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ *
+ *  @version $Id: ProcessEngine.java,v 1.2 2002-09-16 05:27:15 bob Exp $
+ */
 public class ProcessEngine 
 {
+    // ------------------------------------------------------------
+    //     Instance members
+    // ------------------------------------------------------------
+
+    /** Queue of <code>ProcessContext</code>s requiring checking. */
     private LinkedList queue;
 
+    // ------------------------------------------------------------
+    //     Constructors
+    // ------------------------------------------------------------
+
+    /** Construct.
+     */
     public ProcessEngine()
     {
         // intentionally left blank
     }
 
+    // ------------------------------------------------------------
+    //     Instance methods
+    // ------------------------------------------------------------
+
+    /** Start.
+     */
     public void start()
     {
 
     }
 
+    /** Stop.
+     */
     public void stop()
     {
 
     }
 
+    /** Add a <code>ProcessContext</code> to the check queue.
+     *
+     *  @param context The process context to add to the queue.
+     */
     public void addToCheckQueue(ProcessContext context)
     {
         synchronized ( this.queue )
@@ -31,7 +106,15 @@ public class ProcessEngine
             this.queue.notifyAll();
         }
     }
-
+    
+    /** Wait for and retrieve the next <code>ProcessContext</code>
+     *  from the queue to check.
+     *
+     *  @return The next <code>ProcessContext</code>.
+     *
+     *  @throws InterruptedException If the blocking-read of the queue
+     *          is interrupted before returning.
+     */
     protected ProcessContext getNextToCheck() throws InterruptedException
     {
         ProcessContext context = null;
@@ -53,6 +136,13 @@ public class ProcessEngine
         return context;
     }
 
+    /** Spawn an instance of a <code>Process</code>.
+     *
+     *  @param process The process to spawn.
+     *
+     *  @return The <code>ProcessContext</code> representing the
+     *          instance of the newly spawned process.
+     */
     public ProcessContext spawn(Process process)
     {
         ProcessContext context = new ProcessContext( process );
@@ -60,6 +150,15 @@ public class ProcessEngine
         return context;
     }
 
+    /** Spawn an instance of a <code>Process</code> as a child
+     *  of another instance.
+     *
+     *  @param process The process to spawn.
+     *  @param parent The parent context.
+     *
+     *  @return The <code>ProcessContext</code> representing the
+     *          instance of the newly spawned process.
+     */
     public ProcessContext spawn(Process process,
                                 ProcessContext parent)
     {
@@ -70,6 +169,16 @@ public class ProcessEngine
         return context;
     }
 
+    /** Check a <code>ProcessContext</code> for progress possibilities.
+     *
+     *  @param context The context to check.
+     *
+     *  @return <code>true</code> if the <code>ProcessContext</code> performed
+     *          motion, otherwise <code>false</code>.
+     *
+     *  @throws InvalidMotionException If the transitions of the context attempt
+     *          an invalid motion.
+     */
     public boolean check(ProcessContext context) throws InvalidMotionException
     {
         boolean transitioned = false;
@@ -109,6 +218,15 @@ public class ProcessEngine
         return transitioned;
     }
 
+    /** Cause a <code>ProcessContext</code> to follow a passing
+     *  <code>Transition</code>.
+     *
+     *  @param context The process context.
+     *  @param transition The passing transition.
+     *
+     *  @throws InvalidMotionException If the process context may not
+     *          transition.
+     */ 
     protected void followTransition(ProcessContext context,
                                     Transition transition) throws InvalidMotionException
     {

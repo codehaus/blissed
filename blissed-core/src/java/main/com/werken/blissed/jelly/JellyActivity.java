@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: JellyActivity.java,v 1.1 2002-09-16 04:17:26 bob Exp $
+ $Id: JellyActivity.java,v 1.2 2002-09-16 05:27:15 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -58,7 +58,7 @@ import org.apache.commons.jelly.XMLOutput;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: JellyActivity.java,v 1.1 2002-09-16 04:17:26 bob Exp $
+ *  @version $Id: JellyActivity.java,v 1.2 2002-09-16 05:27:15 bob Exp $
  */
 public class JellyActivity implements Activity
 {
@@ -73,6 +73,10 @@ public class JellyActivity implements Activity
     //     Constructors
     // ------------------------------------------------------------
 
+    /** Construct.
+     *
+     *  @param script The jelly script.
+     */
     public JellyActivity(Script script)
     {
         this.script = script;
