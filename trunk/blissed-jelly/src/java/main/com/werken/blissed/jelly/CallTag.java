@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: CallTag.java,v 1.6 2002-09-17 21:36:43 bob Exp $
+ $Id: CallTag.java,v 1.7 2002-09-18 06:04:44 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -51,6 +51,7 @@ import com.werken.blissed.ProcessEngine;
 import com.werken.blissed.ProcessContext;
 
 import org.apache.commons.jelly.XMLOutput;
+import org.apache.commons.jelly.JellyException;
 
 /** Call a process.
  *
@@ -120,6 +121,11 @@ public class CallTag extends RuntimeTagSupport
                               getProcess() );
 
         ProcessContext context = getProcessContext();
+
+        if ( context == null )
+        {
+            throw new JellyException( "No process context" );
+        }
         ProcessEngine  engine  = context.getProcessEngine();
 
         engine.call( getProcess(),
