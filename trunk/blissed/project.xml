@@ -24,10 +24,12 @@
   <siteAddress>blissed.sf.net</siteAddress>
   <siteDirectory>/home/groups/b/bl/blissed/htdocs</siteDirectory>
 
+<!--
   <repository>
     <connection>scm:cvs::pserver:anonymous@cvs.blissed.sourceforge.net:/cvsroot/blissed:blissed</connection>
     <url>http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/blissed/blissed/</url>
   </repository>
+-->
 
   <developers>
 
