@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: DefinitionTagSupport.java,v 1.2 2002-09-17 21:36:43 bob Exp $
+ $Id: DefinitionTagSupport.java,v 1.3 2002-09-17 23:00:05 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -56,15 +56,31 @@ import org.apache.commons.jelly.JellyException;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: DefinitionTagSupport.java,v 1.2 2002-09-17 21:36:43 bob Exp $
+ *  @version $Id: DefinitionTagSupport.java,v 1.3 2002-09-17 23:00:05 bob Exp $
  */
 public abstract class DefinitionTagSupport extends BlissedTagSupport
 {
+    // ------------------------------------------------------------
+    //     Constructors
+    // ------------------------------------------------------------
+
+    /** Construct.
+     */
     protected DefinitionTagSupport()
     {
-        
+        // intentionally left blank
     }
 
+    // ------------------------------------------------------------
+    //     Instance methods
+    // ------------------------------------------------------------
+
+    /** Retrieve the currently in-scope <code>Process</code>.
+     *
+     *  @return The currently in-scope process.
+     *
+     *  @throws JellyException If an in-scope process does not exist.
+     */
     protected Process getCurrentProcess() throws JellyException
     {
         ProcessTag processTag = (ProcessTag) findAncestorWithClass( ProcessTag.class );
@@ -79,6 +95,12 @@ public abstract class DefinitionTagSupport extends BlissedTagSupport
         return process;
     }
 
+    /** Retrieve the currently in-scope <code>State</code>.
+     *
+     *  @return The currently in-scope state.
+     *
+     *  @throws JellyException If an in-scope state does not exist.
+     */
     protected State getCurrentState() throws JellyException
     {
         StateTag stateTag = (StateTag) findAncestorWithClass( StateTag.class );
@@ -93,6 +115,12 @@ public abstract class DefinitionTagSupport extends BlissedTagSupport
         return state;
     }
 
+    /** Retrieve the currently in-scope <code>Described</code>.
+     *
+     *  @return The currently in-scope described object.
+     *
+     *  @throws JellyException If an in-scope described object does not exist.
+     */
     protected Described getCurrentDescribed() throws JellyException
     {
         DescribedTag describedTag = (DescribedTag) findAncestorWithClass( DescribedTag.class );

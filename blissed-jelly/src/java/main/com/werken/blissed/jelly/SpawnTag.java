@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: SpawnTag.java,v 1.2 2002-09-17 21:36:43 bob Exp $
+ $Id: SpawnTag.java,v 1.3 2002-09-17 23:00:05 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -68,7 +68,7 @@ import org.apache.commons.jelly.MissingAttributeException;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: SpawnTag.java,v 1.2 2002-09-17 21:36:43 bob Exp $
+ *  @version $Id: SpawnTag.java,v 1.3 2002-09-17 23:00:05 bob Exp $
  */
 public class SpawnTag extends RuntimeTagSupport 
 {
@@ -140,11 +140,19 @@ public class SpawnTag extends RuntimeTagSupport
         return this.engine;
     }
 
+    /** Set the variable name in which to store the <code>Activity</code>.
+     *
+     *  @param var The variable name.
+     */
     public void setVar(String var)
     {
         this.var = var;
     }
 
+    /** Retrieve the variable name in which to store the <code>Activity</code>.
+     *
+     *  @return The variable name.
+     */
     public String getVar()
     {
         return this.var;

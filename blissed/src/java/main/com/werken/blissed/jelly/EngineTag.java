@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: EngineTag.java,v 1.1 2002-09-17 21:36:43 bob Exp $
+ $Id: EngineTag.java,v 1.2 2002-09-17 23:00:05 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -54,7 +54,7 @@ import org.apache.commons.jelly.XMLOutput;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: EngineTag.java,v 1.1 2002-09-17 21:36:43 bob Exp $
+ *  @version $Id: EngineTag.java,v 1.2 2002-09-17 23:00:05 bob Exp $
  */
 public class EngineTag extends RuntimeTagSupport
 {
@@ -76,11 +76,19 @@ public class EngineTag extends RuntimeTagSupport
         // intentionally left blank
     }
 
+    /** Set the variable name in which to store the <code>ProcessEngine</code>.
+     *
+     *  @param var The variable name.
+     */
     public void setVar(String var)
     {
         this.var = var;
     }
 
+    /** Retrieve the variable name in which to store the <code>ProcessEngine</code>.
+     *
+     *  @return The variable name.
+     */
     public String getVar()
     {
         return this.var;

@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: ActivityTag.java,v 1.8 2002-09-17 21:36:43 bob Exp $
+ $Id: ActivityTag.java,v 1.9 2002-09-17 23:00:05 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -57,6 +57,8 @@ import org.apache.commons.jelly.JellyException;
 /** Create an activity.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ *
+ *  @version $Id: ActivityTag.java,v 1.9 2002-09-17 23:00:05 bob Exp $
  */
 public class ActivityTag extends DefinitionTagSupport
 {
@@ -82,11 +84,19 @@ public class ActivityTag extends DefinitionTagSupport
     //     Instance methods
     // ------------------------------------------------------------
 
+    /** Set the variable name in which to store the <code>Activity</code>.
+     *
+     *  @param var The variable name.
+     */
     public void setVar(String var)
     {
         this.var = var;
     }
 
+    /** Retrieve the variable name in which to store the <code>Activity</code>.
+     *
+     *  @return The variable name.
+     */
     public String getVar()
     {
         return this.var;
