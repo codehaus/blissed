@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: NoOpTask.java,v 1.2 2002-07-04 19:40:07 werken Exp $
+ $Id: NoOpActivity.java,v 1.1 2002-07-05 03:57:12 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -46,20 +46,20 @@ package com.werken.blissed;
  
  */
 
-/** <code>Task</code> which performs no actions.
+/** <code>Activity</code> which performs no actions.
  *
- *  @see Task
+ *  @see Activity
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class NoOpTask implements Task
+public class NoOpActivity implements Activity
 {
     // ------------------------------------------------------------
     //     Constants
     // ------------------------------------------------------------
 
     /** Singleton instance. */
-    public static final NoOpTask INSTANCE = new NoOpTask();
+    public static final NoOpActivity INSTANCE = new NoOpActivity();
 
     // ------------------------------------------------------------
     //     Constructors
@@ -68,14 +68,14 @@ public class NoOpTask implements Task
     /** Construct.
      *
      *  <p>
-     *  While <code>NoOpTask</code> does provide this
+     *  While <code>NoOpActivity</code> does provide this
      *  public constructor, it is recommended to simply
      *  use the singleton instance provided.
      *  </p>
      *
      *  @see #INSTANCE
      */
-    public NoOpTask()
+    public NoOpActivity()
     {
         // intentionally left blank.
     }
@@ -84,7 +84,7 @@ public class NoOpTask implements Task
     //     Instance methods
     // ------------------------------------------------------------
 
-    /** Perform this task.
+    /** Perform this activity.
      *
      *  <p>
      *  This implementation does nothing and simply
