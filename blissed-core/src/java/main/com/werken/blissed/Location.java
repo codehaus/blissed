@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
-  $Id: Location.java,v 1.1 2002-07-04 19:40:07 werken Exp $
+  $Id: Location.java,v 1.2 2002-07-04 22:56:53 werken Exp $
 
   Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -65,7 +65,7 @@ class Location
         return this.context;
     }
 
-    void check() throws InvalidMotionException
+    void check() throws InvalidMotionException, ActivityException
     {
         if ( this.locationStack.isEmpty() )
         {

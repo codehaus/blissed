@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: PredicatedTransition.java,v 1.1 2002-07-04 19:40:07 werken Exp $
+ $Id: PredicatedTransition.java,v 1.2 2002-07-04 22:56:53 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -143,7 +143,7 @@ public class PredicatedTransition extends Transition
      *  @return <code>true</code> if this transition was successful
      *          within the context.
      */
-    boolean accept(Context context) throws InvalidMotionException
+    boolean accept(Context context) throws InvalidMotionException, ActivityException
     {
         boolean result = getPredicate().performTest( context );
 
