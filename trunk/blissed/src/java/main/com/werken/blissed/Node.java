@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Node.java,v 1.10 2002-07-06 21:23:38 werken Exp $
+ $Id: Node.java,v 1.11 2002-07-17 17:11:07 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -134,7 +134,7 @@ public class Node implements Named, Described
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    //     com.werken.blissed.Named impl
+    //     com.werken.blissed.Named
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
     /** Retrieve the name of this node.
@@ -147,7 +147,7 @@ public class Node implements Named, Described
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    //     com.werken.blissed.Described impl
+    //     com.werken.blissed.Described 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
     /** Retrieve the description of this node.
@@ -157,6 +157,15 @@ public class Node implements Named, Described
     public String getDescription()
     {
         return this.description;
+    }
+
+    /** Set the description
+     *
+     *  @param description The description.
+     */
+    public void setDescription(String description)
+    {
+        this.description = description;
     }
 }
 

@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Described.java,v 1.1.1.1 2002-07-02 14:28:07 werken Exp $
+ $Id: Described.java,v 1.2 2002-07-17 17:11:07 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -57,4 +57,10 @@ public interface Described
      *  @return The description.
      */
     String getDescription();
+
+    /** Set the description.
+     *
+     *  @param description The description.
+     */
+    void setDescription(String description);
 }

@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: ProcessTag.java,v 1.3 2002-07-06 21:23:38 werken Exp $
+ $Id: ProcessTag.java,v 1.4 2002-07-17 17:11:07 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -46,14 +46,94 @@ package com.werken.blissed.jelly;
  
  */
 
+import com.werken.blissed.Process;
+import com.werken.blissed.Described;
+
 import org.apache.commons.jelly.XMLOutput;
+import org.apache.commons.jelly.MissingAttributeException;
 
 /** Create a new process.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class ProcessTag extends BlissedTag
+public class ProcessTag extends BlissedTag implements DescribedTag
 {
+    // ------------------------------------------------------------
+    //     Instance members
+    // ------------------------------------------------------------
+
+    /** The process name. */
+    private String name;
+
+    /** The process description. */
+    private String description;
+
+    /** The process. */
+    private Process process;
+
+    // ------------------------------------------------------------
+    //     Constructors
+    // ------------------------------------------------------------
+
+    /** Construct.
+     */
+    public ProcessTag()
+    {
+        this.description = "";
+    }
+
+    // ------------------------------------------------------------
+    //     Instance members
+    // ------------------------------------------------------------
+
+    /** Set the process name.
+     *
+     *  @param name The name.
+     */
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+    /** Set the process description.
+     *
+     *  @param description The description.
+     */
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    //     com.werken.blissed.jelly.BlissedTag
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+    /** Retrieve the current in-scope process.
+     *
+     *  @return The current in-scope process or <code>null</code>.
+     */
+    public Process getProcess()
+    {
+        return this.process;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    //     com.werken.blissed.jelly.DescribedTag
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+    /** Retrieve the current in-scope described object.
+     *
+     *  @return The in-scope described object.
+     */
+    public Described getDescribed()
+    {
+        return getProcess();
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    //     org.apache.commons.jelly.Tag
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
     /** Evaluates this tag after all the tags properties
      *  have been initialized.
      *
@@ -63,6 +143,12 @@ public class ProcessTag extends BlissedTag
      */
     public void doTag(XMLOutput output) throws Exception
     {
+        if ( this.name == null )
+        {
+            throw new MissingAttributeException( "name" );
+        }
 
+        this.process = new Process( this.name,
+                                    this.description );
     }
 }

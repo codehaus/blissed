@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Transition.java,v 1.12 2002-07-06 21:23:38 werken Exp $
+ $Id: Transition.java,v 1.13 2002-07-17 17:11:07 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -290,6 +290,15 @@ public class Transition implements Described
     public String getDescription()
     {
         return this.description;
+    }
+
+    /** Set the description
+     *
+     *  @param description The description.
+     */
+    public void setDescription(String description)
+    {
+        this.description = description;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

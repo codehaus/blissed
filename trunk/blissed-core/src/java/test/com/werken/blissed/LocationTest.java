@@ -16,7 +16,7 @@ public class LocationTest extends TestCase
         super( name );
     }
 
-    public void setUp()
+    public void setUp() throws Exception
     {
         this.process  = new Process( "test.process",
                                      "test process" );
@@ -24,7 +24,7 @@ public class LocationTest extends TestCase
         this.context  = new Context( this.process );
 
         this.location = this.context.getLocation();
-
+        
         this.state1 = this.process.addState( "state.1",
                                              "state one" );
 

@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: StateTag.java,v 1.2 2002-07-06 21:23:38 werken Exp $
+ $Id: StateTag.java,v 1.3 2002-07-17 17:11:07 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -46,14 +46,92 @@ package com.werken.blissed.jelly;
  
  */
 
+import com.werken.blissed.Process;
+import com.werken.blissed.State;
+import com.werken.blissed.Described;
+
 import org.apache.commons.jelly.XMLOutput;
+import org.apache.commons.jelly.JellyException;
+import org.apache.commons.jelly.MissingAttributeException;
 
 /** Create a new state.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class StateTag
+public class StateTag extends BlissedTag implements DescribedTag
 {
+    // ------------------------------------------------------------
+    //     Instance members
+    // ------------------------------------------------------------
+
+    /** The state name. */
+    private String name;
+
+    /** The state description. */
+    private String description;
+
+    /** The state. */
+    private State state;
+
+    // ------------------------------------------------------------
+    //     Constructors
+    // ------------------------------------------------------------
+
+    /** Construct.
+     */
+    public StateTag()
+    {
+        this.description = "";
+    }
+
+    // ------------------------------------------------------------
+    //     Instance methods
+    // ------------------------------------------------------------
+
+    /** Set the state name.
+     *
+     *  @param name The name.
+     */
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+    /** Set the state description.
+     *
+     *  @param description The description.
+     */
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
+
+    /** Retrieve the <code>State</code>.
+     *
+     *  @return The <code>State</code>.
+     */
+    public State getState()
+    {
+        return this.state;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    //     com.werken.blissed.jelly.DescribedTag
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+    /** Retrieve the current in-scope described object.
+     *
+     *  @return The in-scope described object.
+     */
+    public Described getDescribed()
+    {
+        return getState();
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    //     org.apache.commons.jelly.Tag
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
     /** Evaluates this tag after all the tags properties
      *  have been initialized.
      *
@@ -63,6 +141,19 @@ public class StateTag
      */
     public void doTag(XMLOutput output) throws Exception
     {
+        Process process = getProcess();
 
+        if ( process == null )
+        {
+            throw new JellyException( "Unable to locate a proceess." );
+        }
+
+        if ( this.name == null )
+        {
+            throw new MissingAttributeException( "name" );
+        }
+
+        this.state = process.addState( this.name,
+                                       this.description );
     }
 }

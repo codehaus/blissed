@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: BlissedTag.java,v 1.2 2002-07-06 21:23:38 werken Exp $
+ $Id: BlissedTag.java,v 1.3 2002-07-17 17:11:07 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -46,6 +46,8 @@ package com.werken.blissed.jelly;
  
  */
 
+import com.werken.blissed.Process;
+
 import org.apache.commons.jelly.TagSupport;
 
 /** Base of all blissed jelly tags.
@@ -54,5 +56,23 @@ import org.apache.commons.jelly.TagSupport;
  */
 abstract class BlissedTag extends TagSupport
 {
+    /** Retrieve the current in-scope <code>Process</code>.
+     *
+     *  @see Process
+     *
+     *  @return The current in-scope <code>Process</code> or
+     *          <code>null</code> if no <code>Process</code>
+     *          is in scope.
+     */
+    public Process getProcess() 
+    {
+        ProcessTag processTag = (ProcessTag) findAncestorWithClass( ProcessTag.class );
 
+        if ( processTag == null )
+        {
+            return null;
+        }
+
+        return processTag.getProcess();
+    }
 }

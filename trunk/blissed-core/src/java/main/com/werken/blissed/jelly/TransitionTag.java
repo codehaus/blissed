@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: TransitionTag.java,v 1.2 2002-07-06 21:23:38 werken Exp $
+ $Id: TransitionTag.java,v 1.3 2002-07-17 17:11:07 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -45,14 +45,97 @@ package com.werken.blissed.jelly;
  OF THE POSSIBILITY OF SUCH DAMAGE.
  
  */
+
+import com.werken.blissed.Process;
+import com.werken.blissed.State;
+import com.werken.blissed.Transition;
+import com.werken.blissed.Described;
+
 import org.apache.commons.jelly.XMLOutput;
+import org.apache.commons.jelly.JellyException;
+import org.apache.commons.jelly.MissingAttributeException;
 
 /** Create a transition.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class TransitionTag extends BlissedTag
+public class TransitionTag extends BlissedTag implements DescribedTag
 {
+    // ------------------------------------------------------------
+    //     Instance members
+    // ------------------------------------------------------------
+
+    /** From state name. */
+    private String from;
+
+    /** To state name. */
+    private String to;
+
+    /** The transition description. */
+    private String description;
+
+    /** The transition. */
+    private Transition transition;
+
+    // ------------------------------------------------------------
+    //     Constructors
+    // ------------------------------------------------------------
+
+    /** Construct.
+     */
+    public TransitionTag()
+    {
+        this.description = "";
+    }
+
+    // ------------------------------------------------------------
+    //     Instance methods
+    // ------------------------------------------------------------
+
+    /** Set the origin state name.
+     *
+     *  @param from The origin state name.
+     */
+    public void setFrom(String from)
+    {
+        this.from = from;
+    }
+
+    /** Set the destination state name.
+     *
+     *  @param to The destination state name.
+     */
+    public void setTo(String to)
+    {
+        this.to = to;
+    }
+
+    /** Retrieve the transition.
+     *
+     *  @return The transition.
+     */
+    public Transition getTransition()
+    {
+        return this.transition;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    //     com.werken.blissed.Described
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+    /** Retrieve the described object.
+     *
+     *  @return The described object.
+     */
+    public Described getDescribed()
+    {
+        return getTransition();
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    //     org.apache.commons.jelly.Tag
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
     /** Evaluates this tag after all the tags properties
      *  have been initialized.
      *
@@ -62,6 +145,38 @@ public class TransitionTag extends BlissedTag
      */
     public void doTag(XMLOutput output) throws Exception
     {
+        Process process = getProcess();
 
+        if ( process == null )
+        {
+            throw new JellyException( "Unable to locate a proceess." );
+        }
+
+        if ( this.from == null )
+        {
+            throw new MissingAttributeException( "from" );
+        }
+
+        if ( this.to == null )
+        {
+            throw new MissingAttributeException( "to" );
+        }
+
+        State fromState = process.getState( this.from );
+
+        if ( fromState == null )
+        {
+            throw new JellyException( "No such state \"" + this.from  + "\"" );
+        }
+
+        State toState = process.getState( this.to );
+
+        if ( toState == null )
+        {
+            throw new JellyException( "No such state \"" + this.to  + "\"" );
+        }
+
+        this.transition = fromState.addTransition( toState,
+                                                   this.description );
     }
 }

@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: NoOpActivity.java,v 1.1 2002-07-05 03:57:12 werken Exp $
+ $Id: NoOpActivity.java,v 1.2 2002-07-17 17:11:07 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -122,6 +122,15 @@ public class NoOpActivity implements Activity
     public String getDescription()
     {
         return "no-op";
+    }
+
+    /** Set the description.
+     *
+     *  @param description The description.
+     */
+    public void setDescription(String description)
+    {
+        // intentionally left blank
     }
 }
 

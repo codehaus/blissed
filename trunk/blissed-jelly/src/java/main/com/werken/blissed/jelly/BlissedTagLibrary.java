@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: BlissedTagLibrary.java,v 1.2 2002-07-06 21:23:38 werken Exp $
+ $Id: BlissedTagLibrary.java,v 1.3 2002-07-17 17:11:07 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -62,6 +62,13 @@ public class BlissedTagLibrary extends TagLibrary
      */
     public BlissedTagLibrary()
     {
+        registerTag( "process",
+                     ProcessTag.class );
 
+        registerTag( "state",
+                     StateTag.class );
+
+        registerTag( "transition",
+                     TransitionTag.class );
     }
 }
