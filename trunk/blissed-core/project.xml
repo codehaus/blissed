@@ -142,6 +142,15 @@
       </includes>
     </resources>
 
+    <testResources>
+      <testResource>
+        <directory>src/java/test</directory>
+        <includes>
+          <include>**/*.xml</include>
+        </includes>
+      </testResource>
+    </testResources>
+
     <jars/>
   </build>
 </project>
