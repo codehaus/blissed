@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Start.java,v 1.2 2002-07-02 15:40:12 werken Exp $
+ $Id: Start.java,v 1.3 2002-07-03 02:50:51 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -48,6 +48,7 @@ package com.werken.blissed;
 
 /** Entry-point start node of a <code>Process</code>.
  *
+ *  @see Process#getStart
  *  @see Process#start
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
@@ -106,7 +107,7 @@ public class Start extends Node
 
     public void accept(WorkSlip workSlip)
     {
+        super.accept( workSlip );
         getProcess().fireProcessStarted( workSlip );
     }
 }
-

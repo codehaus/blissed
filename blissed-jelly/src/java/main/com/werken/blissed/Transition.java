@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Transition.java,v 1.2 2002-07-02 15:40:12 werken Exp $
+ $Id: Transition.java,v 1.3 2002-07-03 02:50:51 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -46,6 +46,14 @@ package com.werken.blissed;
  
  */
 
+import com.werken.blissed.event.TransitionFollowedEvent;
+import com.werken.blissed.event.TransitionListener;
+
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Collections;
+
 /** A guarded arc between two <code>Node</code>s.
  *
  *  @see Node
@@ -59,6 +67,9 @@ public class Transition implements Described
     //     Instance members
     // ------------------------------------------------------------
 
+    /** Origin end of this transitional arc. */
+    private Node origin;
+
     /** Destination end of this transitional arc. */
     private Node destination;
 
@@ -68,28 +79,44 @@ public class Transition implements Described
     /** Description of this transition. */
     private String description;
 
+    /** Transition event listeners. */
+    private List listeners;
+
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
 
     /** Construct.
      *
+     *  @param origin The origin of this transitional arc.
      *  @param destination The destination of this transitional arc.
      *  @param predicate Predicate guard on this transition.
      *  @param description The description of this transition.
      */
-    public Transition(Node destination,
+    public Transition(Node origin,
+                      Node destination,
                       Predicate predicate,
                       String description)
     {
+        this.origin      = origin;
         this.destination = destination;
         this.predicate   = predicate;
         this.description = description;
+        this.listeners   = Collections.EMPTY_LIST;
     }
 
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
+
+    /** Retrieve the origin of this transition.
+     *
+     *  @return The origin <code>Node</code>.
+     */
+    public Node getOrigin()
+    {
+        return this.origin;
+    }
 
     /** Retrieve the destination of this transition.
      *
@@ -118,7 +145,7 @@ public class Transition implements Described
         this.predicate = predicate;
     }
 
-    /** Test this transition against a context.
+    /** Test and optionally accept this transition against a context.
      *
      *  @param workSlip The context against which to
      *         evaluate this transition.
@@ -126,16 +153,65 @@ public class Transition implements Described
      *  @return <code>true</code> if this transition was successful
      *          within the context.
      */
-    boolean test(WorkSlip workSlip)
+    boolean accept(WorkSlip workSlip)
     {
         boolean result = getPredicate().performTest( workSlip );
 
-        if ( result )
+        if ( ! result )
         {
-            getDestination().accept( workSlip );
+            return false;
         }
 
-        return result;
+        getOrigin().release( workSlip );
+
+        fireTransitionFollowed( workSlip );
+
+        getDestination().accept( workSlip );
+
+        return true;
+    }
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    //     Event-listener management
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+    public void addTransitionListener(TransitionListener listener)
+    {
+        if ( this.listeners == Collections.EMPTY_LIST )
+        {
+            this.listeners = new ArrayList();
+        }
+
+        this.listeners.add( listener );
+    }
+
+    public void removeTransitionListener(TransitionListener listener)
+    {
+        this.listeners.remove( listener );
+    }
+
+    public List getTransitionListeners()
+    {
+        return this.listeners;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    //     Event firing
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+    void fireTransitionFollowed(WorkSlip workSlip)
+    {
+        TransitionFollowedEvent event = new TransitionFollowedEvent( this,
+                                                                     workSlip );
+
+        Iterator listenIter = getTransitionListeners().iterator();
+        TransitionListener eachListen = null;
+
+        while ( listenIter.hasNext() )
+        {
+            eachListen = (TransitionListener) listenIter.next();
+
+            eachListen.transitionFollowed( event );
+        }
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

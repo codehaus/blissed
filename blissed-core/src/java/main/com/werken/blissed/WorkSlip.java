@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: WorkSlip.java,v 1.2 2002-07-02 15:40:12 werken Exp $
+ $Id: WorkSlip.java,v 1.3 2002-07-03 02:50:51 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -62,6 +62,10 @@ import java.util.Collections;
  */
 public class WorkSlip implements Named
 {
+    // ------------------------------------------------------------
+    //     Instance members
+    // ------------------------------------------------------------
+
     /** Name of this WorkSlip. */
     private String name;
 
@@ -76,6 +80,13 @@ public class WorkSlip implements Named
 
     /** Instance attributes. */
     private Map attributes;
+
+    /** Current node. */
+    private Node currentNode;
+
+    // ------------------------------------------------------------
+    //     Constructors
+    // ------------------------------------------------------------
 
     /** Construct a root <code>WorkSlip</code>.
      *
@@ -115,6 +126,10 @@ public class WorkSlip implements Named
         this.attributes = new HashMap();
         this.children = Collections.EMPTY_LIST;
     }
+
+    // ------------------------------------------------------------
+    //     Instance methods
+    // ------------------------------------------------------------
 
     /** Retrieve the name of this WorkSlip.
      *
@@ -175,6 +190,24 @@ public class WorkSlip implements Named
     public void clearAttribute(String name)
     {
         this.attributes.remove( name );
+    }
+
+    /** Retrieve this workslip's current node.
+     *
+     *  @return The current node.
+     */
+    Node getCurrentNode()
+    {
+        return this.currentNode;
+    }
+
+    /** Set this workslip's current node.
+     *
+     *  @param currentNode The current node.
+     */
+    void setCurrentNode(Node currentNode)
+    {
+        this.currentNode = currentNode;
     }
 
     /** Spawn a nested process.
