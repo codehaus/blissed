@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Transition.java,v 1.15 2002-08-14 20:22:29 bob Exp $
+ $Id: Transition.java,v 1.16 2002-09-16 04:17:26 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -46,9 +46,6 @@ package com.werken.blissed;
  
  */
 
-import com.werken.blissed.event.TransitionFollowedEvent;
-import com.werken.blissed.event.TransitionListener;
-
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -74,9 +71,6 @@ public class Transition implements Described
 
     /** Description of this transition. */
     private String description;
-
-    /** Transition event listeners. */
-    private List listeners;
 
     /** Guard which restricts transitions. */
     private Guard guard;
@@ -117,7 +111,6 @@ public class Transition implements Described
         this.destination = destination;
         this.guard       = guard;
         this.description = description;
-        this.listeners   = Collections.EMPTY_LIST;
     }
 
     // ------------------------------------------------------------
@@ -167,127 +160,19 @@ public class Transition implements Described
      *  the test always evaluates to <code>true</code>.
      *  </p>
      *
-     *  @param procession The procession.
+     *  @param context The process context.
      *
-     *  @return <code>true</code> if the procession passes the guard,
+     *  @return <code>true</code> if the process context passes the guard,
      *          otherwise <code>false</code>.
      */
-    boolean testGuard(Procession procession)
+    boolean testGuard(ProcessContext context)
     {
         if ( getGuard() == null )
         {
             return true;
         }
 
-        return getGuard().test( procession );
-    }
-
-    /** Test and optionally accept this transition against a procession.
-     *
-     *  @param procession The procession against which to
-     *         evaluate this transition.
-     *
-     *  @return <code>true</code> if this transition was successful
-     *          within the procession.
-     *
-     *  @throws InvalidMotionException If an invalid motion occurs.
-     *  @throws ActivityException If an error occurs while performing an activity.
-     */
-    boolean accept(Procession procession) throws InvalidMotionException, ActivityException
-    {
-        if ( ! testGuard( procession ) )
-        {
-            return false;
-        }
-
-        State origin = getOrigin();
-
-        origin.release( procession );
-
-        fireTransitionFollowed( procession );
-
-        State destination = getDestination();
-
-        if ( destination != null )
-        {
-            getDestination().accept( procession );
-        }
-        else
-        {
-            origin.getProcess().release( procession );
-        }
-
-        return true;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    //     Event-listener management
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-    /** Add a <code>TransitionListener</code> to this transition.
-     *
-     *  @param listener The listener to add.
-     */
-    public void addTransitionListener(TransitionListener listener)
-    {
-        if ( this.listeners == Collections.EMPTY_LIST )
-        {
-            this.listeners = new ArrayList();
-        }
-
-        this.listeners.add( listener );
-    }
-
-    /** Remove a <code>TransitionListener</code> from this state.
-     *
-     *  @param listener The listener to remove.
-     */
-    public void removeTransitionListener(TransitionListener listener)
-    {
-        this.listeners.remove( listener );
-    }
-
-    /** Retrieve the <b>live</b> list of <code>TransitionListener</code>s
-     *  for this transition.
-     *
-     *  <p>
-     *  The returned <b>live</b> list is directly backed by the transition.
-     *  Change made to the list are immediately reflected internally
-     *  within the transition.
-     *  </p>
-     *
-     *  @return The <code>List</code> of <code>TransitionListener</code>s.
-     */
-    public List getTransitionListeners()
-    {
-        return this.listeners;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    //     Event firing
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-    /** Fire an event indicating that a procession has followed
-     *  this transition.
-     *
-     *  @param procession The procession following this transition.
-     */
-    void fireTransitionFollowed(Procession procession)
-    {
-        TransitionFollowedEvent event = new TransitionFollowedEvent( this,
-                                                                     procession );
-
-        Iterator listenIter = getTransitionListeners().iterator();
-        TransitionListener eachListen = null;
-
-        while ( listenIter.hasNext() )
-        {
-            eachListen = (TransitionListener) listenIter.next();
-
-            eachListen.transitionFollowed( event );
-        }
-
-        procession.fireTransitionFollowed( event );
+        return getGuard().test( context );
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
