@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: BlissedException.java,v 1.3 2002-07-06 21:23:38 werken Exp $
+ $Id: BlissedException.java,v 1.4 2002-09-18 05:04:58 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -112,6 +112,34 @@ public class BlissedException extends Exception
     public boolean hasRootCause()
     {
         return ( this.rootCause != null );
+    }
+
+    /** Retrieve the error message.
+     *
+     *  @return The error message.
+     */
+    public String getMessage()
+    {
+        if ( getRootCause() != null )
+        {
+            return getRootCause().getMessage();
+        }
+
+        return super.getMessage();
+    }
+
+    /** Retrieve the localized error message.
+     *
+     *  @return The localized error message.
+     */
+    public String getLocalizedMessage()
+    {
+        if ( getRootCause() != null )
+        {
+            return getRootCause().getLocalizedMessage();
+        }
+
+        return super.getLocalizedMessage();
     }
 }
 
