@@ -1,7 +1,7 @@
 package org.codehaus.blissed.jelly;
 
 /*
- $Id: RuntimeTagSupport.java,v 1.1 2003-06-04 15:15:04 proyal Exp $
+ $Id: RuntimeTagSupport.java,v 1.2 2003-06-05 19:56:08 proyal Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -52,7 +52,7 @@ import org.codehaus.blissed.ProcessContext;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuntimeTagSupport.java,v 1.1 2003-06-04 15:15:04 proyal Exp $
+ *  @version $Id: RuntimeTagSupport.java,v 1.2 2003-06-05 19:56:08 proyal Exp $
  */
 public abstract class RuntimeTagSupport extends BlissedTagSupport
 {
@@ -63,7 +63,7 @@ public abstract class RuntimeTagSupport extends BlissedTagSupport
     /** Key under which the <code>ProcessContext</code> is stored
      *  within the <code>JellyContext</code>.
      */
-    public static final String PROCESS_CONTEXT_KEY = "org.codehaus.blissed.ProcessContext.current";
+    public static final String PROCESS_CONTEXT_KEY = "processContext";
 
     /** Construct.
      */

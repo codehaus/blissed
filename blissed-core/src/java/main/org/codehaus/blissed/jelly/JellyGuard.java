@@ -1,7 +1,7 @@
 package org.codehaus.blissed.jelly;
 
 /*
- $Id: JellyGuard.java,v 1.1 2003-06-04 15:15:04 proyal Exp $
+ $Id: JellyGuard.java,v 1.2 2003-06-05 19:56:08 proyal Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -123,7 +123,7 @@ public class JellyGuard implements Guard
     {
         JellyContext jellyContext = new JellyContext();
 
-        jellyContext.setVariable( "blissed_context",
+        jellyContext.setVariable( RuntimeTagSupport.PROCESS_CONTEXT_KEY,
                                   context );
 
         try
