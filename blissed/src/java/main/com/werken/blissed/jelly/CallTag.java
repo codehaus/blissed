@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: CallTag.java,v 1.4 2002-09-17 05:13:34 bob Exp $
+ $Id: CallTag.java,v 1.5 2002-09-17 16:02:51 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -62,7 +62,7 @@ import org.apache.commons.jelly.MissingAttributeException;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class CallTag extends BlissedTagSupport 
+public class CallTag extends RuntimeTagSupport 
 {
     // ------------------------------------------------------------
     //     Instance members

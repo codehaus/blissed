@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: DescriptionTag.java,v 1.2 2002-09-17 06:38:48 bob Exp $
+ $Id: DescriptionTag.java,v 1.3 2002-09-17 16:02:51 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -48,7 +48,6 @@ package com.werken.blissed.jelly;
 
 import com.werken.blissed.Described;
 
-import org.apache.commons.jelly.TagSupport;
 import org.apache.commons.jelly.XMLOutput;
 import org.apache.commons.jelly.JellyException;
 
@@ -56,7 +55,7 @@ import org.apache.commons.jelly.JellyException;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class DescriptionTag extends TagSupport
+public class DescriptionTag extends DefinitionTagSupport
 {
     // ------------------------------------------------------------
     //     Constructors
@@ -86,14 +85,7 @@ public class DescriptionTag extends TagSupport
      */
     public void doTag(XMLOutput output) throws Exception
     {
-        DescribedTag describedTag = (DescribedTag) findAncestorWithClass( DescribedTag.class );
-
-        if ( describedTag == null )
-        {
-            throw new JellyException( "Unable to locate an element to describe" );
-        }
-
-        Described described = describedTag.getDescribed();
+        Described described = getCurrentDescribed();
 
         String description = getBodyText();
 
