@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: TransitionTag.java,v 1.6 2002-09-17 16:02:51 bob Exp $
+ $Id: TransitionTag.java,v 1.7 2002-09-17 21:36:43 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -147,11 +147,11 @@ public class TransitionTag extends DefinitionTagSupport implements DescribedTag
     {
         Process process = getCurrentProcess();
 
-        checkAttribute( "from",
-                        this.from );
+        checkStringAttribute( "from",
+                              this.from );
 
-        checkAttribute( "to",
-                        this.to );
+        checkStringAttribute( "to",
+                              this.to );
 
         State fromState = process.getState( this.from );
 

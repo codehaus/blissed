@@ -1,9 +1,9 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: GuardTag.java,v 1.7 2002-09-17 21:36:43 bob Exp $
+ $Id: JellyGuard.java,v 1.1 2002-09-17 21:36:43 bob Exp $
 
- Copyright 2001 (C) The Werken Company. All Rights Reserved.
+ Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
  Redistribution and use of this software and associated documentation
  ("Software"), with or without modification, are permitted provided
@@ -46,89 +46,60 @@ package com.werken.blissed.jelly;
  
  */
 
+import com.werken.blissed.Guard;
 import com.werken.blissed.Transition;
 import com.werken.blissed.ProcessContext;
-import com.werken.blissed.Guard;
 
+import org.apache.commons.jelly.JellyContext;
 import org.apache.commons.jelly.Script;
 import org.apache.commons.jelly.XMLOutput;
 import org.apache.commons.jelly.JellyException;
 
-/** Create a Guard
- *
- *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
- */
-public class GuardTag extends DefinitionTagSupport
+public class JellyGuard implements Guard
 {
-    // ------------------------------------------------------------
-    //     Instance members
-    // ------------------------------------------------------------
+    private Script script;
 
-    /** Storage variable. */
-    private String var;
-
-    // ------------------------------------------------------------
-    //     Constructors
-    // ------------------------------------------------------------
-
-    /** Construct.
-     */
-    public GuardTag()
+    public JellyGuard(Script script)
     {
+        this.script = script;
     }
 
-    // ------------------------------------------------------------
-    //     Instance methods
-    // ------------------------------------------------------------
-
-    public void setVar(String var)
+    public Script getScript()
     {
-        this.var = var;
+        return this.script;
     }
 
-    public String getVar()
+    public boolean test(Transition transition,
+                        ProcessContext context)
     {
-        return this.var;
-    }
+        JellyContext jellyContext = new JellyContext();
 
+        jellyContext.setVariable( "blissed_context",
+                                  context );
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    //     org.apache.commons.jelly.Tag
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-    /** Evaluates this tag after all the tags properties
-     *  have been initialized.
-     *
-     *  @param output The output sink.
-     *
-     *  @throws Exception if an error occurs.
-     */
-    public void doTag(final XMLOutput output) throws Exception
-    {
-        Script script = getBody();
-        
-        Guard guard = new JellyGuard( script );
-
-        if ( getVar() != null )
+        try
         {
-            getContext().setVariable( getVar(),
-                                      guard );
+            XMLOutput output = XMLOutput.createXMLOutput( System.err,
+                                                          false );
+
+            getScript().run( jellyContext,
+                             output );
         }
-        
-        TransitionTag transitionTag = (TransitionTag) findAncestorWithClass( TransitionTag.class );
-
-        if ( transitionTag == null )
+        catch (Throwable t)
         {
-            return;
+            if ( t instanceof PassException )
+            {
+                return true;
+            } 
+
+            else if ( t instanceof FailException )
+            {
+                return false;
+            }
+
+            return false;
         }
 
-        Transition transition = transitionTag.getTransition();
-
-        if ( transition.getGuard() != null )
-        {
-            throw new JellyException( "Guard already defined for transition" );
-        }
-
-        transition.setGuard( guard );
+        return true;
     }
 }

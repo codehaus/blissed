@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: RuntimeTagSupport.java,v 1.1 2002-09-17 16:02:51 bob Exp $
+ $Id: RuntimeTagSupport.java,v 1.2 2002-09-17 21:36:43 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -53,7 +53,7 @@ import com.werken.blissed.ProcessEngine;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: RuntimeTagSupport.java,v 1.1 2002-09-17 16:02:51 bob Exp $
+ *  @version $Id: RuntimeTagSupport.java,v 1.2 2002-09-17 21:36:43 bob Exp $
  */
 public abstract class RuntimeTagSupport extends BlissedTagSupport
 {
@@ -64,7 +64,7 @@ public abstract class RuntimeTagSupport extends BlissedTagSupport
     /** Key under which the <code>ProcessContext</code> is stored
      *  within the <code>JellyContext</code>.
      */
-    public static final String PROCESS_CONTEXT_KEY = "processContext";
+    public static final String PROCESS_CONTEXT_KEY = "com.werken.blissed.ProcessContext.current";
 
     /** Construct.
      */
@@ -76,16 +76,6 @@ public abstract class RuntimeTagSupport extends BlissedTagSupport
     // ------------------------------------------------------------
     //   Instance methods
     // ------------------------------------------------------------
-
-    /** Retrieve the <code>ProcessEngine</code> of the current
-     *  <code>ProcessContext</code>.
-     *
-     *  @return The process engine.
-     */
-    protected ProcessEngine getProcessEngine()
-    {
-        return getProcessContext().getProcessEngine();
-    }
 
     /** Retrieve the current <code>ProcessContext</code>.
      *

@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: CallTag.java,v 1.5 2002-09-17 16:02:51 bob Exp $
+ $Id: CallTag.java,v 1.6 2002-09-17 21:36:43 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -51,7 +51,6 @@ import com.werken.blissed.ProcessEngine;
 import com.werken.blissed.ProcessContext;
 
 import org.apache.commons.jelly.XMLOutput;
-import org.apache.commons.jelly.MissingAttributeException;
 
 /** Call a process.
  *
@@ -117,13 +116,11 @@ public class CallTag extends RuntimeTagSupport
      */
     public void doTag(XMLOutput output) throws Exception
     {
-        if ( this.process == null )
-        {
-            throw new MissingAttributeException( "process" );
-        }
+        checkObjectAttribute( "process",
+                              getProcess() );
 
         ProcessContext context = getProcessContext();
-        ProcessEngine  engine  = getProcessEngine();
+        ProcessEngine  engine  = context.getProcessEngine();
 
         engine.call( getProcess(),
                      context );

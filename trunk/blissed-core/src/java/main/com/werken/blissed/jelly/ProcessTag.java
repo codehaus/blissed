@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: ProcessTag.java,v 1.10 2002-09-17 16:02:51 bob Exp $
+ $Id: ProcessTag.java,v 1.11 2002-09-17 21:36:43 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -67,9 +67,6 @@ public class ProcessTag extends DefinitionTagSupport implements DescribedTag
     /** The process name. */
     private String name;
 
-    /** The process description. */
-    private String description;
-
     /** The process. */
     private Process process;
 
@@ -87,7 +84,7 @@ public class ProcessTag extends DefinitionTagSupport implements DescribedTag
      */
     public ProcessTag()
     {
-        this.description = "";
+        // intentionally left blank
     }
 
     // ------------------------------------------------------------
@@ -103,6 +100,15 @@ public class ProcessTag extends DefinitionTagSupport implements DescribedTag
         this.name = name;
     }
 
+    /** Retrieve the process name.
+     *
+     *  @return The name.
+     */
+    public String getName()
+    {
+        return this.name;
+    }
+
     /** Set the first state of the process.
      *
      *  @param start The name of the start state.
@@ -110,6 +116,15 @@ public class ProcessTag extends DefinitionTagSupport implements DescribedTag
     public void setStart(String start)
     {
         this.start = start;
+    }
+
+    /** Retrieve the name of the first state of the process.
+     *
+     *  @return The name of the start state.
+     */
+    public String getStart()
+    {
+        return this.start;
     }
 
     /** Set the name of the variable in which
@@ -171,22 +186,22 @@ public class ProcessTag extends DefinitionTagSupport implements DescribedTag
      */
     public void doTag(XMLOutput output) throws Exception
     {
-        checkAttribute( "name",
-                        this.name );
+        checkStringAttribute( "name",
+                              getName() );
 
-        checkAttribute( "start",
-                        this.start );
+        checkStringAttribute( "start",
+                              getStart() );
 
-        this.process = new Process( this.name,
-                                    this.description );
+        this.process = new Process( getName(),
+                                    "" );
 
         invokeBody( output );
 
-        State startState = this.process.getState( this.start );
+        State startState = this.process.getState( getStart() );
 
         if ( startState == null )
         {
-            throw new JellyException( "Start state \"" + this.start + "\" not found." );
+            throw new JellyException( "Start state \"" + getStart() + "\" not found." );
         }
 
         this.process.setStartState( startState );

@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: PassTag.java,v 1.2 2002-07-18 18:32:58 bob Exp $
+ $Id: PassTag.java,v 1.3 2002-09-17 21:36:43 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -66,6 +66,7 @@ public class PassTag extends TagSupport
      */
     public PassTag()
     {
+        // intentionally left blank
     }
 
     // ------------------------------------------------------------
@@ -85,11 +86,7 @@ public class PassTag extends TagSupport
      */
     public void doTag(XMLOutput output) throws Exception
     {
-        if ( findAncestorWithClass( GuardTag.class ) == null )
-        {
-            throw new JellyException( "Unable to locate guard" );
-        }
-
+        System.err.println( "PassTag#####doTag()" );
         throw new PassException();
     }
 }

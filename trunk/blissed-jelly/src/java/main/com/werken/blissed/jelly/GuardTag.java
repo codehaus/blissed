@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: GuardTag.java,v 1.6 2002-09-17 16:02:51 bob Exp $
+ $Id: GuardTag.java,v 1.7 2002-09-17 21:36:43 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -64,6 +64,9 @@ public class GuardTag extends DefinitionTagSupport
     //     Instance members
     // ------------------------------------------------------------
 
+    /** Storage variable. */
+    private String var;
+
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
@@ -77,6 +80,16 @@ public class GuardTag extends DefinitionTagSupport
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
+
+    public void setVar(String var)
+    {
+        this.var = var;
+    }
+
+    public String getVar()
+    {
+        return this.var;
+    }
 
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -92,11 +105,21 @@ public class GuardTag extends DefinitionTagSupport
      */
     public void doTag(final XMLOutput output) throws Exception
     {
+        Script script = getBody();
+        
+        Guard guard = new JellyGuard( script );
+
+        if ( getVar() != null )
+        {
+            getContext().setVariable( getVar(),
+                                      guard );
+        }
+        
         TransitionTag transitionTag = (TransitionTag) findAncestorWithClass( TransitionTag.class );
 
         if ( transitionTag == null )
         {
-            throw new JellyException( "Unable to locate a transition." );
+            return;
         }
 
         Transition transition = transitionTag.getTransition();
@@ -106,39 +129,6 @@ public class GuardTag extends DefinitionTagSupport
             throw new JellyException( "Guard already defined for transition" );
         }
 
-        final Script script = getBody();
-        
-        Guard guard = new Guard()
-            {
-                public boolean test(Transition transition,
-                                    ProcessContext procession) 
-                {
-                    try
-                    {
-                        script.run( getContext(),
-                                    output );
-                    }
-                    catch (PassException e)
-                    {
-                        return true;
-                    }
-                    catch (FailException e)
-                    {
-                        return false;
-                    }
-                    catch (JellyException e)
-                    {
-                        return false;
-                    }
-                    catch (Exception e)
-                    {
-                        return false;
-                    }
-
-                    return true;
-                }
-            };
-        
         transition.setGuard( guard );
     }
 }

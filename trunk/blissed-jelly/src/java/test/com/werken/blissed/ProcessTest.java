@@ -111,6 +111,11 @@ public class ProcessTest extends TestCase
         catch (DuplicateStateException e)
         {
             // expected and correct
+            assertEquals( "test.process",
+                          e.getProcess().getName() );
+
+            assertEquals( "state.1",
+                          e.getStateName() );
         }
     }
 

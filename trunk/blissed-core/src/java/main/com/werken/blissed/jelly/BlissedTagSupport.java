@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: BlissedTagSupport.java,v 1.5 2002-09-17 16:02:51 bob Exp $
+ $Id: BlissedTagSupport.java,v 1.6 2002-09-17 21:36:43 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -56,7 +56,7 @@ import org.apache.commons.jelly.MissingAttributeException;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: BlissedTagSupport.java,v 1.5 2002-09-17 16:02:51 bob Exp $
+ *  @version $Id: BlissedTagSupport.java,v 1.6 2002-09-17 21:36:43 bob Exp $
  */
 public abstract class BlissedTagSupport extends TagSupport
 {
@@ -71,12 +71,22 @@ public abstract class BlissedTagSupport extends TagSupport
         // intentionally left blank
     }
 
-    protected void checkAttribute(String name,
-                                  String value) throws MissingAttributeException
+    protected void checkStringAttribute(String name,
+                                        String value) throws MissingAttributeException
     {
-        if ( value == null
-             ||
-             value.trim().equals( "" ) )
+        checkObjectAttribute( name,
+                              value );
+
+        if ( value.trim().equals( "" ) )
+        {
+            throw new MissingAttributeException( name );
+        }
+    }
+
+    protected void checkObjectAttribute(String name,
+                                        Object value) throws MissingAttributeException
+    {
+        if ( value == null )
         {
             throw new MissingAttributeException( name );
         }

@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: DefinitionTagSupport.java,v 1.1 2002-09-17 16:02:51 bob Exp $
+ $Id: DefinitionTagSupport.java,v 1.2 2002-09-17 21:36:43 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -48,6 +48,7 @@ package com.werken.blissed.jelly;
 
 import com.werken.blissed.Described;
 import com.werken.blissed.Process;
+import com.werken.blissed.State;
 
 import org.apache.commons.jelly.JellyException;
 
@@ -55,7 +56,7 @@ import org.apache.commons.jelly.JellyException;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: DefinitionTagSupport.java,v 1.1 2002-09-17 16:02:51 bob Exp $
+ *  @version $Id: DefinitionTagSupport.java,v 1.2 2002-09-17 21:36:43 bob Exp $
  */
 public abstract class DefinitionTagSupport extends BlissedTagSupport
 {
@@ -76,6 +77,20 @@ public abstract class DefinitionTagSupport extends BlissedTagSupport
         Process process = processTag.getProcess();
 
         return process;
+    }
+
+    protected State getCurrentState() throws JellyException
+    {
+        StateTag stateTag = (StateTag) findAncestorWithClass( StateTag.class );
+
+        if ( stateTag == null )
+        {
+            throw new JellyException( "Not within a state element" );
+        }
+        
+        State state = stateTag.getState();
+
+        return state;
     }
 
     protected Described getCurrentDescribed() throws JellyException
