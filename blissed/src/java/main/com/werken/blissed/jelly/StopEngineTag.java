@@ -1,9 +1,9 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: BlissedTagLibrary.java,v 1.11 2002-09-18 17:05:53 bob Exp $
+ $Id: StopEngineTag.java,v 1.1 2002-09-18 17:05:53 bob Exp $
 
- Copyright 2001 (C) The Werken Company. All Rights Reserved.
+ Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
  Redistribution and use of this software and associated documentation
  ("Software"), with or without modification, are permitted provided
@@ -46,13 +46,15 @@ package com.werken.blissed.jelly;
  
  */
 
-import org.apache.commons.jelly.TagLibrary;
+import org.apache.commons.jelly.XMLOutput;
 
-/** Jelly tag-library for blissed.
+/** Stop a <code>ProcessEngine</code>.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ *
+ *  @version $Id: StopEngineTag.java,v 1.1 2002-09-18 17:05:53 bob Exp $
  */
-public class BlissedTagLibrary extends TagLibrary
+public class StopEngineTag extends EngineControlTagSupport 
 {
     // ------------------------------------------------------------
     //     Constructors
@@ -60,48 +62,31 @@ public class BlissedTagLibrary extends TagLibrary
 
     /** Construct.
      */
-    public BlissedTagLibrary()
+    public StopEngineTag()
     {
-        registerTag( "blissed",
-                     BlissedTag.class );
+        // intentionally left blank
+    }
 
-        registerTag( "engine",
-                     EngineTag.class );
+    // ------------------------------------------------------------
+    //     Instance methods
+    // ------------------------------------------------------------
 
-        registerTag( "start-engine",
-                     StartEngineTag.class );
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    //     org.apache.commons.jelly.Tag
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-        registerTag( "stop-engine",
-                     StopEngineTag.class );
+    /** Evaluates this tag after all the tags properties
+     *  have been initialized.
+     *
+     *  @param output The output sink.
+     *
+     *  @throws Exception if an error occurs.
+     */
+    public void doTag(XMLOutput output) throws Exception
+    {
+        checkObjectAttribute( "engine",
+                              getEngine() );
 
-        registerTag( "process",
-                     ProcessTag.class );
-
-        registerTag( "state",
-                     StateTag.class );
-
-        registerTag( "transition",
-                     TransitionTag.class );
-
-        registerTag( "description",
-                     DescriptionTag.class );
-
-        registerTag( "activity",
-                     ActivityTag.class );
-
-        registerTag( "guard",
-                     GuardTag.class );
-
-        registerTag( "pass",
-                     PassTag.class );
-
-        registerTag( "fail",
-                     FailTag.class );
-
-        registerTag( "call",
-                     CallTag.class );
-
-        registerTag( "spawn",
-                     SpawnTag.class );
+        getEngine().stop();
     }
 }

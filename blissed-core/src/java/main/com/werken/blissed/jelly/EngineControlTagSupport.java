@@ -1,9 +1,9 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: BlissedTagLibrary.java,v 1.11 2002-09-18 17:05:53 bob Exp $
+ $Id: EngineControlTagSupport.java,v 1.1 2002-09-18 17:05:53 bob Exp $
 
- Copyright 2001 (C) The Werken Company. All Rights Reserved.
+ Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
  Redistribution and use of this software and associated documentation
  ("Software"), with or without modification, are permitted provided
@@ -46,62 +46,53 @@ package com.werken.blissed.jelly;
  
  */
 
-import org.apache.commons.jelly.TagLibrary;
+import com.werken.blissed.ProcessEngine;
 
-/** Jelly tag-library for blissed.
+/** Base for engine-control tags.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ *
+ *  @version $Id: EngineControlTagSupport.java,v 1.1 2002-09-18 17:05:53 bob Exp $
  */
-public class BlissedTagLibrary extends TagLibrary
+public abstract class EngineControlTagSupport extends RuntimeTagSupport
 {
+    // ------------------------------------------------------------
+    //     Instance members
+    // ------------------------------------------------------------
+
+    /** The engine. */
+    private ProcessEngine engine;
+
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
 
     /** Construct.
      */
-    public BlissedTagLibrary()
+    public EngineControlTagSupport()
     {
-        registerTag( "blissed",
-                     BlissedTag.class );
+        // intentionally left blank
+    }
 
-        registerTag( "engine",
-                     EngineTag.class );
+    // ------------------------------------------------------------
+    //     Instance methods
+    // ------------------------------------------------------------
 
-        registerTag( "start-engine",
-                     StartEngineTag.class );
+    /** Set the <code>ProcessEngine</code> to control.
+     *
+     *  @param engine The process engine.
+     */
+    public void setEngine(ProcessEngine engine)
+    {
+        this.engine = engine;
+    }
 
-        registerTag( "stop-engine",
-                     StopEngineTag.class );
-
-        registerTag( "process",
-                     ProcessTag.class );
-
-        registerTag( "state",
-                     StateTag.class );
-
-        registerTag( "transition",
-                     TransitionTag.class );
-
-        registerTag( "description",
-                     DescriptionTag.class );
-
-        registerTag( "activity",
-                     ActivityTag.class );
-
-        registerTag( "guard",
-                     GuardTag.class );
-
-        registerTag( "pass",
-                     PassTag.class );
-
-        registerTag( "fail",
-                     FailTag.class );
-
-        registerTag( "call",
-                     CallTag.class );
-
-        registerTag( "spawn",
-                     SpawnTag.class );
+    /** Retrieve the <code>ProcessEngine</code> to control.
+     *
+     *  @return The process engine.
+     */
+    public ProcessEngine getEngine()
+    {
+        return this.engine;
     }
 }

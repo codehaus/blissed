@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: ProcessEngine.java,v 1.9 2002-09-18 15:59:14 bob Exp $
+ $Id: ProcessEngine.java,v 1.10 2002-09-18 17:05:53 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -54,7 +54,7 @@ import java.util.Iterator;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ProcessEngine.java,v 1.9 2002-09-18 15:59:14 bob Exp $
+ *  @version $Id: ProcessEngine.java,v 1.10 2002-09-18 17:05:53 bob Exp $
  */
 public class ProcessEngine implements Runnable
 {
@@ -118,9 +118,9 @@ public class ProcessEngine implements Runnable
             return;
         }
 
-        this.threads = new ThreadGroup( "com.werken.blissed.ProcessEngine" );
-
         this.shouldRun = true;
+
+        this.threads = new ThreadGroup( "com.werken.blissed.ProcessEngine" );
 
         Thread thread = null;
 
@@ -159,6 +159,16 @@ public class ProcessEngine implements Runnable
         }
 
         this.threads = null;
+    }
+
+    /** Determine if this <code>ProcessEngine</code> is started.
+     *
+     *  @return <code>true</code> if this process engine is started
+     *          and servicing the queue, otherwise <code>false</code>.
+     */
+    public boolean isStarted()
+    {
+        return ( this.shouldRun );
     }
 
     /** Run the service thread loop.
