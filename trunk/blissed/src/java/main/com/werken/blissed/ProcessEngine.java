@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: ProcessEngine.java,v 1.10 2002-09-18 17:05:53 bob Exp $
+ $Id: ProcessEngine.java,v 1.11 2002-09-18 17:59:57 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -54,7 +54,7 @@ import java.util.Iterator;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ProcessEngine.java,v 1.10 2002-09-18 17:05:53 bob Exp $
+ *  @version $Id: ProcessEngine.java,v 1.11 2002-09-18 17:59:57 bob Exp $
  */
 public class ProcessEngine implements Runnable
 {
@@ -554,9 +554,11 @@ public class ProcessEngine implements Runnable
         exitState( origin,
                    context );
 
-        if ( destination == null )
+        Process process = context.getCurrentProcess();
+
+        if ( destination == process.getTerminalState() )
         {
-            finishProcess( context.getCurrentProcess(),
+            finishProcess( process,
                            context );
         }
         else

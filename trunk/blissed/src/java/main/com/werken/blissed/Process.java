@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Process.java,v 1.26 2002-09-17 05:13:34 bob Exp $
+ $Id: Process.java,v 1.27 2002-09-18 17:59:57 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -79,6 +79,9 @@ public class Process implements Named, Described, DirectedGraph
     /** Start state. */
     private State startState;
 
+    /** Terminal state. */
+    private State terminalState;
+
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
@@ -96,7 +99,10 @@ public class Process implements Named, Described, DirectedGraph
 
         this.states = new HashMap();
 
-        this.startState = null;
+        this.terminalState = new State.TerminalState();
+
+        addState( this.terminalState );
+        setStartState( this.terminalState );
     }
 
     // ------------------------------------------------------------
@@ -110,6 +116,15 @@ public class Process implements Named, Described, DirectedGraph
     public State getStartState()
     {
         return this.startState;
+    }
+
+    /** Retrieve the terminal state.
+     *
+     *  @return The terminal state.
+     */
+    public State getTerminalState()
+    {
+        return this.terminalState;
     }
 
     /** Set the start state.
@@ -304,7 +319,6 @@ public class Process implements Named, Described, DirectedGraph
         while ( stateIter.hasNext() )
         {
             eachState = (State) stateIter.next();
-
             edges.addAll( getEdges( eachState ) );
         }
 
