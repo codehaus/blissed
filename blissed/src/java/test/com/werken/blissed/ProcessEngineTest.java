@@ -66,7 +66,7 @@ public class ProcessEngineTest extends TestCase
         this.state3.addTransition( this.transition3_4 );
 
         this.transition1_end = new Transition( this.state1,
-                                               null,
+                                               this.process.getTerminalState(),
                                                new BooleanGuard( false ),
                                                "transition.1.end" );
 

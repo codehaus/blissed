@@ -162,7 +162,7 @@
       <state name="start" terminal="true"/>
     </process>
     <test:assert 
-          test="${theProcess.getState('start').transitions[0].destination == null}">terminal transition</test:assert>
+          test="${theProcess.getState('start').transitions[0].destination == theProcess.terminalState}">terminal transition</test:assert>
   </test:case>
 
   <!--

@@ -66,7 +66,7 @@ public class ProcessTest extends TestCase
         this.state3.addTransition( this.transition3_4 );
 
         this.transition1_end = new Transition( this.state1,
-                                               null,
+                                               this.process.getTerminalState(),
                                                new BooleanGuard( false ),
                                                "transition.1.end" );
 
@@ -180,13 +180,14 @@ public class ProcessTest extends TestCase
     {
         Set vertices = this.process.getVertices();
 
-        assertEquals( 4,
+        assertEquals( 5,
                       vertices.size() );
 
         assertTrue( vertices.contains( this.state1 ) );
         assertTrue( vertices.contains( this.state2 ) );
         assertTrue( vertices.contains( this.state3 ) );
         assertTrue( vertices.contains( this.state4 ) );
+        assertTrue( vertices.contains( this.process.getTerminalState() ) );
     }
 
     public void testGetEdges_ForVertex()
