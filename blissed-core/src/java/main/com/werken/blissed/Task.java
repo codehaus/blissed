@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Task.java,v 1.2 2002-07-03 04:39:32 werken Exp $
+ $Id: Task.java,v 1.3 2002-07-04 19:40:07 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -55,10 +55,10 @@ package com.werken.blissed;
  */
 public interface Task extends Named, Described
 {
-    /** Perform this task within the context of a WorkSlip.
+    /** Perform this task within the context of a Context.
      *
      *  @param workSlip The WorkSlip context.
      */
-    void perform(WorkSlip workSlip);
+    void perform(Context context);
 }
 

@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Start.java,v 1.5 2002-07-03 04:39:32 werken Exp $
+ $Id: Start.java,v 1.6 2002-07-04 19:40:07 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -101,29 +101,31 @@ public class Start extends Node
         return this.transition;
     }
 
-    /** Attempt to transition the workslip out of this node.
+    /** Attempt to transition the context out of this node.
      *
-     *  @param workSlip The workslip to attempt transitioning.
+     *  @param context The context to attempt transitioning.
      */
-    void attemptTransition(WorkSlip workSlip)
+    void attemptTransition(Context context) throws InvalidMotionException
     {
-        getTransition().accept( workSlip );
+        getTransition().accept( context );
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     //     com.werken.blissed.Node
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-    /** Accept a workslip into this node.
+    /** Accept a context into this node.
      *
-     *  @param workSlip The workslip to accept.
+     *  @param context The context to accept.
      */
-    public void accept(WorkSlip workSlip)
+    public void accept(Context context) throws InvalidMotionException
     {
-        super.accept( workSlip );
+        context.startProcess( getProcess() );
 
-        getProcess().fireProcessStarted( workSlip );
+        super.accept( context );
 
-        attemptTransition( workSlip );
+        getProcess().fireProcessStarted( context );
+
+        attemptTransition( context );
     }
 }

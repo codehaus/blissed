@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Process.java,v 1.7 2002-07-03 06:09:09 werken Exp $
+ $Id: Process.java,v 1.8 2002-07-04 19:40:07 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -89,8 +89,8 @@ public class Process implements Named, Described
     /** Finish node. */
     private Finish finish;
 
-    /** All active workslips in this process. */
-    private Set activeWorkSlips;
+    /** All active contexts in this process. */
+    private Set activeContexts;
 
     /** Process listeners. */
     private List listeners;
@@ -117,10 +117,9 @@ public class Process implements Named, Described
 
         this.start.setTransition( new Transition( this.start,
                                                   this.finish,
-                                                  TruePredicate.INSTANCE,
                                                   "default start-finish transition" ) );
-
-        this.activeWorkSlips = new HashSet();
+        
+        this.activeContexts = new HashSet();
 
         this.listeners = Collections.EMPTY_LIST;
     }
@@ -197,37 +196,37 @@ public class Process implements Named, Described
 
     /** Start a new instance of this process.
      *
-     *  @return A new <code>WorkSlip</code> representing the state
+     *  @return A new <code>Context</code> representing the state
      *          for the new instance of this process.
      */
-    public WorkSlip start()
+    public Context start() throws InvalidMotionException
     {
-        WorkSlip workSlip = new WorkSlip( this );
+        Context context = new Context( this );
 
-        this.activeWorkSlips.add( workSlip );
+        this.activeContexts.add( context );
 
-        getStart().accept( workSlip );
+        getStart().accept( context );
 
-        return workSlip;
+        return context;
     }
 
     /** Start a new instance of this process.
      *
-     *  @param parent The parent WorkSlip.
+     *  @param parent The parent Context.
      *
-     *  @return A new <code>WorkSlip</code> representing the state
+     *  @return A new <code>Context</code> representing the state
      *          for the new instance of this process.
      */
-    WorkSlip start(WorkSlip parent)
+    Context start(Context parent) throws InvalidMotionException
     {
-        WorkSlip workSlip = new WorkSlip( this,
+        Context context = new Context( this,
                                           parent );
 
-        this.activeWorkSlips.add( workSlip );
+        this.activeContexts.add( context );
 
-        getStart().accept( workSlip );
+        getStart().accept( context );
 
-        return workSlip;
+        return context;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -280,12 +279,12 @@ public class Process implements Named, Described
     /** Fire an event indicating that an instance of this
      *  process has started.
      *
-     *  @param workSlip The started process instance context.
+     *  @param context The started process instance context.
      */
-    void fireProcessStarted(WorkSlip workSlip)
+    void fireProcessStarted(Context context)
     {
         ProcessStartedEvent event = new ProcessStartedEvent( this,
-                                                             workSlip );
+                                                             context );
         
         Iterator listenerIter = getProcessListeners().iterator();
         ProcessListener eachListener = null;
@@ -301,12 +300,12 @@ public class Process implements Named, Described
     /** Fire an event indicating that an instance of this
      *  process has finished.
      *
-     *  @param workSlip The finished process instance context.
+     *  @param context The finished process instance context.
      */
-    void fireProcessFinished(WorkSlip workSlip)
+    void fireProcessFinished(Context context)
     {
         ProcessFinishedEvent event = new ProcessFinishedEvent( this,
-                                                               workSlip );
+                                                               context );
 
         Iterator listenerIter = getProcessListeners().iterator();
         ProcessListener eachListener = null;

@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: TruePredicate.java,v 1.3 2002-07-03 04:39:32 werken Exp $
+ $Id: TruePredicate.java,v 1.4 2002-07-04 19:40:07 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -81,7 +81,7 @@ public class TruePredicate extends Predicate
     //     com.werken.blissed.Predicate
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-    /** Test this predicate against a <code>WorkSlip</code> context.
+    /** Test this predicate against a <code>Context</code> context.
      *
      *  <p>
      *  <b>implementation note:</b> This method <i>always</i> returns
@@ -91,10 +91,10 @@ public class TruePredicate extends Predicate
      *  @param workSlip The context against which to evaluate.
      *
      *  @return <code>true</code> if this predicate passes within
-     *          the context of the <code>WorkSlip</code>, otherwise,
+     *          the context of the <code>Context</code>, otherwise,
      *          <code>false</code>.
      */
-    public boolean test(WorkSlip workSlip)
+    public boolean test(Context context)
     {
         return true;
     }

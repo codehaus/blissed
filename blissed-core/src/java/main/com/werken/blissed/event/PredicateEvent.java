@@ -1,7 +1,7 @@
 package com.werken.blissed.event;
 
 /*
- $Id: PredicateEvent.java,v 1.2 2002-07-02 20:17:37 werken Exp $
+ $Id: PredicateEvent.java,v 1.3 2002-07-04 19:40:07 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -47,7 +47,7 @@ package com.werken.blissed.event;
  */
 
 import com.werken.blissed.Predicate;
-import com.werken.blissed.WorkSlip;
+import com.werken.blissed.Context;
 
 /** Abstract class for any event occurring on a <code>Predicate</code>.
  *
@@ -55,7 +55,7 @@ import com.werken.blissed.WorkSlip;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public abstract class PredicateEvent extends BlissedEvent
+public abstract class PredicateEvent extends MotionEvent
 {
     // ------------------------------------------------------------
     //     Constructors
@@ -64,13 +64,12 @@ public abstract class PredicateEvent extends BlissedEvent
     /** Construct.
      *
      *  @param predicate The predicate event source.
-     *  @param workSlip The workslip context.
      */
     public PredicateEvent(Predicate predicate,
-                          WorkSlip workSlip)
+                          Context context)
     {
         super( predicate,
-               workSlip );
+               context );
     }
 
     // ------------------------------------------------------------

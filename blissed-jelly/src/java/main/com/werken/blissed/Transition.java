@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Transition.java,v 1.6 2002-07-03 06:07:07 werken Exp $
+ $Id: Transition.java,v 1.7 2002-07-04 19:40:07 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -54,10 +54,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Collections;
 
-/** A guarded arc between two <code>Node</code>s.
+/** An arc between two <code>Node</code>s.
  *
  *  @see Node
- *  @see Predicate
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
@@ -72,9 +71,6 @@ public class Transition implements Described
 
     /** Destination end of this transitional arc. */
     private Node destination;
-
-    /** Predicate guarding this transition. */
-    private Predicate predicate;
 
     /** Description of this transition. */
     private String description;
@@ -96,29 +92,8 @@ public class Transition implements Described
                       Node destination,
                       String description)
     {
-        this( origin,
-              destination,
-              null,
-              description );
-
-        this.predicate = TruePredicate.INSTANCE;
-    }
-
-    /** Construct.
-     *
-     *  @param origin The origin of this transitional arc.
-     *  @param destination The destination of this transitional arc.
-     *  @param predicate Predicate guard on this transition.
-     *  @param description The description of this transition.
-     */
-    public Transition(Node origin,
-                      Node destination,
-                      Predicate predicate,
-                      String description)
-    {
         this.origin      = origin;
         this.destination = destination;
-        this.predicate   = predicate;
         this.description = description;
         this.listeners   = Collections.EMPTY_LIST;
     }
@@ -145,49 +120,25 @@ public class Transition implements Described
         return this.destination;
     }
 
-    /** Retrieve the <code>Predicate</code> which guards this transition.
-     *
-     *  @return The predicate.
-     */
-    public Predicate getPredicate()
-    {
-        return this.predicate;
-    }
-
-    /** Set the <code>Predicate</code> which guards this transition.
-     *
-     *  @param predicate The predicate.
-     */
-    public void setPredicate(Predicate predicate)
-    {
-        this.predicate = predicate;
-    }
-
     /** Test and optionally accept this transition against a context.
      *
-     *  @param workSlip The context against which to
+     *  @param context The context against which to
      *         evaluate this transition.
      *
      *  @return <code>true</code> if this transition was successful
      *          within the context.
      */
-    boolean accept(WorkSlip workSlip)
+    boolean accept(Context context) throws InvalidMotionException
     {
-        boolean result = getPredicate().performTest( workSlip );
+        getOrigin().release( context );
 
-        if ( ! result )
-        {
-            return false;
-        }
+        fireTransitionFollowed( context );
 
-        getOrigin().release( workSlip );
-
-        fireTransitionFollowed( workSlip );
-
-        getDestination().accept( workSlip );
+        getDestination().accept( context );
 
         return true;
     }
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     //     Event-listener management
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -235,15 +186,15 @@ public class Transition implements Described
     //     Event firing
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-    /** Fire an event indicating that a workslip has followed
+    /** Fire an event indicating that a context has followed
      *  this transition.
      *
-     *  @param workSlip The workslip following this transition.
+     *  @param context The context following this transition.
      */
-    void fireTransitionFollowed(WorkSlip workSlip)
+    void fireTransitionFollowed(Context context)
     {
         TransitionFollowedEvent event = new TransitionFollowedEvent( this,
-                                                                     workSlip );
+                                                                     context );
 
         Iterator listenIter = getTransitionListeners().iterator();
         TransitionListener eachListen = null;
