@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Node.java,v 1.3 2002-07-02 20:32:07 werken Exp $
+ $Id: Node.java,v 1.4 2002-07-03 02:50:51 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -97,7 +97,15 @@ public abstract class Node implements Named, Described
         return this.process;
     }
 
-    public abstract void accept(WorkSlip workSlip);
+    public void accept(WorkSlip workSlip)
+    {
+        workSlip.setCurrentNode( this );
+    }
+
+    public void release(WorkSlip workSlip)
+    {
+        workSlip.setCurrentNode( null );
+    }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     //     com.werken.blissed.Named impl

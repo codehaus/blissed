@@ -1,7 +1,7 @@
-package com.werken.blissed;
+package com.werken.blissed.event;
 
 /*
- $Id: Start.java,v 1.3 2002-07-03 02:50:51 werken Exp $
+ $Id: TransitionFollowedEvent.java,v 1.1 2002-07-03 02:50:51 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -46,68 +46,31 @@ package com.werken.blissed;
  
  */
 
-/** Entry-point start node of a <code>Process</code>.
+import com.werken.blissed.Transition;
+import com.werken.blissed.WorkSlip;
+
+/** Event indicating a transition was followed by a given workslip context.
  *
- *  @see Process#getStart
- *  @see Process#start
+ *  @see Transition#accept
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class Start extends Node
+public class TransitionFollowedEvent extends BlissedEvent
 {
-
-    // ------------------------------------------------------------
-    //     Instance members
-    // ------------------------------------------------------------
-
-    /** The initial transition. */
-    private Transition transition;
-
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
 
     /** Construct.
      *
-     *  @param process The process.
+     *  @param source The event source.
+     *  @param workSlip The workslip context.
      */
-    Start(Process process)
+    public TransitionFollowedEvent(Transition transition,
+                           WorkSlip workSlip)
     {
-        super( process,
-               "blissed.start",
-               "start for " + process.getName() );
-               
-    }
-
-    // ------------------------------------------------------------
-    //     Instance methods
-    // ------------------------------------------------------------
-
-    /** Set the initial transition.
-     *
-     *  @param transition The transition.
-     */
-    public void setTransition(Transition transition)
-    {
-        this.transition  = transition;
-    }
-
-    /** Retrieve the initial transition.
-     *
-     *  @return The transition.
-     */
-    public Transition getTransition()
-    {
-        return this.transition;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    //     com.werken.blissed.Node
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-    public void accept(WorkSlip workSlip)
-    {
-        super.accept( workSlip );
-        getProcess().fireProcessStarted( workSlip );
+        super( transition,
+               workSlip );
     }
 }
+

@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: State.java,v 1.4 2002-07-02 16:26:13 werken Exp $
+ $Id: State.java,v 1.5 2002-07-03 02:50:51 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -185,17 +185,15 @@ public class State extends Node
         {
             eachTrans = (Transition) transIter.next();
 
-            result = eachTrans.test( workSlip );
+            result = eachTrans.accept( workSlip );
 
             if ( result )
             {
-                fireStateExited( workSlip );
-                eachTrans.getDestination().accept( workSlip );
-                break;
+                return true;
             }
         }
 
-        return result;
+        return false;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -293,7 +291,19 @@ public class State extends Node
 
     public void accept(WorkSlip workSlip)
     {
+        super.accept( workSlip );
+
         fireStateEntered( workSlip );
+
+        getTask().perform( workSlip );
+
+        attemptTransition( workSlip );
+    }
+
+    public void release(WorkSlip workSlip)
+    {
+        super.release( workSlip );
+        fireStateExited( workSlip );
     }
 
 }

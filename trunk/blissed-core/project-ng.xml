@@ -54,6 +54,13 @@
       <url>http://junit.org/</url>
     </dependency>
 
+    <dependency>
+      <id>clover</id>
+      <version>3.7</version>
+      <jar>clover.jar</jar>
+      <url>http://junit.org/</url>
+    </dependency>
+
   </dependencies>
 
   <build>
