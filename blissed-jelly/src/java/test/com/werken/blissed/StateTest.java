@@ -20,21 +20,18 @@ public class StateTest extends TestCase
     {
         this.process = new Process( "process",
                                     "a test process" );
-        state1 = new State( this.process,
-                            "state-1",
-                            "state one" );
 
-        state2 = new State( this.process,
-                            "state-2",
-                            "state two" );
+        state1 = this.process.addState( "state-1",
+                                        "state one" );
 
-        state3 = new State( this.process,
-                            "state-3",
-                            "state three" );
+        state2 = this.process.addState( "state-2",
+                                        "state two" );
 
-        state4 = new State( this.process,
-                            "state-4",
-                            "state four" );
+        state3 = this.process.addState( "state-3",
+                                        "state three" );
+
+        state4 = this.process.addState( "state-4",
+                                        "state four" );
     }
 
     public void tearDown()

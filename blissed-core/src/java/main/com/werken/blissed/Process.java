@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Process.java,v 1.6 2002-07-03 06:07:07 werken Exp $
+ $Id: Process.java,v 1.7 2002-07-03 06:09:09 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -183,13 +183,13 @@ public class Process implements Named, Described
      *  @param name The name of the state.
      *  @param description The description of the state.
      */
-    public State createState(String name,
-                             String description)
+    public State addState(String name,
+                          String description)
     {
         State state = new State( this,
                                  name,
                                  description );
-
+        
         addNode( state );
 
         return state;
