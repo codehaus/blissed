@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
-  $Id: Context.java,v 1.5 2002-07-06 03:49:01 werken Exp $
+  $Id: Context.java,v 1.6 2002-07-06 14:51:20 werken Exp $
 
   Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -88,8 +88,8 @@ public class Context implements Named
     /** Children Context, if any. */
     private Set children;
 
-    /** Instance attributes. */
-    private Map attributes;
+    /** Instance variables. */
+    private Map variables;
 
     /** Location tracking. */
     private Location location;
@@ -136,7 +136,7 @@ public class Context implements Named
         this.process = process;
         this.parent  = parent;
 
-        this.attributes = new HashMap();
+        this.variables  = new HashMap();
 
         this.children   = Collections.EMPTY_SET;
         this.listeners  = Collections.EMPTY_LIST;
@@ -176,37 +176,37 @@ public class Context implements Named
         return this.parent;
     }
 
-    /** Retrieve an attribute.
+    /** Retrieve an variable.
      *
-     *  @param name The name of the attribute.
+     *  @param name The name of the variable.
      *
-     *  @return The attribute's value, or <code>null</code>
-     *          if the attribute has not been set.
+     *  @return The variable's value, or <code>null</code>
+     *          if the variable has not been set.
      */
-    public Object getAttribute(String name)
+    public Object getVariable(String name)
     {
-        return this.attributes.get( name );
+        return this.variables.get( name );
     }
 
-    /** Set an attribute.
+    /** Set an variable.
      *
-     *  @param name The name of the attribute.
-     *  @param value The value of the attribute.
+     *  @param name The name of the variable.
+     *  @param value The value of the variable.
      */
-    public void setAttribute(String name,
+    public void setVariable(String name,
                              Object value)
     {
-        this.attributes.put( name,
+        this.variables.put( name,
                              value );
     }
 
-    /** Clean an attribute.
+    /** Clean an variable.
      *
-     *  @param name The name of the attribute.
+     *  @param name The name of the variable.
      */
-    public void clearAttribute(String name)
+    public void clearVariable(String name)
     {
-        this.attributes.remove( name );
+        this.variables.remove( name );
     }
 
     void startProcess(Process process)
@@ -235,19 +235,18 @@ public class Context implements Named
      *
      *  @return The spawned nested Context.
      */
-    public Context start(Process process)
+    public Context spawn(Process process) throws InvalidMotionException, ActivityException
     {
-        Context context = new Context( process,
-                                       this );
+        Context spawned = process.spawn( this );
                                           
         if ( this.children == Collections.EMPTY_SET )
         {
             this.children = new HashSet();
         }
 
-        this.children.add( context );
+        this.children.add( spawned );
 
-        return context;
+        return spawned;
     }
 
     /** Retrieve an unmodifiable set of all children
@@ -259,20 +258,6 @@ public class Context implements Named
     public Set getChildren()
     {
         return Collections.unmodifiableSet( this.children );
-    }
-
-    /** Create a duplicate child of this context for a split.
-     *
-     *  @return A duplicate child context for a split.
-     */
-    Context createSplitContext()
-    {
-        Context dupe = new Context( getProcess(),
-                                    this );
-
-        dupe.attributes.putAll( this.attributes );
-
-        return dupe;
     }
 
     /** Perform a liveness check on this context.
