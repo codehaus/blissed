@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: DoProcessTag.java,v 1.1 2002-07-18 05:22:50 bob Exp $
+ $Id: DoProcessTag.java,v 1.2 2002-07-18 18:32:58 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -47,20 +47,33 @@ package com.werken.blissed.jelly;
  */
 
 import com.werken.blissed.Process;
+import com.werken.blissed.State;
 import com.werken.blissed.Context;
+import com.werken.blissed.Activity;
+import com.werken.blissed.NoOpActivity;
 import com.werken.blissed.ActivityException;
-import com.werken.blissed.InvalidMotionException;
 
+import org.apache.commons.jelly.Tag;
 import org.apache.commons.jelly.XMLOutput;
 import org.apache.commons.jelly.JellyException;
 import org.apache.commons.jelly.MissingAttributeException;
 
+/** Perform a process.
+ *
+ *  <p>
+ *  This tag does <b>not</b> spawn a new process but simply
+ *  considers another process to be the activity for the state.
+ *  <p>
+ *
+ *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ */
 public class DoProcessTag extends BlissedTagSupport 
 {
     // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------
 
+    /** The name of the process to do. */
     private String name;
 
     // ------------------------------------------------------------
@@ -77,11 +90,25 @@ public class DoProcessTag extends BlissedTagSupport
     //     Instance methods
     // ------------------------------------------------------------
 
+    /** Set the name of the process to perform.
+     *
+     *  @param name The name of the process.
+     */
     public void setName(String name)
     {
         this.name = name;
     }
 
+    /** Retrieve the process.
+     *
+     *  @return The process.
+     *
+     *  @throws Exception If a process library cannot be found.
+     */
+    protected Process getProcess() throws Exception
+    {
+        return getProcess( this.name );
+    }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     //     org.apache.commons.jelly.Tag
@@ -98,28 +125,51 @@ public class DoProcessTag extends BlissedTagSupport
      */
     public void doTag(XMLOutput output) throws Exception
     {
+        Tag parent = getParent();
+
+        if ( ( parent == null )
+             ||
+             ! ( parent instanceof StateTag ) )
+        {
+            throw new JellyException( "Parent is not a state" );
+        }
+
+        StateTag stateTag = (StateTag) parent;
+
+        State state = stateTag.getState();
+
+        if ( state.getActivity() != null
+             &&
+             ! ( state.getActivity() instanceof NoOpActivity ) )
+        {
+            throw new JellyException( "Activity already defined for state \""
+                                      + state.getName()
+                                      + "\"" );
+        }
+
         if ( this.name == null )
         {
             throw new MissingAttributeException( "name" );
         }
 
-        invokeBody( output );
+        final String processName = this.name;
 
-        final Process process = getProcess( this.name );
-
-        if ( process == null )
-        {
-            throw new JellyException( "No such process \"" + this.name + "\"" );
-        }
-
-        Context blissedContext = (Context) getContext().getVariable( "blissed.context" );
-
-        if ( blissedContext == null )
-        {
-            throw new JellyException( "No blissed Context" );
-        }
-        
-        process.accept( blissedContext );
+        state.setActivity(
+            new Activity()
+            {
+                public void perform(Context context) throws ActivityException
+                {
+                    try
+                    {
+                        getProcess().accept( context );
+                    }
+                    catch (Exception e)
+                    {
+                        throw new ActivityException( e );
+                    }
+                }
+            }
+            );
     }
 }
 

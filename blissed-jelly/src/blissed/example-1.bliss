@@ -8,9 +8,9 @@
       <description>
         This is state #1.
       </description>
-      <activity>
+      <do-activity>
         example.1.state.1.activity
-      </activity>
+      </do-activity>
     </state>
 
     <state name="2"
@@ -18,26 +18,24 @@
       <description>
         This is state #2.
       </description>
-      <activity>
+      <do-activity>
         example.1.state.2.activity
-      </activity>
+      </do-activity>
     </state>
 
     <state name="3">
       <description>
         This is state #3.
       </description>
-      <activity>
-        example.1.state.3.activity.before
-        <do-process name="example.2"/>
-        example.1.state.3.activity.after
-      </activity>
+
+      <do-process name="example.2"/>
+
     </state>
 
     <state name="4" terminal="true">
-      <activity>
+      <do-activity>
         example.1.state.4.activity
-      </activity>
+      </do-activity>
     </state>
 
     <transition from="1"
@@ -74,15 +72,15 @@
            start="1">
 
     <state name="1">
-      <activity>
+      <do-activity>
         example.2.state.1
-      </activity>
+      </do-activity>
     </state>
 
     <state name="2" terminal="true">
-      <activity>
+      <do-activity>
         example.2.state.2
-      </activity>
+      </do-activity>
     </state>
 
     <transition from="1"

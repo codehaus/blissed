@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: BlissedTag.java,v 1.5 2002-07-18 05:22:50 bob Exp $
+ $Id: BlissedTag.java,v 1.6 2002-07-18 18:32:58 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -49,18 +49,23 @@ package com.werken.blissed.jelly;
 import com.werken.blissed.Process;
 
 import org.apache.commons.jelly.XMLOutput;
-import org.apache.commons.jelly.JellyException;
-import org.apache.commons.jelly.MissingAttributeException;
 
 import java.util.Map;
 import java.util.HashMap;
 
+/** Outtermost wrapper tag to denote a block of blissed.
+ *
+ *  @see ProcessLibrary
+ *
+ *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ */
 public class BlissedTag extends BlissedTagSupport implements ProcessLibrary
 {
     // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------
 
+    /** Library of process. */
     private Map processes;
 
     // ------------------------------------------------------------
@@ -78,12 +83,34 @@ public class BlissedTag extends BlissedTagSupport implements ProcessLibrary
     //     Instance methods
     // ------------------------------------------------------------
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    //     com.werken.blissed.jelly.ProcessLibrary
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+    /** Add a process to this library.
+     *
+     *  <p>
+     *  If the process has the same name as an already
+     *  stored process, this method will replace the older
+     *  process with the newer.
+     *  </p>
+     *
+     *  @param process The process to add.
+     */
     public void addProcess(Process process)
     {
         this.processes.put( process.getName(),
                             process );
     }
 
+    /** Retrieve a process by name from this library.
+     *
+     *  @param name The name of the process.
+     *
+     *  @return The named process, or <code>null</code> if
+     *          this library contains no process with the
+     *          given name.
+     */
     public Process getProcess(String name)
     {
         return (Process) this.processes.get( name );

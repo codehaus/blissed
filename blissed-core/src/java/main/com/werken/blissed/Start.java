@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Start.java,v 1.11 2002-07-17 22:14:53 bob Exp $
+ $Id: Start.java,v 1.12 2002-07-18 18:32:58 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -121,6 +121,14 @@ public class Start extends Node
         getDestination().accept( context ); 
     }
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    //     java.lang.Object
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+    /** Produce a representation suitable for debugging.
+     *
+     *  @return A representation suitable for debugging.
+     */
     public String toString()
     {
         return "[Start: destination=" + getDestination().getName() + "]";

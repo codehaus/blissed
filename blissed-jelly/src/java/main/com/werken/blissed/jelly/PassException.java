@@ -1,9 +1,9 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: PassException.java,v 1.2 2002-07-18 05:22:50 bob Exp $
+ $Id: PassException.java,v 1.3 2002-07-18 18:32:58 bob Exp $
 
- Copyright 2001 (C) The Werken Company. All Rights Reserved.
+ Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
  Redistribution and use of this software and associated documentation
  ("Software"), with or without modification, are permitted provided
@@ -48,6 +48,13 @@ package com.werken.blissed.jelly;
 
 import org.apache.commons.jelly.JellyException;
 
+/** Indicates the immediate passage of a guard.
+ *
+ *  @see PassTag
+ *  @see GuardTag
+ *
+ *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ */
 class PassException extends JellyException
 {
 

@@ -1,9 +1,9 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: PassTag.java,v 1.1 2002-07-17 22:14:53 bob Exp $
+ $Id: PassTag.java,v 1.2 2002-07-18 18:32:58 bob Exp $
 
- Copyright 2001 (C) The Werken Company. All Rights Reserved.
+ Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
  Redistribution and use of this software and associated documentation
  ("Software"), with or without modification, are permitted provided
@@ -50,6 +50,12 @@ import org.apache.commons.jelly.XMLOutput;
 import org.apache.commons.jelly.TagSupport;
 import org.apache.commons.jelly.JellyException;
 
+/** Signal immediate passage of a guard.
+ *
+ *  @see GuardTag
+ *
+ *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ */
 public class PassTag extends TagSupport
 {
     // ------------------------------------------------------------

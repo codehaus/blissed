@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: FailException.java,v 1.2 2002-07-18 05:22:50 bob Exp $
+ $Id: FailException.java,v 1.3 2002-07-18 18:32:58 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -48,6 +48,13 @@ package com.werken.blissed.jelly;
 
 import org.apache.commons.jelly.JellyException;
 
+/** Indicates the immediate failure of a guard.
+ *
+ *  @see FailTag
+ *  @see GuardTag
+ *
+ *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ */
 class FailException extends JellyException
 {
 

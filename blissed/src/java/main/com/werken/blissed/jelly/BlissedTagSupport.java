@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: BlissedTagSupport.java,v 1.2 2002-07-18 05:22:50 bob Exp $
+ $Id: BlissedTagSupport.java,v 1.3 2002-07-18 18:32:58 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -57,13 +57,30 @@ import org.apache.commons.jelly.JellyException;
  */
 abstract class BlissedTagSupport extends TagSupport
 {
+    // ------------------------------------------------------------
+    //   Constructors
+    // ------------------------------------------------------------
+
     /** Construct.
      */
     protected BlissedTagSupport()
     {
-        // intentionally left blank.
     }
 
+    // ------------------------------------------------------------
+    //   Instance methods
+    // ------------------------------------------------------------
+
+    /** Retrieve a process by name from this library.
+     *
+     *  @param name The name of the process.
+     *
+     *  @return The named process, or <code>null</code> if
+     *          this library contains no process with the
+     *          given name.
+     *
+     *  @throws JellyException If an error occurs locating a process library.
+     */
     protected Process getProcess(String name) throws JellyException
     {
         ProcessLibrary library = (ProcessLibrary) findAncestorWithClass( ProcessLibrary.class );
