@@ -2,16 +2,15 @@ package com.werken.blissed;
 
 import junit.framework.TestCase;
 
-public class LocationTest extends TestCase
+public class ProcessContextTest extends TestCase
 {
-    private Process  process;
     private ProcessContext  processContext;
-    private Location location;
 
+    private Process  process;
     private State state1;
     private State state2;
 
-    public LocationTest(String name)
+    public ProcessContextTest(String name)
     {
         super( name );
     }
@@ -24,8 +23,6 @@ public class LocationTest extends TestCase
         this.processContext  = new ProcessContext( null,
                                                    this.process );
 
-        this.location = this.processContext.getLocation();
-        
         this.state1 = this.process.addState( "state.1",
                                              "state one" );
 
@@ -35,31 +32,31 @@ public class LocationTest extends TestCase
 
     public void tearDown()
     {
-        this.process = null;
         this.processContext  = null;
-        this.location = null;
-        this.state1 = null;
-        this.state2 = null;
+
+        this.process = null;
+        this.state1  = null;
+        this.state2  = null;
     }
 
     public void testStartProcess()
     {
-        this.location.startProcess( this.process );
-
+        this.processContext.startProcess( this.process );
+        
         assertSame( process,
-                    this.location.getCurrentProcess() );
+                    this.processContext.getCurrentProcess() );
     }
 
     public void testFinishProcess_Valid()
     {
-        this.location.startProcess( this.process );
+        this.processContext.startProcess( this.process );
 
         assertSame( process,
-                    this.location.getCurrentProcess() );
+                    this.processContext.getCurrentProcess() );
 
         try
         {
-            this.location.finishProcess( this.process );
+            this.processContext.finishProcess( this.process );
         }
         catch (InvalidMotionException e)
         {
@@ -69,17 +66,17 @@ public class LocationTest extends TestCase
 
     public void testFinishProcess_Invalid_WrongProcess()
     {
-        this.location.startProcess( this.process );
+        this.processContext.startProcess( this.process );
         
         assertSame( process,
-                    this.location.getCurrentProcess() );
+                    this.processContext.getCurrentProcess() );
 
         Process anotherProcess = new Process( "another.process",
                                               "anothe process" );
 
         try
         {
-            this.location.finishProcess( anotherProcess );
+            this.processContext.finishProcess( anotherProcess );
             fail( "Should have thrown InvalidMotionException" );
         }
         catch (InvalidMotionException e)
@@ -90,11 +87,11 @@ public class LocationTest extends TestCase
 
     public void testFinishProcess_Invalid_NoProcess()
     {
-        assertNull( this.location.getCurrentProcess() );
+        assertNull( this.processContext.getCurrentProcess() );
 
         try
         {
-            this.location.finishProcess( this.process );
+            this.processContext.finishProcess( this.process );
             fail( "Should have thrown InvalidMotionException" );
         }
         catch (InvalidMotionException e)
@@ -105,24 +102,24 @@ public class LocationTest extends TestCase
 
     public void testFinishProces_Invalid_ProcessNotFinished()
     {
-        this.location.startProcess( this.process );
+        this.processContext.startProcess( this.process );
         
         assertSame( process,
-                    this.location.getCurrentProcess() );
+                    this.processContext.getCurrentProcess() );
 
 
         try
         {
             try
             {
-                this.location.enterState( this.state1 );
+                this.processContext.enterState( this.state1 );
             }
             catch (InvalidMotionException e)
             {
                 fail( e.getLocalizedMessage() );
             }
 
-            this.location.finishProcess( this.process );
+            this.processContext.finishProcess( this.process );
             fail( "Should have thrown InvalidMotionException" );
         }
         catch (InvalidMotionException e)
@@ -133,19 +130,19 @@ public class LocationTest extends TestCase
 
     public void testEnterState_Valid()
     {
-        this.location.startProcess( this.process );
+        this.processContext.startProcess( this.process );
 
         assertSame( this.process,
-                    this.location.getCurrentProcess() );
+                    this.processContext.getCurrentProcess() );
 
-        assertNull( this.location.getCurrentState() );
+        assertNull( this.processContext.getCurrentState() );
 
         try
         {
-            this.location.enterState( this.state1 );
+            this.processContext.enterState( this.state1 );
 
             assertSame( this.state1,
-                        this.location.getCurrentState() );
+                        this.processContext.getCurrentState() );
         }
         catch (InvalidMotionException e)
         {
@@ -155,23 +152,23 @@ public class LocationTest extends TestCase
 
     public void testEnterState_Invalid_NotExitedOtherState()
     {
-        this.location.startProcess( this.process );
+        this.processContext.startProcess( this.process );
 
         assertSame( this.process,
-                    this.location.getCurrentProcess() );
+                    this.processContext.getCurrentProcess() );
 
-        assertNull( this.location.getCurrentState() );
+        assertNull( this.processContext.getCurrentState() );
 
         try
         {
-            this.location.enterState( this.state1 );
+            this.processContext.enterState( this.state1 );
 
             assertSame( this.state1,
-                        this.location.getCurrentState() );
+                        this.processContext.getCurrentState() );
 
             try
             {
-                this.location.enterState( this.state2 );
+                this.processContext.enterState( this.state2 );
                 fail( "Should have thrown InvalidMotionException" );
             }
             catch (InvalidMotionException e)
@@ -189,7 +186,7 @@ public class LocationTest extends TestCase
     {
         try
         {
-            this.location.enterState( this.state1 );
+            this.processContext.enterState( this.state1 );
             fail( "Should have thrown InvalidMotionException" );
         }
         catch (InvalidMotionException e)
@@ -200,23 +197,23 @@ public class LocationTest extends TestCase
 
     public void testExitState_Valid()
     {
-        this.location.startProcess( this.process );
+        this.processContext.startProcess( this.process );
 
         assertSame( this.process,
-                    this.location.getCurrentProcess() );
+                    this.processContext.getCurrentProcess() );
 
-        assertNull( this.location.getCurrentState() );
+        assertNull( this.processContext.getCurrentState() );
 
         try
         {
-            this.location.enterState( this.state1 );
+            this.processContext.enterState( this.state1 );
 
             assertSame( this.state1,
-                        this.location.getCurrentState() );
+                        this.processContext.getCurrentState() );
 
-            this.location.exitState( this.state1 );
+            this.processContext.exitState( this.state1 );
 
-            assertNull( this.location.getCurrentState() );
+            assertNull( this.processContext.getCurrentState() );
         }
         catch (InvalidMotionException e)
         {
@@ -226,16 +223,16 @@ public class LocationTest extends TestCase
 
     public void testExitState_Invalid_NoState()
     {
-        this.location.startProcess( this.process );
+        this.processContext.startProcess( this.process );
 
         assertSame( this.process,
-                    this.location.getCurrentProcess() );
+                    this.processContext.getCurrentProcess() );
 
-        assertNull( this.location.getCurrentState() );
+        assertNull( this.processContext.getCurrentState() );
 
         try
         {
-            this.location.exitState( this.state1 );
+            this.processContext.exitState( this.state1 );
             fail( "Should have thrown InvalidMotionException" );
         }
         catch (InvalidMotionException e)
@@ -246,20 +243,20 @@ public class LocationTest extends TestCase
 
     public void testExitState_Invalid_WrongState()
     {
-        this.location.startProcess( this.process );
+        this.processContext.startProcess( this.process );
 
         assertSame( this.process,
-                    this.location.getCurrentProcess() );
+                    this.processContext.getCurrentProcess() );
 
-        assertNull( this.location.getCurrentState() );
+        assertNull( this.processContext.getCurrentState() );
 
         try
         {
-            this.location.enterState( this.state1 );
+            this.processContext.enterState( this.state1 );
 
             try
             {
-                this.location.exitState( this.state2 );
+                this.processContext.exitState( this.state2 );
                 fail( "Should have thrown InvalidMotionException" );
             }
             catch (InvalidMotionException e)
@@ -277,7 +274,7 @@ public class LocationTest extends TestCase
     {
         try
         {
-            this.location.exitState( this.state1 );
+            this.processContext.exitState( this.state1 );
             fail( "Should have thrown InvalidMotionException" );
         }
         catch (InvalidMotionException e)

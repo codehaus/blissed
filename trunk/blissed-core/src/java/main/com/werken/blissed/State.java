@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: State.java,v 1.20 2002-09-16 05:27:15 bob Exp $
+ $Id: State.java,v 1.21 2002-09-16 14:59:51 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -45,6 +45,8 @@ package com.werken.blissed;
  OF THE POSSIBILITY OF SUCH DAMAGE.
  
  */
+
+import com.werken.blissed.activity.NoOpActivity;
 
 import org.apache.commons.graph.Vertex;
 

@@ -1,7 +1,7 @@
-package com.werken.blissed;
+package com.werken.blissed.guard;
 
 /*
- $Id: NoOpActivity.java,v 1.4 2002-09-16 04:17:26 bob Exp $
+ $Id: BooleanGuard.java,v 1.1 2002-09-16 14:59:51 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -46,20 +46,24 @@ package com.werken.blissed;
  
  */
 
-/** <code>Activity</code> which performs no actions.
+import com.werken.blissed.Guard;
+import com.werken.blissed.ProcessContext;
+import com.werken.blissed.Transition;
+
+/** Simple flag-based boolean <code>Guard</code>.
  *
- *  @see Activity
+ *  @see Guard
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class NoOpActivity implements Activity
+public class BooleanGuard implements Guard
 {
     // ------------------------------------------------------------
-    //     Constants
+    //     Instance members
     // ------------------------------------------------------------
 
-    /** Singleton instance. */
-    public static final NoOpActivity INSTANCE = new NoOpActivity();
+    /** The boolean guard value. */
+    private boolean guard;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -67,70 +71,57 @@ public class NoOpActivity implements Activity
 
     /** Construct.
      *
-     *  <p>
-     *  While <code>NoOpActivity</code> does provide this
-     *  public constructor, it is recommended to simply
-     *  use the singleton instance provided.
-     *  </p>
-     *
-     *  @see #INSTANCE
+     *  @param guard Initial guard value.
      */
-    public NoOpActivity()
+    public BooleanGuard(boolean guard)
     {
-        // intentionally left blank.
+        this.guard = guard;
     }
 
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
 
-    /** Perform this activity.
+    /** Set the guard value.
+     *
+     *  @param guard The guard value.
+     */
+    public void setGuard(boolean guard)
+    {
+        this.guard = guard;
+    }
+
+    /** Retrieve the guard value.
+     *
+     *  @return The guard value.
+     */
+    public boolean getGuard()
+    {
+        return this.guard;
+    }
+
+    /** Test this guard against a process context.
      *
      *  <p>
-     *  This implementation does nothing and simply
-     *  returns.  Hence, it's a no-op.
+     *  <b>implementation note:</b> This method
+     *  ignores the process context itself, and returns
+     *  the same value as returned from
+     *  {@link #getGuard}.
      *  </p>
      *
+     *  @see #setGuard
+     *  @see #getGuard
+     *
+     *  @param transition The transition this guard guards.
      *  @param context The process context.
-     */
-    public void perform(ProcessContext context)
-    {
-        // no-op
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    //     com.werken.blissed.Named impl
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-    /** Retrieve the name.
      *
-     *  @return The name.
+     *  @return <code>true</code> if the process context passes
+     *          this guard, otherwise <code>false</code>.
      */
-    public String getName()
+    public boolean test(Transition transition,
+                        ProcessContext context)
     {
-        return "blissed.no-op";
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    //     com.werken.blissed.Described impl
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-    /** Retrieve the description.
-     *
-     *  @return The description.
-     */
-    public String getDescription()
-    {
-        return "no-op";
-    }
-
-    /** Set the description.
-     *
-     *  @param description The description.
-     */
-    public void setDescription(String description)
-    {
-        // intentionally left blank
+        return getGuard();
     }
 }
 

@@ -2,6 +2,8 @@ package com.werken.blissed;
 
 import junit.framework.TestCase;
 
+import com.werken.blissed.guard.BooleanGuard;
+
 public class ProcessTest extends TestCase
 {
     private Process process;
@@ -39,39 +41,25 @@ public class ProcessTest extends TestCase
         this.process = null;
     }
 
-    public void testAddState()
+    public void testAddState() throws Exception
     {
-        try
-        {
-            State state2 = this.process.addState( "state.2",
-                                                  "state two" );
-            
-            assertSame( state2,
-                        this.process.getState( "state.2" ) );
-        }
-        catch (DuplicateStateException e)
-        {
-            fail( e.getLocalizedMessage() );
-        }
+        State state2 = this.process.addState( "state.2",
+                                              "state two" );
+        
+        assertSame( state2,
+                    this.process.getState( "state.2" ) );
     }
     
-    public void testRemoveState()
+    public void testRemoveState() throws Exception
     {
-        try
-        {
-            State state2 = this.process.addState( "state.2",
-                                                  "state two" );
-            
-            assertSame( state2,
-                        this.process.getState( "state.2" ) );
-            
-            this.process.removeState( state2 );
-            
-            assertNull( this.process.getState( "state.2" ) );
-        }
-        catch (DuplicateStateException e)
-        {
-            fail( e.getLocalizedMessage() );
-        }
+        State state2 = this.process.addState( "state.2",
+                                              "state two" );
+        
+        assertSame( state2,
+                    this.process.getState( "state.2" ) );
+        
+        this.process.removeState( state2 );
+        
+        assertNull( this.process.getState( "state.2" ) );
     }
 }

@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: ActivityTag.java,v 1.5 2002-09-16 05:27:15 bob Exp $
+ $Id: ActivityTag.java,v 1.6 2002-09-16 14:59:51 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -48,7 +48,7 @@ package com.werken.blissed.jelly;
 
 import com.werken.blissed.State;
 import com.werken.blissed.Activity;
-import com.werken.blissed.NoOpActivity;
+import com.werken.blissed.activity.NoOpActivity;
 
 import org.apache.commons.jelly.Script;
 import org.apache.commons.jelly.XMLOutput;

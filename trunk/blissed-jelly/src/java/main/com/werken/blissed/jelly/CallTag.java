@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: CallTag.java,v 1.2 2002-09-16 05:27:15 bob Exp $
+ $Id: CallTag.java,v 1.3 2002-09-16 14:59:51 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -49,7 +49,7 @@ package com.werken.blissed.jelly;
 import com.werken.blissed.Process;
 import com.werken.blissed.State;
 import com.werken.blissed.Activity;
-import com.werken.blissed.NoOpActivity;
+import com.werken.blissed.activity.NoOpActivity;
 import com.werken.blissed.activity.CallActivity;
 
 import org.apache.commons.jelly.Tag;
