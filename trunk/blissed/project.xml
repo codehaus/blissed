@@ -44,7 +44,7 @@
   <issueTrackingUrl>http://jira.werken.com/secure/BrowseProject.jspa?id=10011&amp;report=roadmap</issueTrackingUrl>
 
   <repository>
-    <connection>scm:cvs::pserver:anonymous@cvs.werken.com:/cvsroot/blissed:blissed</connection>
+    <connection>scm:cvs:pserver:anonymous@cvs.werken.com:/cvsroot/blissed:blissed</connection>
     <url>http://cvs.werken.com/viewcvs.cgi/blissed/blissed/</url>
   </repository>
 
@@ -58,6 +58,15 @@
       <email>bob@eng.werken.com</email>
       <organization>The Werken Company</organization>
     </developer>
+    <developer>
+      <name>peter royal</name>
+      <id>proyal</id>
+      <roles>
+        <role>Hacker</role>
+      </roles>
+      <email>proyal@pace2020.com</email>
+      <organization>Pace Systems Group</organization>
+    </developer>
   </developers>
 
   <dependencies>
@@ -65,7 +74,7 @@
     <dependency>
       <id>forehead</id>
       <version>1.0-beta-2</version>
-      <url>http://forehead.werken.co/</url>
+      <url>http://forehead.werken.com/</url>
     </dependency>
 
     <dependency>
@@ -86,7 +95,14 @@
     <dependency>
       <id>commons-jelly</id>
       <version>SNAPSHOT</version>
-      <url>http://jakarta.apache.org/commons/sandbox/jelly/</url>
+      <url>http://jakarta.apache.org/commons/jelly/</url>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-jelly</groupId>
+      <artifactId>commons-jelly-tags-junit</artifactId>
+      <version>SNAPSHOT</version>
+      <url>http://jakarta.apache.org/commons/jelly/</url>
     </dependency>
 
     <dependency>
