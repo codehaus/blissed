@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+
+<document>
+
+  <properties>
+    <title>blissed</title>
+    <author email="bob@eng.werken.com">bob mcwhirter</author>
+  </properties>
+
+  <body>
+
+  <section name="Overview">
+    <p>
+    <code>blissed</code> is a very small framework to assist in
+    the creation, management and execution of processes and states.
+    </p>
+
+    <p>
+    <code>blissed</code> is not intended to be useful on its own,
+    but rather may support a larger workflow system.
+    </p>
+
+  </section>
+
+</body>
+</document>
+
