@@ -47,21 +47,14 @@ public class ProcessContextTest extends TestCase
                     this.processContext.getCurrentProcess() );
     }
 
-    public void testFinishProcess_Valid()
+    public void testFinishProcess_Valid() throws Exception
     {
         this.processContext.startProcess( this.process );
 
         assertSame( process,
                     this.processContext.getCurrentProcess() );
 
-        try
-        {
-            this.processContext.finishProcess( this.process );
-        }
-        catch (InvalidMotionException e)
-        {
-            fail( e.getLocalizedMessage() );
-        }
+        this.processContext.finishProcess( this.process );
     }
 
     public void testFinishProcess_Invalid_WrongProcess()
@@ -107,7 +100,6 @@ public class ProcessContextTest extends TestCase
         assertSame( process,
                     this.processContext.getCurrentProcess() );
 
-
         try
         {
             try
@@ -128,7 +120,7 @@ public class ProcessContextTest extends TestCase
         }
     }
 
-    public void testEnterState_Valid()
+    public void testEnterState_Valid() throws Exception
     {
         this.processContext.startProcess( this.process );
 
@@ -137,20 +129,13 @@ public class ProcessContextTest extends TestCase
 
         assertNull( this.processContext.getCurrentState() );
 
-        try
-        {
-            this.processContext.enterState( this.state1 );
-
-            assertSame( this.state1,
-                        this.processContext.getCurrentState() );
-        }
-        catch (InvalidMotionException e)
-        {
-            fail( e.getLocalizedMessage() );
-        }
+        this.processContext.enterState( this.state1 );
+        
+        assertSame( this.state1,
+                    this.processContext.getCurrentState() );
     }
 
-    public void testEnterState_Invalid_NotExitedOtherState()
+    public void testEnterState_Invalid_NotExitedOtherState() throws Exception
     {
         this.processContext.startProcess( this.process );
 
@@ -159,26 +144,19 @@ public class ProcessContextTest extends TestCase
 
         assertNull( this.processContext.getCurrentState() );
 
+        this.processContext.enterState( this.state1 );
+        
+        assertSame( this.state1,
+                    this.processContext.getCurrentState() );
+        
         try
         {
-            this.processContext.enterState( this.state1 );
-
-            assertSame( this.state1,
-                        this.processContext.getCurrentState() );
-
-            try
-            {
-                this.processContext.enterState( this.state2 );
-                fail( "Should have thrown InvalidMotionException" );
-            }
-            catch (InvalidMotionException e)
-            {
-                // expected and correct
-            }
+            this.processContext.enterState( this.state2 );
+            fail( "Should have thrown InvalidMotionException" );
         }
         catch (InvalidMotionException e)
         {
-            fail( e.getLocalizedMessage() );
+            // expected and correct
         }
     }     
 
@@ -195,7 +173,7 @@ public class ProcessContextTest extends TestCase
         }
     }
 
-    public void testExitState_Valid()
+    public void testExitState_Valid() throws Exception
     {
         this.processContext.startProcess( this.process );
 
@@ -204,21 +182,14 @@ public class ProcessContextTest extends TestCase
 
         assertNull( this.processContext.getCurrentState() );
 
-        try
-        {
-            this.processContext.enterState( this.state1 );
-
-            assertSame( this.state1,
-                        this.processContext.getCurrentState() );
-
-            this.processContext.exitState( this.state1 );
-
-            assertNull( this.processContext.getCurrentState() );
-        }
-        catch (InvalidMotionException e)
-        {
-            fail( e.getLocalizedMessage() );
-        }
+        this.processContext.enterState( this.state1 );
+        
+        assertSame( this.state1,
+                    this.processContext.getCurrentState() );
+        
+        this.processContext.exitState( this.state1 );
+        
+        assertNull( this.processContext.getCurrentState() );
     }
 
     public void testExitState_Invalid_NoState()
@@ -241,7 +212,7 @@ public class ProcessContextTest extends TestCase
         }
     }
 
-    public void testExitState_Invalid_WrongState()
+    public void testExitState_Invalid_WrongState() throws Exception
     {
         this.processContext.startProcess( this.process );
 
@@ -250,23 +221,16 @@ public class ProcessContextTest extends TestCase
 
         assertNull( this.processContext.getCurrentState() );
 
+        this.processContext.enterState( this.state1 );
+        
         try
         {
-            this.processContext.enterState( this.state1 );
-
-            try
-            {
-                this.processContext.exitState( this.state2 );
-                fail( "Should have thrown InvalidMotionException" );
-            }
-            catch (InvalidMotionException e)
-            {
-                // expected and correct
-            }
+            this.processContext.exitState( this.state2 );
+            fail( "Should have thrown InvalidMotionException" );
         }
         catch (InvalidMotionException e)
         {
-            fail( e.getLocalizedMessage() );
+            // expected and correct
         }
     }
 
