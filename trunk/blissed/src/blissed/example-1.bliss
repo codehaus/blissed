@@ -1,7 +1,7 @@
 
-<blissed>
+<blissed trim="true">
 
-  <process name="example"
+  <process name="example.1"
            start="1">
 
     <state name="1">
@@ -9,7 +9,7 @@
         This is state #1.
       </description>
       <activity>
-        Doing state #1 
+        example.1.state.1.activity
       </activity>
     </state>
 
@@ -19,17 +19,24 @@
         This is state #2.
       </description>
       <activity>
-        Doing state #2 
+        example.1.state.2.activity
       </activity>
     </state>
 
-    <state name="3"
-           terminal="true">
+    <state name="3">
       <description>
         This is state #3.
       </description>
       <activity>
-        Doing state #3 
+        example.1.state.3.activity.before
+        <do-process name="example.2"/>
+        example.1.state.3.activity.after
+      </activity>
+    </state>
+
+    <state name="4" terminal="true">
+      <activity>
+        example.1.state.4.activity
       </activity>
     </state>
 
@@ -39,7 +46,7 @@
         Go from #1 to #2
       </description>
       <guard>
-        Testing guard for 1->2
+        example.1.transition.1-2
         <fail/>
       </guard>
     </transition>
@@ -50,11 +57,43 @@
         Go from #1 to #3
       </description>
       <guard>
-        Testing guard for 1->3
+        example.1.transition.1-3
+      </guard>
+    </transition>
+
+    <transition from="3"
+                  to="4">
+      <guard>
+        example.1.transition.3-4
+        <pass/>
       </guard>
     </transition>
   </process>
 
-  <start-process name="example"/>
+  <process name="example.2"
+           start="1">
+
+    <state name="1">
+      <activity>
+        example.2.state.1
+      </activity>
+    </state>
+
+    <state name="2" terminal="true">
+      <activity>
+        example.2.state.2
+      </activity>
+    </state>
+
+    <transition from="1"
+                to="2">
+      <guard>
+        example.2.transition.1-2
+      </guard>
+    </transition>
+
+  </process>
+
+  <spawn-process name="example.1"/>
 
 </blissed>

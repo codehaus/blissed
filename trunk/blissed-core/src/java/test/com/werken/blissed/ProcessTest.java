@@ -91,6 +91,8 @@ public class ProcessTest extends TestCase
         try
         {
             Context context = this.process.spawn();
+
+            this.process.accept( context );
             
             assertSame( this.process,
                         context.getCurrentProcess() );
@@ -113,6 +115,8 @@ public class ProcessTest extends TestCase
         try
         {
             Context context = this.process.spawn();
+
+            this.process.accept( context );
             
             assertSame( this.process,
                         context.getCurrentProcess() );
@@ -121,6 +125,8 @@ public class ProcessTest extends TestCase
                         context.getCurrentNode() );
 
             Context child = this.process.spawn( context );
+
+            this.process.accept( child );
 
             assertSame( this.process,
                         child.getCurrentProcess() );

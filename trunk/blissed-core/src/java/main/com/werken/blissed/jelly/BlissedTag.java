@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: StartProcessTag.java,v 1.1 2002-07-17 22:14:53 bob Exp $
+ $Id: BlissedTag.java,v 1.5 2002-07-18 05:22:50 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -47,19 +47,21 @@ package com.werken.blissed.jelly;
  */
 
 import com.werken.blissed.Process;
-import com.werken.blissed.Context;
 
 import org.apache.commons.jelly.XMLOutput;
 import org.apache.commons.jelly.JellyException;
 import org.apache.commons.jelly.MissingAttributeException;
 
-public class StartProcessTag extends BlissedTagSupport 
+import java.util.Map;
+import java.util.HashMap;
+
+public class BlissedTag extends BlissedTagSupport implements ProcessLibrary
 {
     // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------
 
-    private String name;
+    private Map processes;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -67,18 +69,26 @@ public class StartProcessTag extends BlissedTagSupport
 
     /** Construct.
      */
-    public StartProcessTag()
+    public BlissedTag()
     {
+        this.processes = new HashMap();
     }
 
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
 
-    public void setName(String name)
+    public void addProcess(Process process)
     {
-        this.name = name;
+        this.processes.put( process.getName(),
+                            process );
     }
+
+    public Process getProcess(String name)
+    {
+        return (Process) this.processes.get( name );
+    }
+
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     //     org.apache.commons.jelly.Tag
@@ -93,17 +103,6 @@ public class StartProcessTag extends BlissedTagSupport
      */
     public void doTag(XMLOutput output) throws Exception
     {
-        System.err.println( "Starting process " + this.name );
-        if ( this.name == null )
-        {
-            throw new MissingAttributeException( "name" );
-        }
-
         invokeBody( output );
-
-        Process process = getProcess( this.name );
-
-        process.spawn();
     }
 }
-

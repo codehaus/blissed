@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: GuardTag.java,v 1.1 2002-07-17 22:14:53 bob Exp $
+ $Id: GuardTag.java,v 1.2 2002-07-18 05:22:50 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -116,22 +116,17 @@ public class GuardTag extends BlissedTagSupport
                         script.run( getContext(),
                                     output );
                     }
+                    catch (PassException e)
+                    {
+                        return true;
+                    }
+                    catch (FailException e)
+                    {
+                        return false;
+                    }
                     catch (JellyException e)
                     {
-                        Throwable root = e.getCause();
-
-                        if ( root instanceof PassException )
-                        {
-                            return true;
-                        }
-                        else if (root instanceof FailException )
-                        {
-                            return false;
-                        }
-                        else
-                        {
-                            return false;
-                        }
+                        return false;
                     }
                     catch (Exception e)
                     {

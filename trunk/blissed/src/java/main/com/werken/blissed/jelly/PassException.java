@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: PassException.java,v 1.1 2002-07-17 22:14:53 bob Exp $
+ $Id: PassException.java,v 1.2 2002-07-18 05:22:50 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -46,7 +46,9 @@ package com.werken.blissed.jelly;
  
  */
 
-class PassException extends Exception
+import org.apache.commons.jelly.JellyException;
+
+class PassException extends JellyException
 {
 
 }
