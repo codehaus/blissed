@@ -1,7 +1,7 @@
 package org.codehaus.blissed.jelly;
 
 /*
- $Id: SpawnTag.java,v 1.1 2003-06-04 15:15:04 proyal Exp $
+ $Id: SpawnTag.java,v 1.2 2003-06-05 19:56:56 proyal Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
 
@@ -70,7 +70,7 @@ import org.codehaus.blissed.ProcessEngine;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: SpawnTag.java,v 1.1 2003-06-04 15:15:04 proyal Exp $
+ *  @version $Id: SpawnTag.java,v 1.2 2003-06-05 19:56:56 proyal Exp $
  */
 public class SpawnTag extends RuntimeTagSupport
 {
@@ -236,6 +236,7 @@ public class SpawnTag extends RuntimeTagSupport
             try
             {
                 spawned = engine.spawn( getProcess(),
+                                        null,
                                         async );
             }
             catch( BlissedException e )
@@ -256,7 +257,8 @@ public class SpawnTag extends RuntimeTagSupport
             try
             {
                 spawned = engine.spawn( getProcess(),
-                                        context );
+                                        context,
+                                        null );
             }
             catch( BlissedException e )
             {

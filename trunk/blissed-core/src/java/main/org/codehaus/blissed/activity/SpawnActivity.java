@@ -1,7 +1,7 @@
 package org.codehaus.blissed.activity;
 
 /*
- $Id: SpawnActivity.java,v 1.1 2003-06-04 15:15:04 proyal Exp $
+ $Id: SpawnActivity.java,v 1.2 2003-06-05 19:56:56 proyal Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -57,7 +57,7 @@ import org.codehaus.blissed.InvalidMotionException;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: SpawnActivity.java,v 1.1 2003-06-04 15:15:04 proyal Exp $
+ *  @version $Id: SpawnActivity.java,v 1.2 2003-06-05 19:56:56 proyal Exp $
  */
 public class SpawnActivity implements Activity
 {
@@ -111,7 +111,8 @@ public class SpawnActivity implements Activity
         try
         {
             engine.spawn( getProcess(),
-                          context );
+                          context,
+                          null );
         }
         catch (InvalidMotionException e)
         {
