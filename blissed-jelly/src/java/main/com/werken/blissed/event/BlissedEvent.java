@@ -1,7 +1,7 @@
 package com.werken.blissed.event;
 
 /*
- $Id: NodeEvent.java,v 1.3 2002-07-02 20:17:37 werken Exp $
+ $Id: BlissedEvent.java,v 1.1 2002-07-02 20:17:37 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -46,43 +46,49 @@ package com.werken.blissed.event;
  
  */
 
-import com.werken.blissed.Node;
 import com.werken.blissed.WorkSlip;
 
-/** Abstract class for any event occuring on a <code>Node</code>.
- *
- *  @see Node
+import java.util.EventObject;
+
+/** Abstract class for any blissed event.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public abstract class NodeEvent extends BlissedEvent
+public abstract class BlissedEvent extends EventObject
 {
+    // ------------------------------------------------------------
+    //     Instance members
+    // ------------------------------------------------------------
+
+    /** The workslip. */
+    private WorkSlip workSlip;
+
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
 
     /** Construct.
      *
-     *  @param node The node event source.
+     *  @param source The event source.
      *  @param workSlip The workslip context.
      */
-    public NodeEvent(Node node,
-                     WorkSlip workSlip)
+    public BlissedEvent(Object source,
+                        WorkSlip workSlip)
     {
-        super( node,
-               workSlip );
+        super( source );
+        this.workSlip = workSlip;
     }
 
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
 
-    /** Retrieve the node event source.
+    /** Retrieve the workslip context.
      *
-     *  @return The node event source.
+     *  @return The workslip context.
      */
-    public Node getNode()
+    public WorkSlip getWorkSlip()
     {
-        return (Node) getSource();
+        return this.workSlip;
     }
 }

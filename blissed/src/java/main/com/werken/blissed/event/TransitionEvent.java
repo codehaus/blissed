@@ -1,7 +1,7 @@
 package com.werken.blissed.event;
 
 /*
- $Id: TransitionEvent.java,v 1.1.1.1 2002-07-02 14:28:08 werken Exp $
+ $Id: TransitionEvent.java,v 1.2 2002-07-02 20:17:37 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -47,16 +47,40 @@ package com.werken.blissed.event;
  */
 
 import com.werken.blissed.Transition;
+import com.werken.blissed.WorkSlip;
 
-import java.util.EventObject;
-
-public abstract class TransitionEvent extends EventObject
+/** Abstract class for any event occuring on a <code>Transition</code>.
+ *
+ *  @see Transition
+ *
+ *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ */
+public abstract class TransitionEvent extends BlissedEvent
 {
-    public TransitionEvent(Transition transition)
+    // ------------------------------------------------------------
+    //     Constructors
+    // ------------------------------------------------------------
+
+    /** Construct.
+     *
+     *  @param source The event source.
+     *  @param workSlip The workslip context.
+     */
+    public TransitionEvent(Transition transition,
+                           WorkSlip workSlip)
     {
-        super( transition );
+        super( transition,
+               workSlip );
     }
 
+    // ------------------------------------------------------------
+    //     Instance methods
+    // ------------------------------------------------------------
+
+    /** Retrieve the transition event source.
+     *
+     *  @return The transition event source.
+     */
     public Transition getTransition()
     {
         return (Transition) getSource();

@@ -1,7 +1,7 @@
 package com.werken.blissed.event;
 
 /*
- $Id: ProcessListener.java,v 1.1 2002-07-02 15:40:12 werken Exp $
+ $Id: ProcessListener.java,v 1.2 2002-07-02 20:17:37 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -46,12 +46,26 @@ package com.werken.blissed.event;
  
  */
 
-import com.werken.blissed.Process;
-
 import java.util.EventListener;
 
+/** Interface for receiving <code>ProcessEvent</code>s.
+ *
+ *  @see ProcessEvent
+ *  @see com.werken.blissed.Process
+ *
+ *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ */
 public interface ProcessListener extends EventListener
 {
+    /** Receive notification of a process having started.
+     *
+     *  @param event The process-started event.
+     */
     void processStarted(ProcessStartedEvent event);
+
+    /** Receive notification of a process having finished.
+     *
+     *  @param event The process-finished event.
+     */
     void processFinished(ProcessFinishedEvent event);
 }

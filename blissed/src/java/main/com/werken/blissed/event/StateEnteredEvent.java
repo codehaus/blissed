@@ -1,7 +1,7 @@
 package com.werken.blissed.event;
 
 /*
- $Id: StateEnteredEvent.java,v 1.2 2002-07-02 16:16:40 werken Exp $
+ $Id: StateEnteredEvent.java,v 1.3 2002-07-02 20:17:37 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -49,8 +49,21 @@ package com.werken.blissed.event;
 import com.werken.blissed.State;
 import com.werken.blissed.WorkSlip;
 
+/** Event indicating a state was entered by a given workslip context.
+ *
+ *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ */
 public class StateEnteredEvent extends StateEvent
 {
+    // ------------------------------------------------------------
+    //     Constructors
+    // ------------------------------------------------------------
+
+    /** Construct.
+     *
+     *  @param state The state event source.
+     *  @param workSlip The workslip context.
+     */
     public StateEnteredEvent(State state,
                              WorkSlip workSlip)
     {

@@ -1,7 +1,7 @@
 package com.werken.blissed.event;
 
 /*
- $Id: PredicatePassedEvent.java,v 1.2 2002-07-02 16:16:40 werken Exp $
+ $Id: PredicatePassedEvent.java,v 1.3 2002-07-02 20:17:37 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -49,8 +49,24 @@ package com.werken.blissed.event;
 import com.werken.blissed.Predicate;
 import com.werken.blissed.WorkSlip;
 
+/** Event indicating a predicate's test passed for a given
+ *  workslip context.
+ *
+ *  @see Predicate#test
+ *
+ *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ */
 public class PredicatePassedEvent extends PredicateEvent
 {
+    // ------------------------------------------------------------
+    //     Constructors
+    // ------------------------------------------------------------
+
+    /** Construct.
+     *
+     *  @param predicate The predicate event source.
+     *  @param workSlip The workslip context.
+     */
     public PredicatePassedEvent(Predicate predicate,
                                 WorkSlip workSlip)
     {
