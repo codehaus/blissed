@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Start.java,v 1.4 2002-07-03 03:10:37 werken Exp $
+ $Id: FalsePredicate.java,v 1.1 2002-07-03 03:10:37 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -46,76 +46,62 @@ package com.werken.blissed;
  
  */
 
-/** Entry-point start node of a <code>Process</code>.
+
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Collections;
+
+/** A <code>Predicate</code> that always tests to <code>true</code>.
  *
- *  @see Process#getStart
- *  @see Process#start
+ *  @see Predicate
+ *  @see Predicate#accept
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class Start extends Node
+public class FalsePredicate extends Predicate
 {
-
     // ------------------------------------------------------------
-    //     Instance members
+    //     Constants
     // ------------------------------------------------------------
 
-    /** The initial transition. */
-    private Transition transition;
+    /** Singleton instance. */
+    public static final FalsePredicate INSTANCE = new FalsePredicate();
 
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
 
     /** Construct.
-     *
-     *  @param process The process.
      */
-    Start(Process process)
+    public FalsePredicate()
     {
-        super( process,
-               "blissed.start",
-               "start for " + process.getName() );
-               
+        super( "false" );
     }
 
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
 
-    /** Set the initial transition.
-     *
-     *  @param transition The transition.
-     */
-    public void setTransition(Transition transition)
-    {
-        this.transition  = transition;
-    }
-
-    /** Retrieve the initial transition.
-     *
-     *  @return The transition.
-     */
-    public Transition getTransition()
-    {
-        return this.transition;
-    }
-
-    void attemptTransition(WorkSlip workSlip)
-    {
-        getTransition().accept( workSlip );
-    }
-
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    //     com.werken.blissed.Node
+    //     com.werken.blissed.Predicate
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-    public void accept(WorkSlip workSlip)
+    /** Test this predicate against a <code>WorkSlip</code> context.
+     *
+     *  <p>
+     *  <b>implementation note:</b> This method <i>always</i> returns
+     *  <code>false</code>.
+     *  </p>
+     *
+     *  @param workSlip The context against which to evaluate.
+     *
+     *  @return <code>true</code> if this predicate passes within
+     *          the context of the <code>WorkSlip</code>, otherwise,
+     *          <code>false</code>.
+     */
+    public boolean test(WorkSlip workSlip)
     {
-        super.accept( workSlip );
-
-        getProcess().fireProcessStarted( workSlip );
-
-        attemptTransition( workSlip );
+        return false;
     }
 }

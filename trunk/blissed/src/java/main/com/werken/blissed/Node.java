@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Node.java,v 1.4 2002-07-03 02:50:51 werken Exp $
+ $Id: Node.java,v 1.5 2002-07-03 03:10:37 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -50,7 +50,7 @@ package com.werken.blissed;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public abstract class Node implements Named, Described 
+public class Node implements Named, Described 
 {
     // ------------------------------------------------------------
     //     Instance members
@@ -105,6 +105,11 @@ public abstract class Node implements Named, Described
     public void release(WorkSlip workSlip)
     {
         workSlip.setCurrentNode( null );
+    }
+
+    public void check(WorkSlip workSlip)
+    {
+        // no-op
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

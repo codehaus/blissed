@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Transition.java,v 1.3 2002-07-03 02:50:51 werken Exp $
+ $Id: Transition.java,v 1.4 2002-07-03 03:10:37 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -62,7 +62,7 @@ import java.util.Collections;
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
 public class Transition implements Described
-{
+{    
     // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------

@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Process.java,v 1.3 2002-07-02 16:16:40 werken Exp $
+ $Id: Process.java,v 1.4 2002-07-03 03:10:37 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -115,6 +115,11 @@ public class Process implements Named, Described
         this.start  = new Start( this );
         this.finish = new Finish( this );
 
+        this.start.setTransition( new Transition( this.start,
+                                                  this.finish,
+                                                  TruePredicate.INSTANCE,
+                                                  "default start-finish transition" ) );
+
         this.activeWorkSlips = new HashSet();
 
         this.listeners = Collections.EMPTY_LIST;
@@ -181,6 +186,10 @@ public class Process implements Named, Described
     public WorkSlip start()
     {
         WorkSlip workSlip = new WorkSlip( this );
+
+        this.activeWorkSlips.add( workSlip );
+
+        getStart().accept( workSlip );
 
         return workSlip;
     }
