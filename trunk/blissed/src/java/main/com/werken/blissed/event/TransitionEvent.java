@@ -1,7 +1,7 @@
 package com.werken.blissed.event;
 
 /*
- $Id: TransitionEvent.java,v 1.2 2002-07-02 20:17:37 werken Exp $
+ $Id: TransitionEvent.java,v 1.3 2002-07-03 04:39:32 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -63,7 +63,7 @@ public abstract class TransitionEvent extends BlissedEvent
 
     /** Construct.
      *
-     *  @param source The event source.
+     *  @param transition The transition event source.
      *  @param workSlip The workslip context.
      */
     public TransitionEvent(Transition transition,

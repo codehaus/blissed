@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Transition.java,v 1.4 2002-07-03 03:10:37 werken Exp $
+ $Id: Transition.java,v 1.5 2002-07-03 04:39:32 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -138,7 +138,7 @@ public class Transition implements Described
 
     /** Set the <code>Predicate</code> which guards this transition.
      *
-     *  @param The predicate.
+     *  @param predicate The predicate.
      */
     public void setPredicate(Predicate predicate)
     {
@@ -174,6 +174,10 @@ public class Transition implements Described
     //     Event-listener management
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
+    /** Add a <code>TransitionListener</code> to this transition.
+     *
+     *  @param listener The listener to add.
+     */
     public void addTransitionListener(TransitionListener listener)
     {
         if ( this.listeners == Collections.EMPTY_LIST )
@@ -184,11 +188,26 @@ public class Transition implements Described
         this.listeners.add( listener );
     }
 
+    /** Remove a <code>TransitionListener</code> from this state.
+     *
+     *  @param listener The listener to remove.
+     */
     public void removeTransitionListener(TransitionListener listener)
     {
         this.listeners.remove( listener );
     }
 
+    /** Retrieve the <b>live</b> list of <code>TransitionListener</code>s
+     *  for this transition.
+     *
+     *  <p>
+     *  The returned <b>live</b> list is directly backed by the transition.
+     *  Change made to the list are immediately reflected internally
+     *  within the transition.
+     *  </p>
+     *
+     *  @return The <code>List</code> of <code>TransitionListener</code>s.
+     */
     public List getTransitionListeners()
     {
         return this.listeners;
@@ -198,6 +217,11 @@ public class Transition implements Described
     //     Event firing
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
+    /** Fire an event indicating that a workslip has followed
+     *  this transition.
+     *
+     *  @param workSlip The workslip following this transition.
+     */
     void fireTransitionFollowed(WorkSlip workSlip)
     {
         TransitionFollowedEvent event = new TransitionFollowedEvent( this,

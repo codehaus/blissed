@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: WorkSlip.java,v 1.4 2002-07-03 03:10:37 werken Exp $
+ $Id: WorkSlip.java,v 1.5 2002-07-03 04:39:32 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -49,8 +49,8 @@ package com.werken.blissed;
 import java.util.Date;
 import java.util.Map;
 import java.util.HashMap;
-import java.util.List;
-import java.util.ArrayList;
+import java.util.Set;
+import java.util.HashSet;
 import java.util.Collections;
 
 /** Data for an instance of a <code>Process</code>.
@@ -76,7 +76,7 @@ public class WorkSlip implements Named
     private WorkSlip parent;
 
     /** Children WorkSlips, if any. */
-    private List children;
+    private Set children;
 
     /** Instance attributes. */
     private Map attributes;
@@ -124,7 +124,7 @@ public class WorkSlip implements Named
         this.parent  = parent;
 
         this.attributes = new HashMap();
-        this.children = Collections.EMPTY_LIST;
+        this.children = Collections.EMPTY_SET;
     }
 
     // ------------------------------------------------------------
@@ -221,9 +221,9 @@ public class WorkSlip implements Named
         WorkSlip workSlip = new WorkSlip( process,
                                           this );
                                           
-        if ( this.children == Collections.EMPTY_LIST )
+        if ( this.children == Collections.EMPTY_SET )
         {
-            this.children = new ArrayList();
+            this.children = new HashSet();
         }
 
         this.children.add( workSlip );
@@ -231,7 +231,22 @@ public class WorkSlip implements Named
         return workSlip;
     }
 
-    public WorkSlip createSplitWorkSlip()
+    /** Retrieve an unmodifiable set of all children
+     *  workslips of this workslip.
+     *
+     *  @return An unmodifiable <code>Set</code> of children
+     *          <code>WorkSlip</code>s.
+     */
+    public Set getChildren()
+    {
+        return Collections.unmodifiableSet( this.children );
+    }
+
+    /** Create a duplicate child of this workslip for a split.
+     *
+     *  @return A duplicate child workslip for a split.
+     */
+    WorkSlip createSplitWorkSlip()
     {
         WorkSlip dupe = new WorkSlip( getProcess(),
                                       this );
@@ -241,7 +256,9 @@ public class WorkSlip implements Named
         return dupe;
     }
 
-    public void check()
+    /** Perform a liveness check on this workslip.
+     */
+    void check()
     {
         getCurrentNode().check( this );
     }

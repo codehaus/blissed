@@ -57,6 +57,10 @@ public class WorkSlipTest extends TestCase
     {
         WorkSlip parent = this.process.start();
 
+        assertNull( parent.getParent() );
+
+        assertTrue( parent.getChildren().isEmpty() );
+
         Process subProcess = new Process( "sub-process",
                                           "a test sub-process" );
 
@@ -64,6 +68,11 @@ public class WorkSlipTest extends TestCase
 
         assertSame( parent,
                     child.getParent() );
+
+        assertEquals( 1,
+                      parent.getChildren().size() );
+
+        assertTrue( parent.getChildren().contains( child ) );
     }
 
     public void testAttributes()

@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Start.java,v 1.4 2002-07-03 03:10:37 werken Exp $
+ $Id: Start.java,v 1.5 2002-07-03 04:39:32 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -101,6 +101,10 @@ public class Start extends Node
         return this.transition;
     }
 
+    /** Attempt to transition the workslip out of this node.
+     *
+     *  @param workSlip The workslip to attempt transitioning.
+     */
     void attemptTransition(WorkSlip workSlip)
     {
         getTransition().accept( workSlip );
@@ -110,6 +114,10 @@ public class Start extends Node
     //     com.werken.blissed.Node
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
+    /** Accept a workslip into this node.
+     *
+     *  @param workSlip The workslip to accept.
+     */
     public void accept(WorkSlip workSlip)
     {
         super.accept( workSlip );

@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Split.java,v 1.3 2002-07-03 02:50:51 werken Exp $
+ $Id: Split.java,v 1.4 2002-07-03 04:39:32 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -126,6 +126,10 @@ public class Split extends Node
     //     com.werken.blissed.Node
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
+    /** Accept a workslip into this node.
+     *
+     *  @param workSlip The workslip to accept.
+     */
     public void accept(WorkSlip workSlip)
     {
         super.accept( workSlip );

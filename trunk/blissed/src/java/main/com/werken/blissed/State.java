@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: State.java,v 1.6 2002-07-03 03:10:37 werken Exp $
+ $Id: State.java,v 1.7 2002-07-03 04:39:32 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -202,7 +202,7 @@ public class State extends Node
 
     /** Add a <code>StateListener</code> to this state.
      *
-     *  @param listern The listenr to add.
+     *  @param listener The listenr to add.
      */
     public void addStateListener(StateListener listener)
     {
@@ -216,7 +216,7 @@ public class State extends Node
 
     /** Remove a <code>StateListener</code> from this state.
      *
-     *  @param listern The listenr to remove.
+     *  @param listener The listenr to remove.
      */
     public void removeStateListener(StateListener listener)
     {
@@ -289,6 +289,10 @@ public class State extends Node
     //     com.werken.blissed.Node
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
+    /** Accept a workslip into this node.
+     *
+     *  @param workSlip The workslip to accept.
+     */
     public void accept(WorkSlip workSlip)
     {
         super.accept( workSlip );
@@ -300,12 +304,21 @@ public class State extends Node
         check( workSlip );
     }
 
+    /** Release a workslip from this node.
+     *
+     *  @param workSlip The workslip to release.
+     */
     public void release(WorkSlip workSlip)
     {
         super.release( workSlip );
         fireStateExited( workSlip );
     }
 
+    /** Check the status of the workslip within this
+     *  node, with a goal towards making progress.
+     *
+     *  @param workSlip The workslip to check.
+     */
     public void check(WorkSlip workSlip)
     {
         attemptTransition( workSlip );

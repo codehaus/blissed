@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Node.java,v 1.5 2002-07-03 03:10:37 werken Exp $
+ $Id: Node.java,v 1.6 2002-07-03 04:39:32 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -97,17 +97,30 @@ public class Node implements Named, Described
         return this.process;
     }
 
-    public void accept(WorkSlip workSlip)
+    /** Accept a workslip into this node.
+     *
+     *  @param workSlip The workslip to accept.
+     */
+    void accept(WorkSlip workSlip)
     {
         workSlip.setCurrentNode( this );
     }
 
-    public void release(WorkSlip workSlip)
+    /** Release a workslip from this node.
+     *
+     *  @param workSlip The workslip to release.
+     */
+    void release(WorkSlip workSlip)
     {
         workSlip.setCurrentNode( null );
     }
 
-    public void check(WorkSlip workSlip)
+    /** Check the status of the workslip within this
+     *  node, with a goal towards making progress.
+     *
+     *  @param workSlip The workslip to check.
+     */
+    void check(WorkSlip workSlip)
     {
         // no-op
     }

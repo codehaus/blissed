@@ -34,6 +34,9 @@
     <developer>
       <name>bob mcwhirter</name>
       <id>werken</id>
+      <roles>
+        <role>Founder</role>
+      </roles>
       <email>bob@eng.werken.com</email>
       <organization>The Werken Company</organization>
     </developer>
@@ -43,21 +46,8 @@
   <dependencies>
 
     <dependency>
-      <id>log4j</id>
-      <version>1.1.3</version>
-      <url>http://jakarta.apache.org/log4j/</url>
-    </dependency>
-
-    <dependency>
       <id>junit</id>
       <version>3.7</version>
-      <url>http://junit.org/</url>
-    </dependency>
-
-    <dependency>
-      <id>clover</id>
-      <version>3.7</version>
-      <jar>clover.jar</jar>
       <url>http://junit.org/</url>
     </dependency>
 
