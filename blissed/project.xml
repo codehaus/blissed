@@ -34,6 +34,9 @@
     <developer>
       <name>bob mcwhirter</name>
       <id>werken</id>
+      <roles>
+        <role>Founder</role>
+      </roles>
       <email>bob@eng.werken.com</email>
       <organization>The Werken Company</organization>
     </developer>
