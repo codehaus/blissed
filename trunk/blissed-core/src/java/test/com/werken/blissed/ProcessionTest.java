@@ -37,39 +37,6 @@ public class ProcessionTest extends TestCase
         this.process = null;
     }
 
-    public void testVariableManagement()
-    {
-        Object obj1 = new Object();
-        Object obj2 = new Object();
-
-        assertNull( this.procession.getVariable( "one" ) );
-
-        assertNull( this.procession.getVariable( "two" ) );
-
-        this.procession.setVariable( "one",
-                                     obj1 );
-
-        this.procession.setVariable( "two",
-                                     obj2 );
-
-        assertSame( obj1,
-                    this.procession.getVariable( "one" ) );
-
-        assertSame( obj2,
-                    this.procession.getVariable( "two" ) );
-
-        this.procession.clearVariable( "one" );
-
-        assertNull( this.procession.getVariable( "one" ) );
-
-        assertSame( obj2,
-                    this.procession.getVariable( "two" ) );
-
-        this.procession.clearVariable( "two" );
-
-        assertNull( this.procession.getVariable( "two" ) );
-    }
-
     public void testSpawn()
     {
         try

@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: SpawnProcessTag.java,v 1.4 2002-08-14 20:22:29 bob Exp $
+ $Id: SpawnProcessTag.java,v 1.5 2002-08-15 04:01:29 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -132,8 +132,7 @@ public class SpawnProcessTag extends BlissedTagSupport
         jellyContext.setVariable( "blissed.procession",
                                   procession );
 
-        procession.setVariable( "jelly.context",
-                                    jellyContext);
+        procession.setProcessData( jellyContext );
 
         process.accept( procession );
     }

@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: DoActivityTag.java,v 1.2 2002-08-14 20:22:29 bob Exp $
+ $Id: DoActivityTag.java,v 1.3 2002-08-15 04:01:29 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -118,7 +118,7 @@ public class DoActivityTag extends BlissedTagSupport
         Activity activity = new Activity() {
                 public void perform(Procession procession) throws ActivityException
                 {
-                    JellyContext jellyContext = (JellyContext) procession.getVariable( "jelly.context" );
+                    JellyContext jellyContext = (JellyContext) procession.getProcessData();
 
                     try
                     {
