@@ -102,6 +102,12 @@
     </dependency>
 
     <dependency>
+      <id>commons-jexl</id>
+      <version>1.0-beta-1</version>
+      <url>http://jakarta.apache.org/commons/sandbox/jexl/</url>
+    </dependency>
+
+    <dependency>
       <id>junit</id>
       <version>3.7</version>
       <url>http://junit.org/</url>

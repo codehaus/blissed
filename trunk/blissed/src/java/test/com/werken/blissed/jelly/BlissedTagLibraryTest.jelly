@@ -1,0 +1,195 @@
+<?xml version="1.0"?>
+
+<test:suite xmlns:j="jelly:core" 
+            xmlns:test="jelly:junit"
+            xmlns="jelly:com.werken.blissed.jelly.BlissedTagLibrary"
+            trim="true">
+
+  <!--
+    ||     <process>
+    -->
+
+  <test:case name="testProcessTag_NoName">
+    <j:catch var="e">
+      <process start="foo"/>
+    </j:catch>
+    <test:assert 
+          test="${(e != null) and (e.missingAttribute == 'name')}">missing-attr: name</test:assert>
+  </test:case>
+
+  <test:case name="testProcessTag_NoStart">
+    <j:catch var="e">
+      <process name="foo"/>
+    </j:catch>
+    <test:assert 
+          test="${(e != null) and (e.missingAttribute == 'start')}">missing-attr: start</test:assert>
+  </test:case>
+
+  <test:case name="testProcessTag_StartNotFound">
+    <j:catch var="e">
+      <process name="foo" start="noStart"/>
+    </j:catch>
+    <test:assert 
+          test="${(e != null) and (e.message.startsWith( 'Start state' ))}">start-state not found</test:assert>
+  </test:case>
+
+  <test:case name="testProcessTag_Var">
+    <process name="foo" start="start" var="theProcess">
+      <state name="start"/>
+    </process>
+    <test:assert 
+          test="${theProcess != null}">process not null</test:assert>
+  </test:case>
+
+  <test:case name="testProcessTag_WithDescription">
+    <process name="foo" start="start" var="theProcess">
+      <description>This is the process</description>
+      <state name="start"/>
+    </process>
+    <test:assert 
+          test="${theProcess != null}">process not null</test:assert>
+    <test:assert 
+          test="${theProcess.description == 'This is the process'}">process desc</test:assert>
+  </test:case>
+
+  <!--
+    ||     <state>
+    -->
+
+  <test:case name="testStateTag_NoProcess">
+    <j:catch var="e">
+      <state/>
+    </j:catch>
+    <test:assert 
+          test="${(e != null) and (e.message.startsWith( 'Not within a process' ))}">not within a process</test:assert>
+  </test:case>
+
+  <test:case name="testStateTag_NoName">
+    <j:catch var="junk">
+      <process name="foo" start="noStart">
+        <j:catch var="e">
+          <state/>
+        </j:catch>
+        <test:assert 
+              test="${(e != null) and (e.missingAttribute == 'name')}">missing-attr: name</test:assert>
+      </process>
+    <!-- expected to throw.  we're not testing that. -->
+    </j:catch>
+  </test:case>
+
+  <test:case name="testStateTag_Valid">
+    <process name="foo" start="start">
+      <state name="start"/>
+    </process>
+  </test:case>
+
+  <test:case name="testStateTag_WithDescription">
+    <process name="foo" start="start" var="theProcess">
+      <state name="start">
+        <description>This is the state</description>
+      </state>
+    </process>
+    <test:assert 
+          test="${theProcess.getState('start').description == 'This is the state'}">state desc</test:assert>
+  </test:case>
+
+  <test:case name="testStateTag_Terminal">
+    <process name="foo" start="start" var="theProcess">
+      <state name="start" terminal="true"/>
+    </process>
+    <test:assert 
+          test="${theProcess.getState('start').transitions[0].destination == null}">terminal transition</test:assert>
+  </test:case>
+
+  <!--
+    ||     <description>
+    -->
+
+  <test:case name="testDescriptionTag_NoContainer">
+    <j:catch var="e">
+      <description/>
+    </j:catch>
+    <test:assert 
+          test="${(e != null) and (e.reason.endsWith( 'to describe' ))}">not within a container</test:assert>
+  </test:case>
+
+  <!--
+    ||     <transition>
+    -->
+
+  <test:case name="testTransitionTag_NoProcess">
+    <j:catch var="e">
+      <transition/>
+    </j:catch>
+    <test:assert 
+          test="${(e != null) and (e.reason.startsWith( 'Not within a process' ))}">not within process</test:assert>
+  </test:case>
+
+  <test:case name="testTransitionTag_NoFrom">
+    <j:catch var="junk">
+      <process name="foo">
+        <j:catch var="e">
+          <transition to="dest"/>
+        </j:catch>
+        <test:assert 
+              test="${(e != null) and (e.missingAttribute == 'from')}">missing-attr: from</test:assert>
+      </process>
+    <!-- expected to throw.  we're not testing that. -->
+    </j:catch>
+  </test:case>
+
+  <test:case name="testTransitionTag_NoTo">
+    <j:catch var="junk">
+      <process name="foo">
+        <j:catch var="e">
+          <transition from="origin"/>
+        </j:catch>
+        <test:assert 
+              test="${(e != null) and (e.missingAttribute == 'to')}">missing-attr: to</test:assert>
+      </process>
+    <!-- expected to throw.  we're not testing that. -->
+    </j:catch>
+  </test:case>
+
+
+  <test:case name="testTransitionTag_FromNoSuchState">
+    <j:catch var="junk">
+      <process name="foo">
+        <state name="dest"/>
+        <j:catch var="e">
+          <transition from="origin" to="dest"/>
+        </j:catch>
+        <test:assert 
+              test="${(e != null) and (e.reason.startsWith( 'No such state' ))}">no such state</test:assert>
+      </process>
+    <!-- expected to throw.  we're not testing that. -->
+    </j:catch>
+  </test:case>
+
+  <test:case name="testTransitionTag_ToNoSuchState">
+    <j:catch var="junk">
+      <process name="foo">
+        <state name="origin"/>
+        <j:catch var="e">
+          <transition from="origin" to="dest"/>
+        </j:catch>
+        <test:assert 
+              test="${(e != null) and (e.reason.startsWith( 'No such state' ))}">no such state</test:assert>
+      </process>
+    <!-- expected to throw.  we're not testing that. -->
+    </j:catch>
+  </test:case>
+
+  <test:case name="testTransitionTag_Valid">
+    <process name="foo" start="origin" var="theProcess">
+      <state name="origin"/>
+      <state name="dest"/>
+      <transition from="origin" to="dest"/>
+    </process>
+    <test:assert
+          test="${theProcess.getState('origin').transitions[0].destination == theProcess.getState('dest')}">transition</test:assert>
+  </test:case>
+
+</test:suite>
+
+

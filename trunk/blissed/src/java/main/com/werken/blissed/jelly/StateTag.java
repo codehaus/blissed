@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: StateTag.java,v 1.6 2002-07-26 05:41:26 bob Exp $
+ $Id: StateTag.java,v 1.7 2002-09-17 06:38:48 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -99,15 +99,6 @@ public class StateTag extends BlissedTagSupport implements DescribedTag
     public void setName(String name)
     {
         this.name = name;
-    }
-
-    /** Set the state description.
-     *
-     *  @param description The description.
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
     }
 
     /** Retrieve the <code>State</code>.
