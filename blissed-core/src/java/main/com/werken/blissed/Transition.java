@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Transition.java,v 1.13 2002-07-17 17:11:07 bob Exp $
+ $Id: Transition.java,v 1.14 2002-07-26 05:41:26 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -54,9 +54,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Collections;
 
-/** An arc between two <code>Node</code>s.
+/** An arc between two <code>State</code>s.
  *
- *  @see Node
+ *  @see State
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
@@ -67,10 +67,10 @@ public class Transition implements Described
     // ------------------------------------------------------------
 
     /** Origin end of this transitional arc. */
-    private Node origin;
+    private State origin;
 
     /** Destination end of this transitional arc. */
-    private Node destination;
+    private State destination;
 
     /** Description of this transition. */
     private String description;
@@ -91,8 +91,8 @@ public class Transition implements Described
      *  @param destination The destination of this transitional arc.
      *  @param description The description of this transition.
      */
-    Transition(Node origin,
-               Node destination,
+    Transition(State origin,
+               State destination,
                String description)
     {
         this( origin,
@@ -108,8 +108,8 @@ public class Transition implements Described
      *  @param guard The guard for this transition.
      *  @param description The description of this transition.
      */
-    Transition(Node origin,
-               Node destination,
+    Transition(State origin,
+               State destination,
                Guard guard,
                String description)
     {
@@ -126,18 +126,18 @@ public class Transition implements Described
 
     /** Retrieve the origin of this transition.
      *
-     *  @return The origin <code>Node</code>.
+     *  @return The origin <code>State</code>.
      */
-    public Node getOrigin()
+    public State getOrigin()
     {
         return this.origin;
     }
 
     /** Retrieve the destination of this transition.
      *
-     *  @return The destination <code>Node</code>.
+     *  @return The destination <code>State</code>.
      */
-    public Node getDestination()
+    public State getDestination()
     {
         return this.destination;
     }
@@ -200,11 +200,22 @@ public class Transition implements Described
             return false;
         }
 
-        getOrigin().release( context );
+        State origin = getOrigin();
+
+        origin.release( context );
 
         fireTransitionFollowed( context );
 
-        getDestination().accept( context );
+        State destination = getDestination();
+
+        if ( destination != null )
+        {
+            getDestination().accept( context );
+        }
+        else
+        {
+            origin.getProcess().release( context );
+        }
 
         return true;
     }

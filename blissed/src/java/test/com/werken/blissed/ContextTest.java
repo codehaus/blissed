@@ -21,11 +21,12 @@ public class ContextTest extends TestCase
         this.state1 = this.process.addState( "state.1",
                                              "state one" );
 
-        this.process.getStart().setDestination( this.state1 );
-
-        this.state1.addTransition( this.process.getFinish(),
+        this.state1.addTransition( null,
                                    new BooleanGuard( false ),
                                    "1 to finish" );
+
+
+        this.process.setStartState( this.state1 );
 
         this.context = new Context( this.process );
     }
@@ -81,7 +82,7 @@ public class ContextTest extends TestCase
                         spawned.getCurrentProcess() );
             
             assertSame( this.state1,
-                        spawned.getCurrentNode() );
+                        spawned.getCurrentState() );
 
             assertSame( this.context,
                         spawned.getParent() );

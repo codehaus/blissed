@@ -111,7 +111,7 @@ public class LocationTest extends TestCase
         {
             try
             {
-                this.location.enterNode( this.state1 );
+                this.location.enterState( this.state1 );
             }
             catch (InvalidMotionException e)
             {
@@ -127,21 +127,21 @@ public class LocationTest extends TestCase
         }
     }
 
-    public void testEnterNode_Valid()
+    public void testEnterState_Valid()
     {
         this.location.startProcess( this.process );
 
         assertSame( this.process,
                     this.location.getCurrentProcess() );
 
-        assertNull( this.location.getCurrentNode() );
+        assertNull( this.location.getCurrentState() );
 
         try
         {
-            this.location.enterNode( this.state1 );
+            this.location.enterState( this.state1 );
 
             assertSame( this.state1,
-                        this.location.getCurrentNode() );
+                        this.location.getCurrentState() );
         }
         catch (InvalidMotionException e)
         {
@@ -149,25 +149,25 @@ public class LocationTest extends TestCase
         }
     }
 
-    public void testEnterNode_Invalid_NotExitedOtherNode()
+    public void testEnterState_Invalid_NotExitedOtherState()
     {
         this.location.startProcess( this.process );
 
         assertSame( this.process,
                     this.location.getCurrentProcess() );
 
-        assertNull( this.location.getCurrentNode() );
+        assertNull( this.location.getCurrentState() );
 
         try
         {
-            this.location.enterNode( this.state1 );
+            this.location.enterState( this.state1 );
 
             assertSame( this.state1,
-                        this.location.getCurrentNode() );
+                        this.location.getCurrentState() );
 
             try
             {
-                this.location.enterNode( this.state2 );
+                this.location.enterState( this.state2 );
                 fail( "Should have thrown InvalidMotionException" );
             }
             catch (InvalidMotionException e)
@@ -181,11 +181,11 @@ public class LocationTest extends TestCase
         }
     }     
 
-    public void testEnterNode_Invalid_NoProcess()
+    public void testEnterState_Invalid_NoProcess()
     {
         try
         {
-            this.location.enterNode( this.state1 );
+            this.location.enterState( this.state1 );
             fail( "Should have thrown InvalidMotionException" );
         }
         catch (InvalidMotionException e)
@@ -194,25 +194,25 @@ public class LocationTest extends TestCase
         }
     }
 
-    public void testExitNode_Valid()
+    public void testExitState_Valid()
     {
         this.location.startProcess( this.process );
 
         assertSame( this.process,
                     this.location.getCurrentProcess() );
 
-        assertNull( this.location.getCurrentNode() );
+        assertNull( this.location.getCurrentState() );
 
         try
         {
-            this.location.enterNode( this.state1 );
+            this.location.enterState( this.state1 );
 
             assertSame( this.state1,
-                        this.location.getCurrentNode() );
+                        this.location.getCurrentState() );
 
-            this.location.exitNode( this.state1 );
+            this.location.exitState( this.state1 );
 
-            assertNull( this.location.getCurrentNode() );
+            assertNull( this.location.getCurrentState() );
         }
         catch (InvalidMotionException e)
         {
@@ -220,18 +220,18 @@ public class LocationTest extends TestCase
         }
     }
 
-    public void testExitNode_Invalid_NoNode()
+    public void testExitState_Invalid_NoState()
     {
         this.location.startProcess( this.process );
 
         assertSame( this.process,
                     this.location.getCurrentProcess() );
 
-        assertNull( this.location.getCurrentNode() );
+        assertNull( this.location.getCurrentState() );
 
         try
         {
-            this.location.exitNode( this.state1 );
+            this.location.exitState( this.state1 );
             fail( "Should have thrown InvalidMotionException" );
         }
         catch (InvalidMotionException e)
@@ -240,22 +240,22 @@ public class LocationTest extends TestCase
         }
     }
 
-    public void testExitNode_Invalid_WrongNode()
+    public void testExitState_Invalid_WrongState()
     {
         this.location.startProcess( this.process );
 
         assertSame( this.process,
                     this.location.getCurrentProcess() );
 
-        assertNull( this.location.getCurrentNode() );
+        assertNull( this.location.getCurrentState() );
 
         try
         {
-            this.location.enterNode( this.state1 );
+            this.location.enterState( this.state1 );
 
             try
             {
-                this.location.exitNode( this.state2 );
+                this.location.exitState( this.state2 );
                 fail( "Should have thrown InvalidMotionException" );
             }
             catch (InvalidMotionException e)
@@ -269,11 +269,11 @@ public class LocationTest extends TestCase
         }
     }
 
-    public void testExitNode_Invalid_NoProcess()
+    public void testExitState_Invalid_NoProcess()
     {
         try
         {
-            this.location.exitNode( this.state1 );
+            this.location.exitState( this.state1 );
             fail( "Should have thrown InvalidMotionException" );
         }
         catch (InvalidMotionException e)

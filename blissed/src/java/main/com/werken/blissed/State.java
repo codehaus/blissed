@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: State.java,v 1.16 2002-07-07 22:59:41 bob Exp $
+ $Id: State.java,v 1.17 2002-07-26 05:41:26 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -52,12 +52,16 @@ import com.werken.blissed.event.StateExitedEvent;
 import com.werken.blissed.event.ActivityStartedEvent;
 import com.werken.blissed.event.ActivityFinishedEvent;
 
+import org.apache.commons.graph.Vertex;
+
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Set;
+import java.util.HashSet;
 import java.util.Collections;
 import java.util.Iterator;
 
-/** A <code>Activity</code>-bearing node in the process graph.
+/** A <code>Activity</code>-bearing state in the process graph.
  *
  *  <p>
  *  A <code>State</code> contains a <code>Activity</code> and
@@ -73,17 +77,29 @@ import java.util.Iterator;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class State extends Node
+public class State implements Named, Described, Vertex
 {
     // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------
 
+    /** The process to which this state belongs. */
+    private Process process;
+
+    /** The name of this. */
+    private String name;
+
+    /** The description of this state. */
+    private String description;
+
     /** The activity. */
     private Activity activity;
 
     /** The exit-path transitions. */
-    private List transitions;
+    private List outbound;
+
+    /** Entry-path transitions */
+    private Set inbound;
 
     /** State-event listeners. */
     private List listeners;
@@ -94,26 +110,36 @@ public class State extends Node
 
     /** Construct.
      *
-     *  @param process The process to which this node belongs.
-     *  @param name The name of this node.
-     *  @param description The description of this node.
+     *  @param process The process to which this state belongs.
+     *  @param name The name of this state.
+     *  @param description The description of this state.
      */
     State(Process process,
           String name,
           String description)
     {
-        super( process,
-               name,
-               description );
+        this.process     = process;
+        this.name        = name;
+        this.description = description;
 
-        this.activity = NoOpActivity.INSTANCE;
-        this.transitions = new ArrayList();
-        this.listeners = Collections.EMPTY_LIST;
+        this.activity    = NoOpActivity.INSTANCE;
+        this.outbound    = new ArrayList();
+        this.inbound     = new HashSet();
+        this.listeners   = Collections.EMPTY_LIST;
     }
 
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
+
+    /** Retrieve the process to which this state belongs.
+     *
+     *  @return The process.
+     */
+    public Process getProcess()
+    {
+        return this.process;
+    }
 
     /** Add an exit path transition.
      *
@@ -121,7 +147,23 @@ public class State extends Node
      */
     void addTransition(Transition transition)
     {
-        this.transitions.add( transition );
+        this.outbound.add( transition );
+
+        State destination = transition.getDestination();
+
+        if ( destination != null )
+        {
+            transition.getDestination().addInboundTransition( transition );
+        }
+    }
+
+    /** Add an inbound path transition.
+     *
+     *  @param transition The transition to add.
+     */
+    void addInboundTransition(Transition transition)
+    {
+        this.inbound.add( transition );
     }
 
     /** Remove an exit path transition.
@@ -130,7 +172,17 @@ public class State extends Node
      */
     public void removeTransition(Transition transition)
     {
-        this.transitions.remove( transition );
+        this.outbound.remove( transition );
+        transition.getDestination().removeInboundTransition( transition );
+    }
+
+    /** Remove an inbound path transition.
+     *
+     *  @param transition The transition to remove.
+     */
+    void removeInboundTransition(Transition transition)
+    {
+        this.inbound.remove( transition );
     }
 
     /** Create a transition.
@@ -140,7 +192,7 @@ public class State extends Node
      *
      *  @return The added transition.
      */
-    public Transition addTransition(Node destination,
+    public Transition addTransition(State destination,
                                     String description)
     {
         return addTransition( destination,
@@ -156,7 +208,7 @@ public class State extends Node
      *
      *  @return The added transition.
      */
-    public Transition addTransition(Node destination,
+    public Transition addTransition(State destination,
                                     Guard guard,
                                     String description)
     {
@@ -170,7 +222,7 @@ public class State extends Node
         return transition;   
     }
 
-    /** Retrieve the <b>live</b> list of transitions.
+    /** Retrieve the <b>live</b> list of outbound.
      *
      *  <p>
      *  The <b>live</b> list that is returned is backed
@@ -183,7 +235,16 @@ public class State extends Node
      */
     public List getTransitions()
     {
-        return this.transitions;
+        return this.outbound;
+    }
+
+    /** Retrieve the set of inbound transitions
+     *
+     *  @return The <code>Set</code> of inbound <code>Transitions</code>.
+     */
+    Set getInboundTransitions()
+    {
+        return this.inbound;
     }
 
     /** Set the <code>Activity</code> for this state.
@@ -204,13 +265,57 @@ public class State extends Node
         return this.activity;
     }
 
+    /** Accept a context into this state.
+     *
+     *  @param context The context to accept.
+     *
+     *  @throws InvalidMotionException If an invalid motion occurs.
+     *  @throws ActivityException If an error occurs while performing an activity.
+     */
+    public void accept(Context context) throws InvalidMotionException, ActivityException
+    {
+        context.enterState( this );
+
+        fireStateEntered( context );
+
+        getActivity().perform( context );
+
+        check( context );
+    }
+
+    /** Release a context from this state.
+     *
+     *  @param context The context to release.
+     *
+     *  @throws InvalidMotionException If an invalid motion occurs.
+     */
+    public void release(Context context) throws InvalidMotionException
+    {
+        context.exitState( this );
+
+        fireStateExited( context );
+    }
+
+    /** Check the status of the context within this
+     *  state, with a goal towards making progress.
+     *
+     *  @param context The context to check.
+     *
+     *  @throws InvalidMotionException If an invalid motion occurs.
+     *  @throws ActivityException If an error occurs while performing an activity.
+     */
+    public void check(Context context) throws InvalidMotionException, ActivityException
+    {
+        attemptTransition( context );
+    }
+
     /** Attempt to perform some transition within the
      *  context of this state and a context.
      *
      *  @param context The Context to attempt transitioning.
      *
      *  @return <code>true</code> if a transition was followed
-     *          moving the context to a new node, otherwise
+     *          moving the context to a new state, otherwise
      *          <code>false</code>.
      *
      *  @throws InvalidMotionException If an invalid motion occurs.
@@ -218,14 +323,14 @@ public class State extends Node
      */
     boolean attemptTransition(Context context) throws InvalidMotionException, ActivityException
     {
-        List transitions = getTransitions();
+        List outbound = getTransitions();
 
-        if ( transitions.isEmpty() )
+        if ( outbound.isEmpty() )
         {
             throw new NoTransitionException( this );
         }
 
-        Iterator   transIter = transitions.iterator();
+        Iterator   transIter = outbound.iterator();
         Transition eachTrans = null;
 
         boolean result = false;
@@ -389,51 +494,40 @@ public class State extends Node
 
         context.fireActivityFinished( event );
     }
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    //     com.werken.blissed.Node
+    //     com.werken.blissed.Named
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-    /** Accept a context into this node.
+    /** Retrieve the name of this state.
      *
-     *  @param context The context to accept.
-     *
-     *  @throws InvalidMotionException If an invalid motion occurs.
-     *  @throws ActivityException If an error occurs while performing an activity.
+     *  @return The name.
      */
-    public void accept(Context context) throws InvalidMotionException, ActivityException
+    public String getName()
     {
-        super.accept( context );
-
-        fireStateEntered( context );
-
-        getActivity().perform( context );
-
-        check( context );
+        return this.name;
     }
 
-    /** Release a context from this node.
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    //     com.werken.blissed.Described 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+    /** Retrieve the description of this state.
      *
-     *  @param context The context to release.
-     *
-     *  @throws InvalidMotionException If an invalid motion occurs.
+     *  @return The description.
      */
-    public void release(Context context) throws InvalidMotionException
+    public String getDescription()
     {
-        super.release( context );
-        fireStateExited( context );
+        return this.description;
     }
 
-    /** Check the status of the context within this
-     *  node, with a goal towards making progress.
+    /** Set the description
      *
-     *  @param context The context to check.
-     *
-     *  @throws InvalidMotionException If an invalid motion occurs.
-     *  @throws ActivityException If an error occurs while performing an activity.
+     *  @param description The description.
      */
-    public void check(Context context) throws InvalidMotionException, ActivityException
+    public void setDescription(String description)
     {
-        attemptTransition( context );
+        this.description = description;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -447,7 +541,7 @@ public class State extends Node
     public String toString()
     {
         return "[State: name=" + getName()
-            + "; transitions=" + getTransitions()
+            + "; outbound=" + getTransitions()
             + "]";
     }
 

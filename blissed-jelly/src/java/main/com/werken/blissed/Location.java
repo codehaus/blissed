@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Location.java,v 1.5 2002-07-06 21:23:38 werken Exp $
+ $Id: Location.java,v 1.6 2002-07-26 05:41:26 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -104,23 +104,23 @@ class Location
         return ((ProcessEntry)this.locationStack.peek()).getProcess();
     }
 
-    /** Retrieve the current node.
+    /** Retrieve the current state.
      *
-     *  @return The current node, or <code>null</code> if the
-     *          context is in no node.
+     *  @return The current state, or <code>null</code> if the
+     *          context is in no state.
      */
-    Node getCurrentNode()
+    State getCurrentState()
     {
         if ( this.locationStack.isEmpty() )
         {
             return null;
         }
 
-        return ((ProcessEntry)this.locationStack.peek()).getCurrentNode();
+        return ((ProcessEntry)this.locationStack.peek()).getCurrentState();
     }
 
     /** Check the status of the context within this
-     *  node, with a goal towards making progress.
+     *  state, with a goal towards making progress.
      *
      *  @throws InvalidMotionException If an invalid motion occurs.
      *  @throws ActivityException If an error occurs while performing an activity.
@@ -134,14 +134,14 @@ class Location
 
         ProcessEntry entry = (ProcessEntry) this.locationStack.peek();
 
-        Node node = entry.getCurrentNode();
+        State state = entry.getCurrentState();
 
-        if ( node == null )
+        if ( state == null )
         {
             return;
         }
 
-        node.check( getContext() );
+        state.check( getContext() );
     }
 
     /** Signal that this context has started a process.
@@ -175,7 +175,7 @@ class Location
             throw new InvalidMotionException( "Context not in process \"" + process.getName() + "\"" );
         }
 
-        if ( entry.getCurrentNode() != null )
+        if ( entry.getCurrentState() != null )
         {
             throw new InvalidMotionException( "Process not finished" );
         }
@@ -183,13 +183,13 @@ class Location
         this.locationStack.pop();
     }
 
-    /** Signal that this context has entered a node.
+    /** Signal that this context has entered a state.
      *
-     *  @param node The node.
+     *  @param state The state.
      *
      *  @throws InvalidMotionException If an invalid motion occurs.
      */
-    void enterNode(Node node) throws InvalidMotionException
+    void enterState(State state) throws InvalidMotionException
     {
         if ( this.locationStack.isEmpty() )
         {
@@ -198,16 +198,16 @@ class Location
 
         ProcessEntry entry = (ProcessEntry) this.locationStack.peek();
 
-        entry.enterNode( node );
+        entry.enterState( state );
     }
 
-    /** Signal that this context has exited a node.
+    /** Signal that this context has exited a state.
      *
-     *  @param node The node.
+     *  @param state The state.
      *
      *  @throws InvalidMotionException If an invalid motion occurs.
      */
-    void exitNode(Node node) throws InvalidMotionException
+    void exitState(State state) throws InvalidMotionException
     {
         if ( this.locationStack.isEmpty() )
         {
@@ -216,7 +216,7 @@ class Location
 
         ProcessEntry entry = (ProcessEntry) this.locationStack.peek();
 
-        entry.exitNode( node );
+        entry.exitState( state );
     }
 }
 
@@ -233,8 +233,8 @@ class ProcessEntry
     /** The process. */
     private Process process;
 
-    /** The current node within the process. */
-    private Node node;
+    /** The current state within the process. */
+    private State state;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -247,7 +247,7 @@ class ProcessEntry
     ProcessEntry(Process process)
     {
         this.process = process;
-        this.node    = null;
+        this.state    = null;
     }
 
     // ------------------------------------------------------------
@@ -263,49 +263,49 @@ class ProcessEntry
         return this.process;
     }
 
-    /** Signal that this context has entered a node.
+    /** Signal that this context has entered a state.
      *
-     *  @param node The node.
+     *  @param state The state.
      *
      *  @throws InvalidMotionException If an invalid motion occurs.
      */
-    void enterNode(Node node) throws InvalidMotionException
+    void enterState(State state) throws InvalidMotionException
     {
-        if ( this.node != null )
+        if ( this.state != null )
         {
-            throw new InvalidMotionException( "Context cannot enter node \"" + node.getName() 
-                                              + "\" while still in node \"" + this.node.getName() + "\"" );
+            throw new InvalidMotionException( "Context cannot enter state \"" + state.getName() 
+                                              + "\" while still in state \"" + this.state.getName() + "\"" );
         }
 
-        this.node = node;
+        this.state = state;
     }
 
-    /** Signal that this context has exited a node.
+    /** Signal that this context has exited a state.
      *
-     *  @param node The node.
+     *  @param state The state.
      *
      *  @throws InvalidMotionException If an invalid motion occurs.
      */
-    void exitNode(Node node) throws InvalidMotionException
+    void exitState(State state) throws InvalidMotionException
     {
-        if ( this.node == null
+        if ( this.state == null
              ||
-             ! this.node.equals( node ) )
+             ! this.state.equals( state ) )
         {
-            throw new InvalidMotionException( "Context not in node \""
-                                              + node.getName() + "\" - cannot exit" );
+            throw new InvalidMotionException( "Context not in state \""
+                                              + state.getName() + "\" - cannot exit" );
         }
 
-        this.node = null;
+        this.state = null;
     }
 
-    /** Retrieve the current node.
+    /** Retrieve the current state.
      *
-     *  @return The current node, or <code>null</code> if the
-     *          context is in no node.
+     *  @return The current state, or <code>null</code> if the
+     *          context is in no state.
      */
-    Node getCurrentNode()
+    State getCurrentState()
     {
-        return this.node;
+        return this.state;
     }
 }

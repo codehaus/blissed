@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: StateTag.java,v 1.5 2002-07-18 18:32:58 bob Exp $
+ $Id: StateTag.java,v 1.6 2002-07-26 05:41:26 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -178,7 +178,7 @@ public class StateTag extends BlissedTagSupport implements DescribedTag
 
         if ( this.terminal )
         {
-            this.state.addTransition( process.getFinish(),
+            this.state.addTransition( null,
                                       "terminal transition" );
         }
     }

@@ -25,7 +25,7 @@ public class StateTest extends TestCase
         this.state2 = this.process.addState( "state.2",
                                              "state two" );
 
-        this.state2.addTransition( this.process.getFinish(),
+        this.state2.addTransition( null,
                                    new BooleanGuard( false ),
                                    "2 to finish");
 
@@ -43,7 +43,7 @@ public class StateTest extends TestCase
         try
         {
             this.context.startProcess( this.process );
-            this.context.enterNode( this.state1 );
+            this.context.enterState( this.state1 );
 
             try
             {
@@ -74,12 +74,12 @@ public class StateTest extends TestCase
         try
         {
             this.context.startProcess( this.process );
-            this.context.enterNode( this.state1 );
+            this.context.enterState( this.state1 );
 
             this.state1.attemptTransition( this.context );
 
             assertSame( this.state1,
-                        this.context.getCurrentNode() );
+                        this.context.getCurrentState() );
         }
         catch (InvalidMotionException e)
         {
@@ -100,12 +100,12 @@ public class StateTest extends TestCase
         try
         {
             this.context.startProcess( this.process );
-            this.context.enterNode( this.state1 );
+            this.context.enterState( this.state1 );
 
             this.state1.attemptTransition( this.context );
 
             assertSame( this.state2,
-                        this.context.getCurrentNode() );
+                        this.context.getCurrentState() );
         }
         catch (InvalidMotionException e)
         {

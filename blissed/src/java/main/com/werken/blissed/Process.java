@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Process.java,v 1.19 2002-07-18 05:22:50 bob Exp $
+ $Id: Process.java,v 1.20 2002-07-26 05:41:26 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -50,6 +50,10 @@ import com.werken.blissed.event.ProcessListener;
 import com.werken.blissed.event.ProcessStartedEvent;
 import com.werken.blissed.event.ProcessFinishedEvent;
 
+import org.apache.commons.graph.DirectedGraph;
+import org.apache.commons.graph.Vertex;
+import org.apache.commons.graph.Edge;
+
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Set;
@@ -68,7 +72,7 @@ import java.util.Collections;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class Process implements Named, Described, Activity
+public class Process implements Named, Described, Activity, DirectedGraph
 {
     // ------------------------------------------------------------
     //     Instance members
@@ -83,11 +87,8 @@ public class Process implements Named, Described, Activity
     /** States in this process, indexed by <code>name</code>. */
     private Map states;
 
-    /** Start node. */
-    private Start start;
-
-    /** Finish node. */
-    private Finish finish;
+    /** Start state. */
+    private State startState;
 
     /** All active contexts in this process. */
     private Set activeContexts;
@@ -112,8 +113,7 @@ public class Process implements Named, Described, Activity
 
         this.states = new HashMap();
 
-        this.finish = new Finish( this );
-        this.start  = new Start( this );
+        this.startState = null;
 
         this.activeContexts = new HashSet();
         this.listeners = Collections.EMPTY_LIST;
@@ -123,39 +123,23 @@ public class Process implements Named, Described, Activity
     //     Instance methods
     // ------------------------------------------------------------
 
-    /** Retrieve the entry-point start node of this process.
+    /** Retrieve the entry-point start state of this process.
      *
-     *  @return The entry-point start node.
+     *  @return The entry-point start state.
      */
-    public Start getStart()
+    public State getStartState()
     {
-        return this.start;
+        return this.startState;
     }
 
     /** Set the start state.
      *
-     *  @param start The start state, or <code>null</code> to
+     *  @param startState The start state, or <code>null</code> to
      *         remove the start state.
      */
-    public void setStartState(State start)
+    public void setStartState(State startState)
     {
-        if ( start == null )
-        {
-            getStart().setDestination( getFinish() );
-        }
-        else
-        {
-            getStart().setDestination( start );
-        }
-    }
-
-    /** Retrieve the exit-point finish node of this process.
-     *
-     *  @return The exit-point finish node.
-     */
-    public Finish getFinish()
-    {
-        return this.finish;
+        this.startState = startState;
     }
 
     /** Add a state to this process.
@@ -263,7 +247,7 @@ public class Process implements Named, Described, Activity
 
         fireProcessStarted( context );
 
-        getStart().accept( context );
+        getStartState().accept( context );
     }
 
     /** Release a context from this node.
@@ -442,6 +426,72 @@ public class Process implements Named, Described, Activity
         {
             throw new ActivityException( e );
         }
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    //     org.apache.commons.graph.DirectedGraph
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+    public Set getVertices()
+    {
+        return new HashSet( this.states.values() );
+    }
+
+    public Set getEdges(Vertex vertex)
+    {
+        Set edges = new HashSet();
+
+        edges.add( getInbound( vertex ) );
+        edges.add( getOutbound( vertex ) );
+
+        return edges;
+    }
+
+    public Set getVertices(Edge edge)
+    {
+        Set vertices = new HashSet( 2 );
+
+        vertices.add( ((Transition)edge).getOrigin() );
+        vertices.add( ((Transition)edge).getDestination() );
+
+        return vertices;
+    }
+
+    public Set getEdges()
+    {
+        Iterator stateIter = this.states.values().iterator();
+        State    eachState = null;
+
+        Set edges = new HashSet();
+
+        while ( stateIter.hasNext() )
+        {
+            eachState = (State) stateIter.next();
+
+            edges.addAll( getEdges( eachState ) );
+        }
+
+        return edges;
+    }
+
+    public Set getInbound(Vertex vertex)
+    {
+        return ((State)vertex).getInboundTransitions();
+    }
+
+    public Set getOutbound(Vertex vertex)
+    {
+        return new HashSet( ((State)vertex).getTransitions() );
+    }
+
+    public Vertex getSource(Edge edge)
+    {
+        return ((Transition)edge).getOrigin();
+    }
+
+    public Vertex getTarget(Edge edge)
+    {
+        return ((Transition)edge).getDestination();
     }
 
 }
