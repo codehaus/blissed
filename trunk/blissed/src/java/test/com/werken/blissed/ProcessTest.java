@@ -5,6 +5,8 @@ import junit.framework.TestCase;
 public class ProcessTest extends TestCase
 {
     private Process process;
+    private State state1;
+    private Transition transition_1_finish;
 
     public ProcessTest(String name)
     {
@@ -15,6 +17,15 @@ public class ProcessTest extends TestCase
     {
         this.process = new Process( "test.process",
                                     "test process" );
+
+        this.state1 = this.process.addState( "state.1",
+                                             "state one" );
+
+        this.transition_1_finish = this.state1.addTransition( this.process.getFinish(),
+                                                              new BooleanGuard( false ),
+                                                              "1 to finish" );
+
+        this.process.getStart().setDestination( this.state1 );
     }
 
     public void tearDown()
@@ -34,23 +45,45 @@ public class ProcessTest extends TestCase
 
     public void testAddState()
     {
-        State state = this.process.addState( "state.1",
-                                             "state one" );
-
-        assertSame( state,
-                    this.process.getNode( "state.1" ) );
+        State state2 = this.process.addState( "state.2",
+                                              "state two" );
+        
+        assertSame( state2,
+                    this.process.getNode( "state.2" ) );
     }
-
+    
     public void testRemoveNode()
     {
-        State state = this.process.addState( "state.1",
-                                             "state one" );
+        State state2 = this.process.addState( "state.2",
+                                              "state two" );
+        
+        assertSame( state2,
+                    this.process.getNode( "state.2" ) );
 
-        assertSame( state,
-                    this.process.getNode( "state.1" ) );
+        this.process.removeNode( state2 );
 
-        this.process.removeNode( state );
+        assertNull( this.process.getNode( "state.2" ) );
+    }
 
-        assertNull( this.process.getNode( "state.1" ) );
+    public void testSpawn_Root()
+    {
+        try
+        {
+            Context context = this.process.spawn();
+            
+            assertSame( this.process,
+                        context.getCurrentProcess() );
+            
+            assertSame( this.state1,
+                        context.getCurrentNode() );
+        }
+        catch (InvalidMotionException e)
+        {
+            fail( e.getLocalizedMessage() );
+        }
+        catch (ActivityException e)
+        {
+            fail( e.getLocalizedMessage() );
+        }
     }
 }
