@@ -11,12 +11,12 @@
   <organization>
     <name>The Werken Company</name>
     <url>http://www.werken.com</url>
-    <logo>/images/werken.gif</logo>
+    <logo>http://images.werken.com/werken_large.gif</logo>
   </organization>
   <inceptionYear>2002</inceptionYear>
   <package>com.werken.blissed</package>
   <shortDescription>blissed: Java state-machine framework</shortDescription>
-  <logo>/images/logo.gif</logo>
+  <logo>http://images.werken.com/blissed.gif</logo>
 
   <description>
   </description>
@@ -58,8 +58,14 @@
 
     <dependency>
       <id>commons-jelly</id>
-      <version>1.0-dev-4</version>
+      <version>SNAPSHOT</version>
       <url>http://jakarta.apache.org/commons/sandbox/jelly/</url>
+    </dependency>
+
+    <dependency>
+      <id>commons-logging</id>
+      <version>1.1-dev</version>
+      <url>http://jakarta.apache.org/commons/logging/</url>
     </dependency>
 
     <dependency>
@@ -75,7 +81,7 @@
     </dependency>
 
     <dependency>
-      <id>xmlParserAPIs</id>
+      <id>xml-apis</id>
       <version>2.0.0</version>
       <url>http://xml.apache.org/xerces2-j/</url>
     </dependency>

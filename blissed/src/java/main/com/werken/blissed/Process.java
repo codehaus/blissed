@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Process.java,v 1.16 2002-07-06 21:23:38 werken Exp $
+ $Id: Process.java,v 1.17 2002-07-17 17:11:07 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -80,8 +80,8 @@ public class Process implements Named, Described, Activity
     /** Description of this process. */
     private String description;
 
-    /** Nodes in this process, indexed by <code>name</code>. */
-    private Map nodes;
+    /** States in this process, indexed by <code>name</code>. */
+    private Map states;
 
     /** Start node. */
     private Start start;
@@ -104,13 +104,13 @@ public class Process implements Named, Described, Activity
      *  @param name The name of the process.
      *  @param description A description of the process.
      */
-    Process(String name,
-            String description)
+    public Process(String name,
+                   String description)
     {
         this.name        = name;
         this.description = description;
 
-        this.nodes = new HashMap();
+        this.states = new HashMap();
 
         this.finish = new Finish( this );
         this.start  = new Start( this );
@@ -141,35 +141,35 @@ public class Process implements Named, Described, Activity
         return this.finish;
     }
 
-    /** Add a node to this process.
+    /** Add a state to this process.
      *
-     *  @param node The node to add.
+     *  @param state The state to add.
      */
-    protected void addNode(Node node)
+    protected void addState(State state)
     {
-        this.nodes.put( node.getName(),
-                        node );
+        this.states.put( state.getName(),
+                         state );
     }
 
-    /** Retrieve a node in this process, by name.
+    /** Retrieve a stae in this process, by name.
      *
-     *  @param name The name of the node to retrieve.
+     *  @param name The name of the stae to retrieve.
      *
-     *  @return The named node, or <code>null</code> of no node
+     *  @return The named stae, or <code>null</code> of no stae
      *          with the given name is known to this process.
      */
-    protected Node getNode(String name)
+    public State getState(String name)
     {
-        return (Node) this.nodes.get( name );
+        return (State) this.states.get( name );
     }
 
-    /** Remove a node from this process.
+    /** Remove a state from this process.
      *
-     *  @param node The node to remove.
+     *  @param state The state to remove.
      */
-    protected void removeNode(Node node)
+    protected void removeState(State state)
     {
-        this.nodes.remove( node.getName() );
+        this.states.remove( state.getName() );
     }
 
     /** Create a new state for this process.
@@ -178,15 +178,24 @@ public class Process implements Named, Described, Activity
      *  @param description The description of the state.
      *
      *  @return The newly added <code>State</code>.
+     *
+     *  @throws DuplicateStateException If a state already exists within
+     *          this process with the specified name.
      */
     public State addState(String name,
-                          String description)
+                          String description) throws DuplicateStateException
     {
+        if ( this.states.containsKey( name ) )
+        {
+            throw new DuplicateStateException( this,
+                                               name );
+        }
+
         State state = new State( this,
                                  name,
                                  description );
         
-        addNode( state );
+        addState( state );
 
         return state;
     }
@@ -391,6 +400,15 @@ public class Process implements Named, Described, Activity
     public String getDescription()
     {
         return this.description;
+    }
+
+    /** Set the description
+     *
+     *  @param description The description.
+     */
+    public void setDescription(String description)
+    {
+        this.description = description;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

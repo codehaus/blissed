@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: FinishTag.java,v 1.2 2002-07-06 21:23:38 werken Exp $
+ $Id: DescribedTag.java,v 1.1 2002-07-17 17:11:07 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -46,23 +46,21 @@ package com.werken.blissed.jelly;
  
  */
 
-import org.apache.commons.jelly.XMLOutput;
+import com.werken.blissed.Described;
 
-/** The process's finish node.
+/** Interface for tagging a tag as <code>Described</code>.
+ *
+ *  @see Described
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class FinishTag extends BlissedTag
+public interface DescribedTag
 {
-    /** Evaluates this tag after all the tags properties
-     *  have been initialized.
+    /** Retrieve the <code>Described</code> object.
      *
-     *  @param output The output sink.
+     *  @see Described
      *
-     *  @throws Exception if an error occurs.
+     *  @return The <code>Described</code> object.
      */
-    public void doTag(XMLOutput output) throws Exception
-    {
-
-    }
+    Described getDescribed();
 }

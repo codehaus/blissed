@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: StartTag.java,v 1.2 2002-07-06 21:23:38 werken Exp $
+ $Id: DescriptionTag.java,v 1.1 2002-07-17 17:11:07 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -46,14 +46,37 @@ package com.werken.blissed.jelly;
  
  */
 
-import org.apache.commons.jelly.XMLOutput;
+import com.werken.blissed.Described;
 
-/** The process's start node.
+import org.apache.commons.jelly.TagSupport;
+import org.apache.commons.jelly.XMLOutput;
+import org.apache.commons.jelly.JellyException;
+
+/** Provide a long description.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class StartTag extends BlissedTag
+public class DescriptionTag extends TagSupport
 {
+    // ------------------------------------------------------------
+    //     Constructors
+    // ------------------------------------------------------------
+
+    /** Construct.
+     */
+    public DescriptionTag()
+    {
+        // intentionally left blank.
+    }
+
+    // ------------------------------------------------------------
+    //     Instance methods
+    // ------------------------------------------------------------
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    //     org.apache.commons.jelly.Tag
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
     /** Evaluates this tag after all the tags properties
      *  have been initialized.
      *
@@ -63,6 +86,17 @@ public class StartTag extends BlissedTag
      */
     public void doTag(XMLOutput output) throws Exception
     {
+        DescribedTag describedTag = (DescribedTag) findAncestorWithClass( DescribedTag.class );
 
+        if ( describedTag == null )
+        {
+            throw new JellyException( "Unable to locate an element to describe." );
+        }
+
+        Described described = describedTag.getDescribed();
+
+        String description = getBodyText();
+
+        described.setDescription( description );
     }
 }

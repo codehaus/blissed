@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: NoOpActivity.java,v 1.2 2002-07-17 17:11:07 bob Exp $
+ $Id: DuplicateStateException.java,v 1.1 2002-07-17 17:11:07 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -46,91 +46,73 @@ package com.werken.blissed;
  
  */
 
-/** <code>Activity</code> which performs no actions.
- *
- *  @see Activity
+/** Indicates an attempt to add a duplicate state to a process.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class NoOpActivity implements Activity
+public class DuplicateStateException extends BlissedException
 {
     // ------------------------------------------------------------
-    //     Constants
+    //     Instance members
     // ------------------------------------------------------------
 
-    /** Singleton instance. */
-    public static final NoOpActivity INSTANCE = new NoOpActivity();
+    /** The process. */
+    private Process process;
+
+    /** The dupliate state name. */
+    private String stateName;
 
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
 
-    /** Construct.
+    /** Contsruct.
      *
-     *  <p>
-     *  While <code>NoOpActivity</code> does provide this
-     *  public constructor, it is recommended to simply
-     *  use the singleton instance provided.
-     *  </p>
-     *
-     *  @see #INSTANCE
+     *  @param process The process.
+     *  @param stateName The duplicate state name.
      */
-    public NoOpActivity()
+    protected DuplicateStateException(Process process,
+                                      String stateName)
     {
-        // intentionally left blank.
+        this.process = process;
+        this.stateName = stateName;
     }
 
     // ------------------------------------------------------------
-    //     Instance methods
+    //      Instance methods
     // ------------------------------------------------------------
 
-    /** Perform this activity.
+    /** Retrieve the process.
      *
-     *  <p>
-     *  This implementation does nothing and simply
-     *  returns.  Hence, it's a no-op.
-     *  </p>
-     *
-     *  @param context The <code>Context</code> context.
+     *  @return The process.
      */
-    public void perform(Context context)
+    public Process getProcess()
     {
-        // no-op
+        return this.process;
+    }
+
+    /** Retrieve the state name.
+     *
+     *  @return The state name.
+     */
+    public String getStateName()
+    {
+        return this.stateName;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    //     com.werken.blissed.Named impl
+    //     java.lang.Throwable
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-    /** Retrieve the name.
+    /** Retrieve the error message.
      *
-     *  @return The name.
+     *  @return The error message.
      */
-    public String getName()
+    public String getMessage()
     {
-        return "blissed.no-op";
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    //     com.werken.blissed.Described impl
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-    /** Retrieve the description.
-     *
-     *  @return The description.
-     */
-    public String getDescription()
-    {
-        return "no-op";
-    }
-
-    /** Set the description.
-     *
-     *  @param description The description.
-     */
-    public void setDescription(String description)
-    {
-        // intentionally left blank
+        return getProcess().getName()
+            + " already contains a state with the name \""
+            + getStateName()
+            + "\"";
     }
 }
-

@@ -18,7 +18,7 @@ public class TransitionTest extends TestCase
         super( name );
     }
 
-    public void setUp()
+    public void setUp() throws Exception
     {
         this.process = new Process( "process.test",
                                     "test process" );
