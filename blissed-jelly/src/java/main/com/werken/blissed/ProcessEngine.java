@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: ProcessEngine.java,v 1.11 2002-09-18 17:59:57 bob Exp $
+ $Id: ProcessEngine.java,v 1.12 2002-09-19 21:45:19 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -54,7 +54,7 @@ import java.util.Iterator;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ProcessEngine.java,v 1.11 2002-09-18 17:59:57 bob Exp $
+ *  @version $Id: ProcessEngine.java,v 1.12 2002-09-19 21:45:19 bob Exp $
  */
 public class ProcessEngine implements Runnable
 {
@@ -303,11 +303,18 @@ public class ProcessEngine implements Runnable
      *  @throws ActivityException If an activity causes an error.
      *  @throws InvalidMotionException If a motion error occurs while
      *          attempting to spawn the process.
+     *  @throws ProcessDataInstantiationException If an error occurs
+     *          while attempting to instantiate the process data.
      */
-    public ProcessContext spawn(Process process) throws ActivityException, InvalidMotionException
+    public ProcessContext spawn(Process process)
+        throws ActivityException, InvalidMotionException, ProcessDataInstantiationException
     {
-        return spawn( process,
-                      false );
+        ProcessContext context = spawn( process,
+                                        false );
+
+        context.setProcessData( newProcessData( process ) );
+
+        return context;
     }
 
     /** Spawn an instance of a <code>Process</code>.
@@ -323,14 +330,18 @@ public class ProcessEngine implements Runnable
      *  @throws ActivityException If an activity causes an error.
      *  @throws InvalidMotionException If a motion error occurs while
      *          attempting to spawn the process.
+     *  @throws ProcessDataInstantiationException If an error occurs
+     *          while attempting to instantiate the process data.
      */
     public ProcessContext spawn(Process process,
-                                boolean async) throws ActivityException, InvalidMotionException
+                                boolean async)
+        throws ActivityException, InvalidMotionException, ProcessDataInstantiationException
     {
 
         ProcessContext context = new ProcessContext( this,
                                                      process );
 
+        context.setProcessData( newProcessData( process ) );
 
         if ( async )
         {
@@ -360,13 +371,18 @@ public class ProcessEngine implements Runnable
      *  @throws ActivityException If an activity causes an error.
      *  @throws InvalidMotionException If a motion error occurs while
      *          attempting to spawn the process.
+     *  @throws ProcessDataInstantiationException If an error occurs
+     *          while attempting to instantiate the process data.
      */
     public ProcessContext spawn(Process process,
-                                ProcessContext parent) throws ActivityException, InvalidMotionException
+                                ProcessContext parent)
+        throws ActivityException, InvalidMotionException, ProcessDataInstantiationException
     {
         ProcessContext context = new ProcessContext( this,
                                                      process,
                                                      parent );
+
+        context.setProcessData( newProcessData( process ) );
 
         parent.addChild( context );
 
@@ -374,6 +390,21 @@ public class ProcessEngine implements Runnable
                                 context );
 
         return context;
+    }
+
+    /** Create a new process-data instance for the specified <code>Process</code>.
+     *
+     *  @param process The process.
+     *
+     *  @return The new process-data instance.
+     *
+     *  @throws ProcessDataInstantiationException If an error occurs
+     *          while attempting to instantiate the process data.
+     */
+    public Object newProcessData(Process process)
+        throws ProcessDataInstantiationException
+    {
+        return null;
     }
 
     /** Call another <code>Process</code> from another instance.
