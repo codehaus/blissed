@@ -26,9 +26,22 @@
       </blockquote>
 
       <p>
-      You may find folks hanging out in either <code><b>#werken</b></code>
-      or <code><b>#blissed</b></code>.
+      You may find folks hanging out in either <a href="irc://irc.werken.com/werken">#werken</a>
+      or <a href="irc://irc.werken.com/blissed">#blissed</a>.
       </p>
+
+      <subsection name="Logs">
+        <p>
+        Many of the channels hosted by The Werken Company are archived
+        and available through the 
+        <a href="http://irc.werken.com/channels/">Werken IRC Archives</a>.
+        </p>
+
+        <p>
+        <a href="http://irc.werken.com/channels/blissed/">#blissed archive</a>
+        </p>
+      </subsection>
+      
 
     </section>
   </body>
