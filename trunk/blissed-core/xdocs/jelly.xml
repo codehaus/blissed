@@ -32,18 +32,13 @@
       the system, and acts as a way to group a collection processes together.
       </p>
 
-      <source>
-<![CDATA[
-
-<!--
+      <source><![CDATA[ <!--
   ||  Open a block so that we can use blissed
   -->
 
 <blissed xmlns="jelly:com.werken.blissed.jelly.BlissedTagLibrary">
   ...
-</blissed>
-      ]]>
-      </source>
+</blissed>]]></source>
 
     </section>
 
@@ -55,9 +50,7 @@
       the initial <code>start</code> state.
       </p>
  
-      <source>
-<![CDATA[
-<blissed xmlns="jelly:com.werken.blissed.jelly.BlissedTagLibrary">
+      <source><![CDATA[<blissed xmlns="jelly:com.werken.blissed.jelly.BlissedTagLibrary">
 
   <!--
     ||  Define a new process named 'process.application'
@@ -67,27 +60,22 @@
     ...
   </process>
 
-</blissed>
-      ]]>
-      </source>
+</blissed>]]></source>
 
       <p>
       A &lt;process&gt; contains &lt;state&gt; definitions followed by
-      &lt;transition&gt; definitions.  Both &lt;state&gt; and &lt;transition&gt; 
-      require a <code>name</code> attribute that is unique to the states or
-      transitions for the current &lt;process&gt;.  Both may contain a 
-      &lt;description&gt; element for providing documentation.
+      &lt;transition&gt; definitions.  &lt;state&gt; tags
+      require a <code>name</code> attribute that is unique to the states 
+      for the current &lt;process&gt;.  All three tags may contain a 
+      &lt;description&gt; child element to provide documentation.
       </p>
 
       <p>
-      A &lt;state&gt; tag may also contain either a &lt;do-activity&gt; block
-      or &lt;do-process&gt; tag.
+      A &lt;state&gt; tag may contain a &lt;activity&gt; block if you
+      wish an activity to occur upon entering the state.
       </p>
 
-      <source>
-      <![CDATA[
-
-<process name="process.application"
+      <source><![CDATA[<process name="process.application"
          start="application.complete.check">
 
   <!--
@@ -102,11 +90,11 @@
     <!--
       || Perform this activity block.
       -->
-    <do-activity>
+    <activity>
       <check-field name="name.first" .../>
       <check-field name="name.last" .../>
       <check-field name="address.street" .../>
-    </do-activity>
+    </activity>
 
   </state> 
 
@@ -120,7 +108,7 @@
       Notify applicant of rejection, and give an explanation.
     </description>
 
-    <do-activity>
+    <activity>
       <smtp:send to="${applicant.email}">
 
       Dear ${applicant.name.first},
@@ -129,7 +117,7 @@
          ... 
 
       </smtp:send>
-    </do-activity>
+    </activity>
 
   </state>
 
@@ -142,13 +130,13 @@
       Send the application through the underwriting process.
     </description>
 
-    <do-process name="process.underwrite"/>
+    <activity>
+      <call process="${process.underwrite}"/>
+    </activity>
 
   </state>
 
-</process>
-      ]]>
-      </source>
+</process>]]></source>
 
     </section>
 
@@ -157,46 +145,46 @@
     <p>
     Process run-time involves either spawning new processes, or
     simply using one process as the activity of another.  We've
-    already seen how &lt;do-process&gt; can be used for organizational
+    already briefly seen how &lt;call&gt; tag can be used for organizational
     purposes, where when flattened, there is still a single large
     process.
     </p>
 
     <p>
-    The &lt;spawn-process&gt; tag can be used to either spawn a new
+    The &lt;spawn&gt; tag can be used to either spawn a new
     top-level process or to create a nested, child processes from
     an already existing process.
     </p>
 
     <p>
-    Like &lt;do-process&gt;, the &lt;spawn-process&gt; takes a single
-    <code>name</code> attribute specifying the process name.  It will
-    always create a new <code>Thread</code> for the execution of the
-    process.  If the &lt;spawn-process&gt; occurs outside of an
-    &lt;do-activity&gt; tag, then a top-level process is created,
-    otherwise, a child of the current process is created.
+    Like &lt;call&gt;, the &lt;spawn&gt; takes a single
+    <code>process</code> attribute specifying the process name.  It will
+    always run detached from the calling thread within the ProcessEngine's
+    service loop.
+    If the &lt;spawn&gt; occurs outside of an
+    &lt;activity&gt; tag, then a top-level process is created,
+    and an <code>engine</code> attribute is required in order to
+    provide a process engine.
+    Otherwise, a child of the current process is created.
     </p>
 
-      <source>
-<![CDATA[
-
-<!--
+      <source><![CDATA[<!--
   ||  Open a block so that we can use blissed
   -->
 
 <blissed xmlns="jelly:com.werken.blissed.jelly.BlissedTagLibrary">
   ...
-  <process name="process.application">
+  <process name="process.application" var="processApplication">
     <state name="notify.others">
-      <do-activity>
+      <activity>
         <!--
           || Spawn two concurrent process to perform
           || notifications.  This process continues 
           || even before these terminate.
           -->
-        <spawn process="notify.internal-orgs"/>
-        <spawn process="notify.external-orgs"/>
-      </do-activity>
+        <spawn process="${notify.internal-orgs}"/>
+        <spawn process="${notify.external-orgs}"/>
+      </activity>
     </state>
 
   </process>
@@ -205,13 +193,17 @@
   <process.. />
 
   <!--
+    || Create a process engine.
+    -->
+
+  <engine var="engine"/>
+
+  <!--
     || Spawn the top-level process for an application.
     -->
-  <spawn-process name="process.application"/>
+  <spawn process="${processApplication}" engine="${engine}/>
 
-</blissed>
-      ]]>
-      </source>
+</blissed>]]></source>
 
     </section>
 

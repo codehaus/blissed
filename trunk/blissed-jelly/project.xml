@@ -41,7 +41,7 @@
 
   <siteAddress>blissed.werken.com</siteAddress>
   <siteDirectory>/www/blissed.werken.com</siteDirectory>
-  <issueTrackingUrl>http://jira.werken.com/</issueTrackingUrl>
+  <issueTrackingUrl>http://jira.werken.com/secure/BrowseProject.jspa?id=10011&amp;report=roadmap</issueTrackingUrl>
 
   <repository>
     <connection>scm:cvs::pserver:anonymous@cvs.werken.com:/cvsroot/blissed:blissed</connection>
