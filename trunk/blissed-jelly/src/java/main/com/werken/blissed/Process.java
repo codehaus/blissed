@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Process.java,v 1.2 2002-07-02 15:40:12 werken Exp $
+ $Id: Process.java,v 1.3 2002-07-02 16:16:40 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -61,6 +61,10 @@ import java.util.Collections;
 
 /** A graph of nodes and transitions in the form of a
  *  state machine.
+ *
+ *  @see ProcessStartedEvent
+ *  @see ProcessFinishedEvent
+ *  @see ProcessListener
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */

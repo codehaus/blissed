@@ -1,7 +1,7 @@
 package com.werken.blissed.event;
 
 /*
- $Id: PredicateFailedEvent.java,v 1.1.1.1 2002-07-02 14:28:08 werken Exp $
+ $Id: PredicateFailedEvent.java,v 1.2 2002-07-02 16:16:40 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -49,7 +49,7 @@ package com.werken.blissed.event;
 import com.werken.blissed.Predicate;
 import com.werken.blissed.WorkSlip;
 
-public class PredicateFailedEvent extends PredicateTestedEvent
+public class PredicateFailedEvent extends PredicateEvent
 {
     public PredicateFailedEvent(Predicate predicate,
                                 WorkSlip workSlip)

@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: State.java,v 1.2 2002-07-02 15:40:12 werken Exp $
+ $Id: State.java,v 1.3 2002-07-02 16:16:40 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -46,8 +46,14 @@ package com.werken.blissed;
  
  */
 
+import com.werken.blissed.event.StateListener;
+import com.werken.blissed.event.StateEnteredEvent;
+import com.werken.blissed.event.StateExitedEvent;
+
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 
 /** A <code>Task</code>-bearing node in the process graph.
  *
@@ -59,6 +65,9 @@ import java.util.ArrayList;
  *
  *  @see Task
  *  @see Transition
+ *  @see StateEnteredEvent
+ *  @see StateExitedEvent
+ *  @see StateListener
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
@@ -73,6 +82,9 @@ public class State extends Node
 
     /** The exit-path transitions. */
     private List transitions;
+
+    /** State-event listeners. */
+    private List listeners;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -94,6 +106,7 @@ public class State extends Node
 
         this.task = NoOpTask.INSTANCE;
         this.transitions = new ArrayList();
+        this.listeners = Collections.EMPTY_LIST;
     }
 
     // ------------------------------------------------------------
@@ -152,6 +165,99 @@ public class State extends Node
         return this.task;
     }
 
+    void testTransitions(WorkSlip workSlip)
+    {
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    //     Event-listener management
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+    /** Add a <code>StateListener</code> to this state.
+     *
+     *  @param listern The listenr to add.
+     */
+    public void addStateListener(StateListener listener)
+    {
+        if ( this.listeners == Collections.EMPTY_LIST )
+        {
+            this.listeners = new ArrayList();
+        }
+
+        this.listeners.add( listener );
+    }
+
+    /** Remove a <code>StateListener</code> from this state.
+     *
+     *  @param listern The listenr to remove.
+     */
+    public void removeStateListener(StateListener listener)
+    {
+        this.listeners.remove( listener );
+    }
+
+    /** Retrieve the <b>live</b> list of <code>StateListener</code>s
+     *  for this state.
+     *
+     *  <p>
+     *  The returned <b>live</b> list is directly backed by the state.
+     *  Change made to the list are immediately reflected internally
+     *  within the state.
+     *  </p>
+     *
+     *  @return The <code>List</code> of <code>StateListener</code>s.
+     */
+    public List getProcessListeners()
+    {
+        return this.listeners;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    //     Event firing
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+    /** Fire an event indicating that a workslip has entered 
+     *  this state.
+     *
+     *  @param workSlip The workslip entering this state.
+     */
+    void fireStateEntered(WorkSlip workSlip)
+    {
+        StateEnteredEvent event = new StateEnteredEvent( this,
+                                                         workSlip );
+        
+        Iterator listenerIter = getProcessListeners().iterator();
+        StateListener eachListener = null;
+        
+        while ( listenerIter.hasNext() )
+        {
+            eachListener = (StateListener) listenerIter.next();
+            
+            eachListener.stateEntered( event );
+        }
+    }
+
+    /** Fire an event indicating that a workslip has exited 
+     *  this state.
+     *
+     *  @param workSlip The finished process instance context.
+     */
+    void fireProcessFinished(WorkSlip workSlip)
+    {
+        StateExitedEvent event = new StateExitedEvent( this,
+                                                       workSlip );
+
+        Iterator listenerIter = getProcessListeners().iterator();
+        StateListener eachListener = null;
+
+        while ( listenerIter.hasNext() )
+        {
+            eachListener = (StateListener) listenerIter.next();
+            
+            eachListener.stateExited( event );
+        }
+    }
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     //     com.werken.blissed.Node
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -160,4 +266,5 @@ public class State extends Node
     {
 
     }
+
 }

@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Predicate.java,v 1.2 2002-07-02 15:40:12 werken Exp $
+ $Id: Predicate.java,v 1.3 2002-07-02 16:16:40 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -48,8 +48,7 @@ package com.werken.blissed;
 
 import com.werken.blissed.event.PredicatePassedEvent;
 import com.werken.blissed.event.PredicateFailedEvent;
-import com.werken.blissed.event.PredicateTestedEvent;
-import com.werken.blissed.event.PredicateTestedListener;
+import com.werken.blissed.event.PredicateListener;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -66,8 +65,9 @@ import java.util.Collections;
  *
  *  @see Transition
  *  @see WorkSlip
- *  @see PredicateTestedEvent
- *  @see PredicateTestedListener
+ *  @see PredicatePassedEvent
+ *  @see PredicateFailedEvent
+ *  @see PredicateListener
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
@@ -82,7 +82,7 @@ public abstract class Predicate implements Described
     private String description;
 
     /** List of PredicateTestedListeners. */
-    private List predicateTestedListeners;
+    private List listeners;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -95,6 +95,7 @@ public abstract class Predicate implements Described
     public Predicate(String description)
     {
         this.description = description;
+        this.listeners = Collections.EMPTY_LIST;
     }
 
     // ------------------------------------------------------------
@@ -149,35 +150,35 @@ public abstract class Predicate implements Described
     //     Event-listener management
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-    /** Add a <code>PredicateTestedListener</code> to this predicate.
+    /** Add a <code>PredicateListener</code> to this predicate.
      *
      *  @param listern The listenr to add.
      */
-    public void addPredicateTestedListener(PredicateTestedListener listener)
+    public void addPredicateListener(PredicateListener listener)
     {
-        if ( this.predicateTestedListeners == Collections.EMPTY_LIST )
+        if ( this.listeners == Collections.EMPTY_LIST )
         {
-            this.predicateTestedListeners = new ArrayList();
+            this.listeners = new ArrayList();
         }
 
-        this.predicateTestedListeners.add( listener );
+        this.listeners.add( listener );
     }
 
-    /** Remove a <code>PredicateTestedListener</code> from this predicate.
+    /** Remove a <code>PredicateListener</code> from this predicate.
      *
-     *  @param listern The listenr to remove.
+     *  @param listener The listener to remove.
      */
-    public void removePredicteTestedListener(PredicateTestedListener listener)
+    public void removePredicateListener(PredicateListener listener)
     {
-        if ( this.predicateTestedListeners == Collections.EMPTY_LIST )
+        if ( this.listeners == Collections.EMPTY_LIST )
         {
             return;
         }
 
-        this.predicateTestedListeners.remove( listener );
+        this.listeners.remove( listener );
     }
 
-    /** Retrieve the <b>live</b> list of <code>PredicateTestedListener</code>s
+    /** Retrieve the <b>live</b> list of <code>PredicateListener</code>s
      *  for this predicate.
      *
      *  <p>
@@ -186,11 +187,11 @@ public abstract class Predicate implements Described
      *  within the predicate.
      *  </p>
      *
-     *  @return The <code>List</code> of <code>PredicateTestedListener</code>s.
+     *  @return The <code>List</code> of <code>PredicateListener</code>s.
      */
-    public List getPredicateTestedListeners()
+    public List getPredicateListeners()
     {
-        return this.predicateTestedListeners;
+        return this.listeners;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -209,7 +210,15 @@ public abstract class Predicate implements Described
         PredicatePassedEvent event = new PredicatePassedEvent( this,
                                                                 workSlip );
 
-        firePredicateTestedEvent( event );
+        Iterator listenerIter = getPredicateListeners().iterator();
+        PredicateListener eachListener = null;
+        
+        while ( listenerIter.hasNext() )
+        {
+            eachListener = (PredicateListener) listenerIter.next();
+            
+            eachListener.predicatePassed( event );
+        }
     }
 
     /** Fire an event indicating this predicate failed
@@ -223,23 +232,14 @@ public abstract class Predicate implements Described
         PredicateFailedEvent event = new PredicateFailedEvent( this,
                                                                workSlip );
 
-        firePredicateTestedEvent( event );
-    }
-
-    /** Fire an event indicating this predicate was tested.
-     *
-     *  @param event The event to fire.
-     */
-    void firePredicateTestedEvent(PredicateTestedEvent event)
-    {
-        Iterator listenerIter = getPredicateTestedListeners().iterator();
-        PredicateTestedListener eachListener = null;
+        Iterator listenerIter = getPredicateListeners().iterator();
+        PredicateListener eachListener = null;
         
         while ( listenerIter.hasNext() )
         {
-            eachListener = (PredicateTestedListener) listenerIter.next();
+            eachListener = (PredicateListener) listenerIter.next();
             
-            eachListener.predicateTested( event );
+            eachListener.predicateFailed( event );
         }
     }
 }
