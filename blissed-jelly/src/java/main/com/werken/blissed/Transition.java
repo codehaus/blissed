@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Transition.java,v 1.5 2002-07-03 04:39:32 werken Exp $
+ $Id: Transition.java,v 1.6 2002-07-03 06:07:07 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -85,6 +85,24 @@ public class Transition implements Described
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
+
+    /** Construct.
+     *
+     *  @param origin The origin of this transitional arc.
+     *  @param destination The destination of this transitional arc.
+     *  @param description The description of this transition.
+     */
+    public Transition(Node origin,
+                      Node destination,
+                      String description)
+    {
+        this( origin,
+              destination,
+              null,
+              description );
+
+        this.predicate = TruePredicate.INSTANCE;
+    }
 
     /** Construct.
      *
@@ -250,5 +268,18 @@ public class Transition implements Described
     {
         return this.description;
     }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    //     java.lang.Object
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+    public String toString()
+    {
+        return "[Transition: origin=" + getOrigin()
+            + "; destination=" + getDestination()
+            + "; description=" + getDescription()
+            + "]";
+    }
+
 
 }

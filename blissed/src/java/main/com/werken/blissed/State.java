@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: State.java,v 1.7 2002-07-03 04:39:32 werken Exp $
+ $Id: State.java,v 1.8 2002-07-03 06:07:07 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -117,7 +117,7 @@ public class State extends Node
      *
      *  @param transition The transition to add.
      */
-    public void addTransition(Transition transition)
+    void addTransition(Transition transition)
     {
         this.transitions.add( transition );
     }
@@ -129,6 +129,43 @@ public class State extends Node
     public void removeTransition(Transition transition)
     {
         this.transitions.remove( transition );
+    }
+
+    /** Create an exit path transition.
+     *
+     *  @param destination The destination of the transition.
+     *  @param description Description of the transition.
+     */
+    public Transition addTransition(Node destination,
+                                    String description)
+    {
+        Transition transition = new Transition( this,
+                                                destination,
+                                                description );
+
+        addTransition( transition );
+
+        return transition;
+    }
+
+    /** Create an exit path transition.
+     *
+     *  @param destination The destination of the transition.
+     *  @param predicate Predicate guarding the transition.
+     *  @param description Description of the transition.
+     */
+    public Transition addTransition(Node destination,
+                                    Predicate predicate,
+                                    String description)
+    {
+        Transition transition = new Transition( this,
+                                                destination,
+                                                predicate,
+                                                description );
+
+        addTransition( transition );
+
+        return transition;
     }
 
     /** Retrieve the <b>live</b> list of transitions.
@@ -323,4 +360,20 @@ public class State extends Node
     {
         attemptTransition( workSlip );
     }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    //     java.lang.Object
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+    /** Produce a string form suitable for debugging.
+     *
+     *  @return A string form suitable for debugging.
+     */
+    public String toString()
+    {
+        return "[State: name=" + getName()
+            + "; transitions=" + getTransitions()
+            + "]";
+    }
+
 }

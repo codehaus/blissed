@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Process.java,v 1.5 2002-07-03 04:39:32 werken Exp $
+ $Id: Process.java,v 1.6 2002-07-03 06:07:07 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -151,7 +151,7 @@ public class Process implements Named, Described
      *
      *  @param node The node to add.
      */
-    void addNode(Node node)
+    protected void addNode(Node node)
     {
         this.nodes.put( node.getName(),
                         node );
@@ -176,6 +176,23 @@ public class Process implements Named, Described
     void removeNode(Node node)
     {
         this.nodes.remove( node.getName() );
+    }
+
+    /** Create a new state for this process.
+     *
+     *  @param name The name of the state.
+     *  @param description The description of the state.
+     */
+    public State createState(String name,
+                             String description)
+    {
+        State state = new State( this,
+                                 name,
+                                 description );
+
+        addNode( state );
+
+        return state;
     }
 
     /** Start a new instance of this process.

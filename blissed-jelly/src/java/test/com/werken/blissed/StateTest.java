@@ -55,10 +55,9 @@ public class StateTest extends TestCase
 
     public void testAttemptTransition_OneTransition()
     {
-        this.state1.addTransition( new Transition( this.state1,
-                                                   this.state2,
-                                                   TruePredicate.INSTANCE,
-                                                   "first transition" ) );
+        this.state1.addTransition( this.state2,
+                                   TruePredicate.INSTANCE,
+                                   "first transition" );
 
         WorkSlip ws = new WorkSlip( this.process );
 
@@ -74,15 +73,13 @@ public class StateTest extends TestCase
     {
         // The first transition should pass immediately.
 
-        this.state1.addTransition( new Transition( this.state1,
-                                                   this.state2,
-                                                   TruePredicate.INSTANCE,
-                                                   "first transition" ) );
+        this.state1.addTransition( this.state2,
+                                   TruePredicate.INSTANCE,
+                                   "first transition" );
 
-        this.state1.addTransition( new Transition( this.state1,
-                                                   this.state2,
-                                                   FalsePredicate.INSTANCE,
-                                                   "second transition" ) );
+        this.state1.addTransition( this.state2,
+                                   FalsePredicate.INSTANCE,
+                                   "second transition" );
 
         WorkSlip ws = new WorkSlip( this.process );
 
@@ -99,15 +96,13 @@ public class StateTest extends TestCase
         // The first transition will fail, and the flow
         // should follow the second transition.
 
-        this.state1.addTransition( new Transition( this.state1,
-                                                   this.state2,
-                                                   FalsePredicate.INSTANCE,
-                                                   "first transition" ) );
+        this.state1.addTransition( this.state2,
+                                   FalsePredicate.INSTANCE,
+                                   "first transition" );
 
-        this.state1.addTransition( new Transition( this.state1,
-                                                   this.state3,
-                                                   TruePredicate.INSTANCE,
-                                                   "second transition" ) );
+        this.state1.addTransition( this.state3,
+                                   TruePredicate.INSTANCE,
+                                   "second transition" );
 
         WorkSlip ws = new WorkSlip( this.process );
 
@@ -124,15 +119,13 @@ public class StateTest extends TestCase
         // Though both transitions match, the first will
         // be followed.
 
-        this.state1.addTransition( new Transition( this.state1,
-                                                   this.state2,
-                                                   TruePredicate.INSTANCE,
-                                                   "first transition" ) );
+        this.state1.addTransition( this.state2,
+                                   TruePredicate.INSTANCE,
+                                   "first transition" );
 
-        this.state1.addTransition( new Transition( this.state1,
-                                                   this.state3,
-                                                   TruePredicate.INSTANCE,
-                                                   "second transition" ) );
+        this.state1.addTransition( this.state3,
+                                   TruePredicate.INSTANCE,
+                                   "second transition" );
 
         WorkSlip ws = new WorkSlip( this.process );
 
@@ -148,15 +141,13 @@ public class StateTest extends TestCase
     {
         // Neither transition matches, so no movement.
 
-        this.state1.addTransition( new Transition( this.state1,
-                                                   this.state2,
-                                                   FalsePredicate.INSTANCE,
-                                                   "first transition" ) );
+        this.state1.addTransition( this.state2,
+                                   FalsePredicate.INSTANCE,
+                                   "first transition" );
 
-        this.state1.addTransition( new Transition( this.state1,
-                                                   this.state3,
-                                                   FalsePredicate.INSTANCE,
-                                                   "second transition" ) );
+        this.state1.addTransition( this.state3,
+                                   FalsePredicate.INSTANCE,
+                                   "second transition" );
 
         WorkSlip ws = new WorkSlip( this.process );
 
