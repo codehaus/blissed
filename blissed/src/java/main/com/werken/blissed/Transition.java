@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Transition.java,v 1.18 2002-09-16 14:59:51 bob Exp $
+ $Id: Transition.java,v 1.19 2002-09-16 16:40:24 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -204,7 +204,7 @@ public class Transition implements Described
     public String toString()
     {
         return "[Transition: origin=" + getOrigin()
-            + "; destination=" + getDestination()
+            + "; destination=" + getDestination().getName()
             + "; guard=" + getGuard() 
             + "; description=" + getDescription()
             + "]";
