@@ -1,7 +1,7 @@
 package com.werken.blissed.event;
 
 /*
- $Id: ActivityEvent.java,v 1.1 2002-07-07 05:09:16 werken Exp $
+ $Id: ActivityEvent.java,v 1.2 2002-07-07 05:18:34 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -46,6 +46,7 @@ package com.werken.blissed.event;
  
  */
 
+import com.werken.blissed.State;
 import com.werken.blissed.Activity;
 import com.werken.blissed.Context;
 
@@ -55,22 +56,33 @@ import com.werken.blissed.Context;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public abstract class ActivityEvent extends MotionEvent
+public abstract class ActivityEvent extends StateEvent
 {
+    // ------------------------------------------------------------
+    //     Instance members
+    // ------------------------------------------------------------
+
+    /** The activity. */
+    private Activity activity;
+
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
 
     /** Construct.
      *
+     *  @param state The state event source.
      *  @param activity The node activity source.
      *  @param context The context.
      */
-    public ActivityEvent(Activity activity,
+    public ActivityEvent(State state,
+                         Activity activity,
                          Context context)
     {
-        super( activity,
+        super( state,
                context );
+
+        this.activity = activity;
     }
 
     // ------------------------------------------------------------
@@ -83,6 +95,6 @@ public abstract class ActivityEvent extends MotionEvent
      */
     public Activity getActivity()
     {
-        return (Activity) getSource();
+        return this.activity;
     }
 }

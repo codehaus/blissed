@@ -1,7 +1,7 @@
 package com.werken.blissed.event;
 
 /*
- $Id: StateListener.java,v 1.3 2002-07-04 19:40:07 werken Exp $
+ $Id: StateListener.java,v 1.4 2002-07-07 05:18:34 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -69,4 +69,15 @@ public interface StateListener extends EventListener
      */
     void stateExited(StateExitedEvent event);
 
+    /** Receive notification of a context starting an activity.
+     *
+     *  @param event The activity-started event.
+     */
+    void activityStarted(ActivityStartedEvent event);
+
+    /** Receive notification of a context finishing an activity.
+     *
+     *  @param event The activity-finished event.
+     */
+    void activityFinished(ActivityFinishedEvent event);
 }
