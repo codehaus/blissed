@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: DoActivityTag.java,v 1.3 2002-08-15 04:01:29 bob Exp $
+ $Id: DoActivityTag.java,v 1.4 2002-08-15 04:06:53 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -64,10 +64,6 @@ import org.apache.commons.jelly.JellyException;
 public class DoActivityTag extends BlissedTagSupport
 {
     // ------------------------------------------------------------
-    //     Instance members
-    // ------------------------------------------------------------
-
-    // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
 
@@ -75,6 +71,7 @@ public class DoActivityTag extends BlissedTagSupport
      */
     public DoActivityTag()
     {
+        // intentionally left blank
     }
 
     // ------------------------------------------------------------
