@@ -19,7 +19,7 @@
     <code>blissed</code> is not intended to be useful on its own,
     but rather may support a larger workflow system or other process-based
     application.  To allow it to be easy to integrate with other projects, a 
-    <a href="http://jakarta.apache.org/commons/sandbox/jelly/">Jelly</a>
+    <a href="http://jakarta.apache.org/commons/jelly/">Jelly</a>
     tag library is provided.
     </p>
 

@@ -11,7 +11,7 @@
 
       <p>
       <code>blissed</code> easiest to use by way of the 
-      <a href="http://jakarta.apache.org/commons/sandbox/jelly/">jelly</a>
+      <a href="http://jakarta.apache.org/commons/jelly/">jelly</a>
       tag library.
       </p>
 
@@ -36,7 +36,7 @@
   ||  Open a block so that we can use blissed
   -->
 
-<blissed xmlns="jelly:com.werken.blissed.jelly.BlissedTagLibrary">
+<blissed xmlns="jelly:org.codehaus.blissed.jelly.BlissedTagLibrary">
   ...
 </blissed>]]></source>
 
@@ -50,7 +50,7 @@
       the initial <code>start</code> state.
       </p>
  
-      <source><![CDATA[<blissed xmlns="jelly:com.werken.blissed.jelly.BlissedTagLibrary">
+      <source><![CDATA[<blissed xmlns="jelly:org.codehaus.blissed.jelly.BlissedTagLibrary">
 
   <!--
     ||  Define a new process named 'process.application'
@@ -172,7 +172,7 @@
   ||  Open a block so that we can use blissed
   -->
 
-<blissed xmlns="jelly:com.werken.blissed.jelly.BlissedTagLibrary">
+<blissed xmlns="jelly:org.codehaus.blissed.jelly.BlissedTagLibrary">
   ...
   <process name="process.application" var="processApplication">
     <state name="notify.others">
