@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Process.java,v 1.24 2002-09-16 05:27:15 bob Exp $
+ $Id: Process.java,v 1.25 2002-09-16 15:39:50 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -147,10 +147,26 @@ public class Process implements Named, Described, DirectedGraph
     /** Remove a state from this process.
      *
      *  @param state The state to remove.
+     *
+     *  @return The removed state or <code>null</code>
+     *          if the state was not removed.
      */
-    protected void removeState(State state)
+    protected State removeState(State state)
     {
-        this.states.remove( state.getName() );
+        // Since we do a name-based lookup, and multiple
+        // states from multiple processes might have the
+        // same name, we must first ensure that we're truly
+        // attempting to remove the same state that's been
+        // passed in as a parameter.
+        
+        State removed = getState( state.getName() );
+
+        if ( removed == state )
+        {
+            return (State) this.states.remove( removed.getName() );
+        }
+
+        return null;
     }
 
     /** Create a new state for this process.
