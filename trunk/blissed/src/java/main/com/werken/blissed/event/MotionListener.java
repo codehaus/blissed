@@ -1,7 +1,7 @@
 package com.werken.blissed.event;
 
 /*
- $Id: MotionListener.java,v 1.1 2002-07-04 19:40:07 werken Exp $
+ $Id: MotionListener.java,v 1.2 2002-07-05 21:06:34 uid40906 Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -47,7 +47,7 @@ package com.werken.blissed.event;
  */
 
 public interface MotionListener
-    extends ProcessListener, StateListener, PredicateListener, TransitionListener
+    extends ProcessListener, StateListener, TransitionListener
 {
 
 }

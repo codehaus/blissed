@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: State.java,v 1.12 2002-07-05 04:15:04 werken Exp $
+ $Id: State.java,v 1.13 2002-07-05 21:06:34 uid40906 Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -129,26 +129,6 @@ public class State extends Node
     public void removeTransition(Transition transition)
     {
         this.transitions.remove( transition );
-    }
-
-    /** Create a predicated exit path transition.
-     *
-     *  @param destination The destination of the transition.
-     *  @param predicate Predicate guarding the transition.
-     *  @param description Description of the transition.
-     */
-    public Transition addTransition(Node destination,
-                                    String description,
-                                    Predicate predicate)
-    {
-        Transition transition = new PredicatedTransition( this,
-                                                          destination,
-                                                          description,
-                                                          predicate );
-
-        addTransition( transition );
-
-        return transition;
     }
 
     /** Create a non-predicated exit path transition.
