@@ -4,6 +4,16 @@
             xmlns:test="jelly:junit"
             xmlns="jelly:com.werken.blissed.jelly.BlissedTagLibrary"
             trim="true">
+  <!--
+    ||     <blissed>
+    -->
+
+  <test:case name="testBlissedTag">
+    <blissed>
+      <j:set var="foo" value="testBlissedTag"/>
+    </blissed>
+    <test:assert test="${foo == 'testBlissedTag'}">blissed passthrough</test:assert>
+  </test:case>
 
   <!--
     ||     <process>
@@ -127,7 +137,7 @@
 
   <test:case name="testTransitionTag_NoFrom">
     <j:catch var="junk">
-      <process name="foo">
+      <process name="foo" start="origin">
         <j:catch var="e">
           <transition to="dest"/>
         </j:catch>
@@ -140,7 +150,7 @@
 
   <test:case name="testTransitionTag_NoTo">
     <j:catch var="junk">
-      <process name="foo">
+      <process name="foo" start="origin">
         <j:catch var="e">
           <transition from="origin"/>
         </j:catch>
@@ -154,7 +164,7 @@
 
   <test:case name="testTransitionTag_FromNoSuchState">
     <j:catch var="junk">
-      <process name="foo">
+      <process name="foo" start="origin">
         <state name="dest"/>
         <j:catch var="e">
           <transition from="origin" to="dest"/>
@@ -168,7 +178,7 @@
 
   <test:case name="testTransitionTag_ToNoSuchState">
     <j:catch var="junk">
-      <process name="foo">
+      <process name="foo" start="origin">
         <state name="origin"/>
         <j:catch var="e">
           <transition from="origin" to="dest"/>
@@ -188,6 +198,18 @@
     </process>
     <test:assert
           test="${theProcess.getState('origin').transitions[0].destination == theProcess.getState('dest')}">transition</test:assert>
+  </test:case>
+
+  <test:case name="testTransitionTag_WithDescription">
+    <process name="foo" start="origin" var="theProcess">
+      <state name="origin"/>
+      <state name="dest"/>
+      <transition from="origin" to="dest">
+        <description>This is the transition</description>
+      </transition>
+    </process>
+    <test:assert
+          test="${theProcess.getState('origin').transitions[0].description == 'This is the transition'}">transition desc</test:assert>
   </test:case>
 
 </test:suite>

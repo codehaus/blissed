@@ -1,9 +1,9 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: SpawnProcessTag.java,v 1.9 2002-09-17 05:13:34 bob Exp $
+ $Id: RuntimeTagSupport.java,v 1.1 2002-09-17 16:02:51 bob Exp $
 
- Copyright 2001 (C) The Werken Company. All Rights Reserved.
+ Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
  Redistribution and use of this software and associated documentation
  ("Software"), with or without modification, are permitted provided
@@ -46,94 +46,54 @@ package com.werken.blissed.jelly;
  
  */
 
-import com.werken.blissed.Process;
-import com.werken.blissed.ProcessEngine;
 import com.werken.blissed.ProcessContext;
+import com.werken.blissed.ProcessEngine;
 
-import org.apache.commons.jelly.XMLOutput;
-import org.apache.commons.jelly.MissingAttributeException;
-
-/** Spawn a new process.
- *
- *  <p>
- *  This may be used to spawn both top-level and child processes.
- *  In both cases, a new <code>Thread</code> is created for execution
- *  of the process.
- *  </p>
- *
- *  <p>
- *  The <code>Thread</code> for the process may terminate before the
- *  <code>Process</code> itself, if execution stalls.  
- *  </p>
+/** Base of process runtime jelly tags.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ *
+ *  @version $Id: RuntimeTagSupport.java,v 1.1 2002-09-17 16:02:51 bob Exp $
  */
-public class SpawnProcessTag extends BlissedTagSupport 
+public abstract class RuntimeTagSupport extends BlissedTagSupport
 {
     // ------------------------------------------------------------
-    //     Instance members
+    //   Constants
     // ------------------------------------------------------------
 
-    /** Name of the process to spawn. */
-    private Process process;
-
-    // ------------------------------------------------------------
-    //     Constructors
-    // ------------------------------------------------------------
+    /** Key under which the <code>ProcessContext</code> is stored
+     *  within the <code>JellyContext</code>.
+     */
+    public static final String PROCESS_CONTEXT_KEY = "processContext";
 
     /** Construct.
      */
-    public SpawnProcessTag()
+    protected RuntimeTagSupport()
     {
         // intentionally left blank
     }
 
     // ------------------------------------------------------------
-    //     Instance methods
+    //   Instance methods
     // ------------------------------------------------------------
 
-    /** Set the process to perform.
+    /** Retrieve the <code>ProcessEngine</code> of the current
+     *  <code>ProcessContext</code>.
      *
-     *  @param process The process.
+     *  @return The process engine.
      */
-    public void setProcess(Process process)
+    protected ProcessEngine getProcessEngine()
     {
-        this.process = process;
+        return getProcessContext().getProcessEngine();
     }
 
-    /** Retrieve the process.
+    /** Retrieve the current <code>ProcessContext</code>.
      *
-     *  @return The process.
-     *
-     *  @throws Exception If a process library cannot be found.
+     *  @return The current process context, or <code>null</code>
+     *          if no process context is currently in-scope.
      */
-    public Process getProcess() throws Exception
+    protected ProcessContext getProcessContext()
     {
-        return this.process;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    //     org.apache.commons.jelly.Tag
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-    /** Evaluates this tag after all the tags properties
-     *  have been initialized.
-     *
-     *  @param output The output sink.
-     *
-     *  @throws Exception if an error occurs.
-     */
-    public void doTag(XMLOutput output) throws Exception
-    {
-        if ( this.process == null )
-        {
-            throw new MissingAttributeException( "process" );
-        }
-
-        ProcessContext context = getProcessContext();
-        ProcessEngine  engine  = getProcessEngine();
-
-        engine.spawn( getProcess(),
-                      context );
+        return (ProcessContext) getContext().getVariable( PROCESS_CONTEXT_KEY );
     }
 }

@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: TransitionTag.java,v 1.5 2002-07-18 05:22:50 bob Exp $
+ $Id: TransitionTag.java,v 1.6 2002-09-17 16:02:51 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -59,7 +59,7 @@ import org.apache.commons.jelly.MissingAttributeException;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class TransitionTag extends BlissedTagSupport implements DescribedTag
+public class TransitionTag extends DefinitionTagSupport implements DescribedTag
 {
     // ------------------------------------------------------------
     //     Instance members
@@ -145,24 +145,13 @@ public class TransitionTag extends BlissedTagSupport implements DescribedTag
      */
     public void doTag(XMLOutput output) throws Exception
     {
-        ProcessTag processTag = (ProcessTag) findAncestorWithClass( ProcessTag.class );
+        Process process = getCurrentProcess();
 
-        if ( processTag == null )
-        {
-            throw new JellyException( "Not within a process element" );
-        }
-        
-        Process process = processTag.getProcess();
+        checkAttribute( "from",
+                        this.from );
 
-        if ( this.from == null )
-        {
-            throw new MissingAttributeException( "from" );
-        }
-
-        if ( this.to == null )
-        {
-            throw new MissingAttributeException( "to" );
-        }
+        checkAttribute( "to",
+                        this.to );
 
         State fromState = process.getState( this.from );
 

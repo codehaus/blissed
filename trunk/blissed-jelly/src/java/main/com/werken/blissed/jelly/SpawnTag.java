@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: DescriptionTag.java,v 1.3 2002-09-17 16:02:51 bob Exp $
+ $Id: SpawnTag.java,v 1.1 2002-09-17 16:02:51 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -46,31 +46,71 @@ package com.werken.blissed.jelly;
  
  */
 
-import com.werken.blissed.Described;
+import com.werken.blissed.Process;
+import com.werken.blissed.ProcessEngine;
+import com.werken.blissed.ProcessContext;
 
 import org.apache.commons.jelly.XMLOutput;
-import org.apache.commons.jelly.JellyException;
+import org.apache.commons.jelly.MissingAttributeException;
 
-/** Provide a long description.
+/** Spawn a new process.
+ *
+ *  <p>
+ *  This may be used to spawn both top-level and child processes.
+ *  In both cases, a new <code>Thread</code> is created for execution
+ *  of the process.
+ *  </p>
+ *
+ *  <p>
+ *  The <code>Thread</code> for the process may terminate before the
+ *  <code>Process</code> itself, if execution stalls.  
+ *  </p>
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class DescriptionTag extends DefinitionTagSupport
+public class SpawnTag extends RuntimeTagSupport 
 {
+    // ------------------------------------------------------------
+    //     Instance members
+    // ------------------------------------------------------------
+
+    /** Name of the process to spawn. */
+    private Process process;
+
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
 
     /** Construct.
      */
-    public DescriptionTag()
+    public SpawnTag()
     {
-        // intentionally left blank.
+        // intentionally left blank
     }
 
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
+
+    /** Set the process to perform.
+     *
+     *  @param process The process.
+     */
+    public void setProcess(Process process)
+    {
+        this.process = process;
+    }
+
+    /** Retrieve the process.
+     *
+     *  @return The process.
+     *
+     *  @throws Exception If a process library cannot be found.
+     */
+    public Process getProcess() throws Exception
+    {
+        return this.process;
+    }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     //     org.apache.commons.jelly.Tag
@@ -85,10 +125,15 @@ public class DescriptionTag extends DefinitionTagSupport
      */
     public void doTag(XMLOutput output) throws Exception
     {
-        Described described = getCurrentDescribed();
+        if ( this.process == null )
+        {
+            throw new MissingAttributeException( "process" );
+        }
 
-        String description = getBodyText();
+        ProcessContext context = getProcessContext();
+        ProcessEngine  engine  = getProcessEngine();
 
-        described.setDescription( description );
+        engine.spawn( getProcess(),
+                      context );
     }
 }

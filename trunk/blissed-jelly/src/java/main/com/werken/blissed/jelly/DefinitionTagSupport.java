@@ -1,9 +1,9 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: DescriptionTag.java,v 1.3 2002-09-17 16:02:51 bob Exp $
+ $Id: DefinitionTagSupport.java,v 1.1 2002-09-17 16:02:51 bob Exp $
 
- Copyright 2001 (C) The Werken Company. All Rights Reserved.
+ Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
  Redistribution and use of this software and associated documentation
  ("Software"), with or without modification, are permitted provided
@@ -47,48 +47,48 @@ package com.werken.blissed.jelly;
  */
 
 import com.werken.blissed.Described;
+import com.werken.blissed.Process;
 
-import org.apache.commons.jelly.XMLOutput;
 import org.apache.commons.jelly.JellyException;
 
-/** Provide a long description.
+/** Base of process definition jelly tags.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ *
+ *  @version $Id: DefinitionTagSupport.java,v 1.1 2002-09-17 16:02:51 bob Exp $
  */
-public class DescriptionTag extends DefinitionTagSupport
+public abstract class DefinitionTagSupport extends BlissedTagSupport
 {
-    // ------------------------------------------------------------
-    //     Constructors
-    // ------------------------------------------------------------
-
-    /** Construct.
-     */
-    public DescriptionTag()
+    protected DefinitionTagSupport()
     {
-        // intentionally left blank.
+        
     }
 
-    // ------------------------------------------------------------
-    //     Instance methods
-    // ------------------------------------------------------------
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    //     org.apache.commons.jelly.Tag
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-    /** Evaluates this tag after all the tags properties
-     *  have been initialized.
-     *
-     *  @param output The output sink.
-     *
-     *  @throws Exception if an error occurs.
-     */
-    public void doTag(XMLOutput output) throws Exception
+    protected Process getCurrentProcess() throws JellyException
     {
-        Described described = getCurrentDescribed();
+        ProcessTag processTag = (ProcessTag) findAncestorWithClass( ProcessTag.class );
 
-        String description = getBodyText();
+        if ( processTag == null )
+        {
+            throw new JellyException( "Not within a process element" );
+        }
+        
+        Process process = processTag.getProcess();
 
-        described.setDescription( description );
+        return process;
+    }
+
+    protected Described getCurrentDescribed() throws JellyException
+    {
+        DescribedTag describedTag = (DescribedTag) findAncestorWithClass( DescribedTag.class );
+
+        if ( describedTag == null )
+        {
+            throw new JellyException( "Unable to locate an element to describe" );
+        }
+
+        Described described = describedTag.getDescribed();
+
+        return described;
     }
 }

@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: GuardTag.java,v 1.5 2002-09-16 14:59:51 bob Exp $
+ $Id: GuardTag.java,v 1.6 2002-09-17 16:02:51 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -58,7 +58,7 @@ import org.apache.commons.jelly.JellyException;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class GuardTag extends BlissedTagSupport
+public class GuardTag extends DefinitionTagSupport
 {
     // ------------------------------------------------------------
     //     Instance members

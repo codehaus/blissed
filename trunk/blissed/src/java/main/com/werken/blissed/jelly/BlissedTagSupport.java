@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: BlissedTagSupport.java,v 1.4 2002-09-17 05:13:34 bob Exp $
+ $Id: BlissedTagSupport.java,v 1.5 2002-09-17 16:02:51 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -50,22 +50,16 @@ import com.werken.blissed.ProcessContext;
 import com.werken.blissed.ProcessEngine;
 
 import org.apache.commons.jelly.TagSupport;
+import org.apache.commons.jelly.MissingAttributeException;
 
 /** Base of all blissed jelly tags.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ *
+ *  @version $Id: BlissedTagSupport.java,v 1.5 2002-09-17 16:02:51 bob Exp $
  */
 public abstract class BlissedTagSupport extends TagSupport
 {
-    // ------------------------------------------------------------
-    //   Constants
-    // ------------------------------------------------------------
-
-    /** Key under which the <code>ProcessContext</code> is stored
-     *  within the <code>JellyContext</code>.
-     */
-    public static final String PROCESS_CONTEXT_KEY = "processContext";
-
     // ------------------------------------------------------------
     //   Constructors
     // ------------------------------------------------------------
@@ -77,27 +71,14 @@ public abstract class BlissedTagSupport extends TagSupport
         // intentionally left blank
     }
 
-    // ------------------------------------------------------------
-    //   Instance methods
-    // ------------------------------------------------------------
-
-    /** Retrieve the <code>ProcessEngine</code> of the current
-     *  <code>ProcessContext</code>.
-     *
-     *  @return The process engine.
-     */
-    protected ProcessEngine getProcessEngine()
+    protected void checkAttribute(String name,
+                                  String value) throws MissingAttributeException
     {
-        return getProcessContext().getProcessEngine();
-    }
-
-    /** Retrieve the current <code>ProcessContext</code>.
-     *
-     *  @return The current process context, or <code>null</code>
-     *          if no process context is currently in-scope.
-     */
-    protected ProcessContext getProcessContext()
-    {
-        return (ProcessContext) getContext().getVariable( PROCESS_CONTEXT_KEY );
+        if ( value == null
+             ||
+             value.trim().equals( "" ) )
+        {
+            throw new MissingAttributeException( name );
+        }
     }
 }

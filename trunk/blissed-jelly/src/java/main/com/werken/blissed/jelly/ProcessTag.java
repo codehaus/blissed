@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: ProcessTag.java,v 1.9 2002-09-17 06:38:48 bob Exp $
+ $Id: ProcessTag.java,v 1.10 2002-09-17 16:02:51 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -58,7 +58,7 @@ import org.apache.commons.jelly.JellyException;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class ProcessTag extends BlissedTagSupport implements DescribedTag
+public class ProcessTag extends DefinitionTagSupport implements DescribedTag
 {
     // ------------------------------------------------------------
     //     Instance members
@@ -171,15 +171,11 @@ public class ProcessTag extends BlissedTagSupport implements DescribedTag
      */
     public void doTag(XMLOutput output) throws Exception
     {
-        if ( this.name == null )
-        {
-            throw new MissingAttributeException( "name" );
-        }
+        checkAttribute( "name",
+                        this.name );
 
-        if ( this.start == null )
-        {
-            throw new MissingAttributeException( "start" );
-        }
+        checkAttribute( "start",
+                        this.start );
 
         this.process = new Process( this.name,
                                     this.description );
