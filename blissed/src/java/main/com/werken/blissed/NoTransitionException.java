@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: NoTransitionException.java,v 1.1 2002-07-06 03:49:01 werken Exp $
+ $Id: NoTransitionException.java,v 1.2 2002-07-06 21:23:38 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -46,8 +46,17 @@ package com.werken.blissed;
  
  */
 
+/** Indicates that a state contains no transitions.
+ *
+ *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ */
 public class NoTransitionException extends InvalidMotionException
 {
+    // ------------------------------------------------------------
+    //     Instance members
+    // ------------------------------------------------------------
+
+    /** The offending state. */
     private State state;
 
     // ------------------------------------------------------------
@@ -55,12 +64,18 @@ public class NoTransitionException extends InvalidMotionException
     // ------------------------------------------------------------
 
     /** Construct.
+     *
+     *  @param state The state without transitions.
      */
     NoTransitionException(State state)
     {
         this.state = state;
     }
 
+    /** Retrieve the error message.
+     *
+     *  @return The error message.
+     */
     public String getMessage()
     {
         return state.getName() + " contains no transitions";

@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Process.java,v 1.15 2002-07-06 15:44:54 werken Exp $
+ $Id: Process.java,v 1.16 2002-07-06 21:23:38 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -176,6 +176,8 @@ public class Process implements Named, Described, Activity
      *
      *  @param name The name of the state.
      *  @param description The description of the state.
+     *
+     *  @return The newly added <code>State</code>.
      */
     public State addState(String name,
                           String description)
@@ -193,6 +195,9 @@ public class Process implements Named, Described, Activity
      *
      *  @return A new <code>Context</code> representing the state
      *          for the new instance of this process.
+     *
+     *  @throws InvalidMotionException If an invalid motion occurs.
+     *  @throws ActivityException If an error occurs while performing an activity.
      */
     public Context spawn() throws InvalidMotionException, ActivityException
     {
@@ -209,6 +214,9 @@ public class Process implements Named, Described, Activity
      *
      *  @return A new <code>Context</code> representing the state
      *          for the new instance of this process.
+     *
+     *  @throws InvalidMotionException If an invalid motion occurs.
+     *  @throws ActivityException If an error occurs while performing an activity.
      */
     Context spawn(Context parent) throws InvalidMotionException, ActivityException
     {
@@ -220,6 +228,13 @@ public class Process implements Named, Described, Activity
         return context;
     }
 
+    /** Accept a context into this process.
+     *
+     *  @param context The context to accept.
+     *
+     *  @throws InvalidMotionException If an invalid motion occurs.
+     *  @throws ActivityException If an error occurs while performing an activity.
+     */
     void accept(Context context) throws InvalidMotionException, ActivityException
     {
         this.activeContexts.add( context );
@@ -231,6 +246,12 @@ public class Process implements Named, Described, Activity
         getStart().accept( context );
     }
 
+    /** Release a context from this node.
+     *
+     *  @param context The context to release.
+     *
+     *  @throws InvalidMotionException If an invalid motion occurs.
+     */
     void release(Context context) throws InvalidMotionException
     {
         // getFinish().release( context );
@@ -242,6 +263,12 @@ public class Process implements Named, Described, Activity
         this.activeContexts.remove( context );
     }
 
+    /** Retrieve an unmodifiable set of all contexts currently
+     *  active within this process.
+     *
+     *  @return An unmodifiable <code>Set</code> of all <code>Context</code>s
+     *          that are currently active within this process.
+     */
     public Set getActiveContexts()
     {
         return Collections.unmodifiableSet( this.activeContexts );
@@ -370,6 +397,12 @@ public class Process implements Named, Described, Activity
     //     com.werken.blissed.Activity
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
+    /** Perform this activity within the specified context.
+     *
+     *  @param context The context.
+     *
+     *  @throws ActivityException if an error occurs.
+     */
     public void perform(Context context) throws ActivityException
     {
         try

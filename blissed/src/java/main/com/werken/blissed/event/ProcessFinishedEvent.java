@@ -1,7 +1,7 @@
 package com.werken.blissed.event;
 
 /*
- $Id: ProcessFinishedEvent.java,v 1.3 2002-07-04 19:40:07 werken Exp $
+ $Id: ProcessFinishedEvent.java,v 1.4 2002-07-06 21:23:38 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -64,6 +64,7 @@ public class ProcessFinishedEvent extends ProcessEvent
     /** Construct.
      *
      *  @param process The process event-source.
+     *  @param context The context.
      */
     public ProcessFinishedEvent(Process process,
                                 Context context)

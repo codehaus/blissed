@@ -52,11 +52,22 @@
     </dependency>
 
     <dependency>
+      <id>dom4j</id>
+      <version>1.4-dev-3</version>
+      <url>http://dom4j.org/</url>
+    </dependency>
+
+    <dependency>
       <id>junit</id>
       <version>3.7</version>
       <url>http://junit.org/</url>
     </dependency>
 
+    <dependency>
+      <id>xmlParserAPIs</id>
+      <version>2.0.0</version>
+      <url>http://xml.apache.org/xerces2-j/</url>
+    </dependency>
   </dependencies>
 
   <build>

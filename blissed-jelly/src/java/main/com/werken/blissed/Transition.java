@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Transition.java,v 1.11 2002-07-06 03:49:01 werken Exp $
+ $Id: Transition.java,v 1.12 2002-07-06 21:23:38 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -85,6 +85,12 @@ public class Transition implements Described
     //     Constructors
     // ------------------------------------------------------------
 
+    /** Construct.
+     *
+     *  @param origin The origin of this transitional arc.
+     *  @param destination The destination of this transitional arc.
+     *  @param description The description of this transition.
+     */
     Transition(Node origin,
                Node destination,
                String description)
@@ -99,6 +105,7 @@ public class Transition implements Described
      *
      *  @param origin The origin of this transitional arc.
      *  @param destination The destination of this transitional arc.
+     *  @param guard The guard for this transition.
      *  @param description The description of this transition.
      */
     Transition(Node origin,
@@ -135,16 +142,36 @@ public class Transition implements Described
         return this.destination;
     }
 
+    /** Set the guard of this transition.
+     *
+     *  @param guard The guard.
+     */
     public void setGuard(Guard guard)
     {
         this.guard = guard;
     }
 
+    /** Retrieve the guard of this transition.
+     *
+     *  @return The guard.
+     */
     public Guard getGuard()
     {
         return this.guard;
     }
 
+    /** Test the guard on this transition.
+     *
+     *  <p>
+     *  If this transition contains no guard, then
+     *  the test always evaluates to <code>true</code>.
+     *  </p>
+     *
+     *  @param context The context.
+     *
+     *  @return <code>true</code> if the context passes the guard,
+     *          otherwise <code>false</code>.
+     */
     boolean testGuard(Context context)
     {
         if ( getGuard() == null )
@@ -162,6 +189,9 @@ public class Transition implements Described
      *
      *  @return <code>true</code> if this transition was successful
      *          within the context.
+     *
+     *  @throws InvalidMotionException If an invalid motion occurs.
+     *  @throws ActivityException If an error occurs while performing an activity.
      */
     boolean accept(Context context) throws InvalidMotionException, ActivityException
     {
@@ -266,10 +296,15 @@ public class Transition implements Described
     //     java.lang.Object
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
+    /** Produce a string form suitable for debugging.
+     *
+     *  @return A string form suitable for debugging.
+     */
     public String toString()
     {
         return "[Transition: origin=" + getOrigin()
             + "; destination=" + getDestination()
+            + "; guard=" + getGuard() 
             + "; description=" + getDescription()
             + "]";
     }

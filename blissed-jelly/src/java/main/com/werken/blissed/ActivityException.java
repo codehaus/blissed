@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: ActivityException.java,v 1.1 2002-07-04 22:56:53 werken Exp $
+ $Id: ActivityException.java,v 1.2 2002-07-06 21:23:38 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -46,19 +46,31 @@ package com.werken.blissed;
  
  */
 
+/** Indicates an error while performing an activity.
+ *
+ *  @see Activity#perform
+ *
+ *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ */
 public class ActivityException extends BlissedException
 {
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
 
-    /** Construct.
+    /** Construct with a message.
+     *
+     *  @param msg The message.
      */
     public ActivityException(String msg)
     {
         super( msg );
     }
 
+    /** Construct with a root cause.
+     *
+     *  @param rootCause The root cause.
+     */
     public ActivityException(Throwable rootCause)
     {
         super( rootCause );

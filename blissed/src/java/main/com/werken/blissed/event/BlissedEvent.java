@@ -1,7 +1,7 @@
 package com.werken.blissed.event;
 
 /*
- $Id: BlissedEvent.java,v 1.2 2002-07-04 19:40:07 werken Exp $
+ $Id: BlissedEvent.java,v 1.3 2002-07-06 21:23:38 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -54,5 +54,11 @@ import com.werken.blissed.Context;
  */
 public interface BlissedEvent 
 {
+    /** Retrieve the <code>Context</code> of this event.
+     *
+     *  @see Context
+     *
+     *  @return The context of this event.
+     */
     Context getContext();
 }

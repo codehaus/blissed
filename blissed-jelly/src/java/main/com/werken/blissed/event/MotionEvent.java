@@ -1,7 +1,7 @@
 package com.werken.blissed.event;
 
 /*
- $Id: MotionEvent.java,v 1.1 2002-07-04 19:40:07 werken Exp $
+ $Id: MotionEvent.java,v 1.2 2002-07-06 21:23:38 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -60,12 +60,18 @@ public abstract class MotionEvent extends EventObject implements BlissedEvent
     //     Instance members
     // ------------------------------------------------------------
 
+    /** The context of the event. */
     private Context context;
 
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
 
+    /** Construct.
+     *
+     *  @param source The source of the event.
+     *  @param context The context.
+     */
     public MotionEvent(Object source,
                        Context context)
     {
@@ -77,6 +83,12 @@ public abstract class MotionEvent extends EventObject implements BlissedEvent
     //     Instance methods
     // ------------------------------------------------------------
 
+    /** Retrieve the <code>Context</code> of this event.
+     *
+     *  @see Context
+     *
+     *  @return The context of this event.
+     */
     public Context getContext()
     {
         return this.context;

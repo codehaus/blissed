@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: BlissedException.java,v 1.2 2002-07-04 19:40:07 werken Exp $
+ $Id: BlissedException.java,v 1.3 2002-07-06 21:23:38 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -79,6 +79,10 @@ public class BlissedException extends Exception
         this.rootCause = rootCause;
     }
 
+    /** Construct with a message.
+     *
+     *  @param msg The error message.
+     */
     protected BlissedException(String msg)
     {
         super( msg );
