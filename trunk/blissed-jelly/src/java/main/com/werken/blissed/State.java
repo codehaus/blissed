@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: State.java,v 1.24 2002-09-18 17:59:57 bob Exp $
+ $Id: State.java,v 1.25 2002-09-18 18:17:51 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -71,27 +71,6 @@ import java.util.Iterator;
  */
 public class State implements Named, Described, Vertex
 {
-    // ------------------------------------------------------------
-    //     Constants
-    // ------------------------------------------------------------
-
-    /** Mostly read-only terminal state class. */
-    static class TerminalState extends State
-    {
-        TerminalState()
-        {
-            super( "state.terminal",
-                   "terminal state" );
-        }
-        public void setDescription(String name) { };
-        public void setActivity(Activity activity) { };
-        public Transition addTransition(State destination,
-                                        String Description) { return null; };
-        public Transition addTransition(State destination,
-                                        Guard guard,
-                                        String Description) { return null; };
-    };
-
     // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------
@@ -315,4 +294,67 @@ public class State implements Named, Described, Vertex
     {
         this.description = description;
     }
+
+    // ------------------------------------------------------------
+    //     Inner classes
+    // ------------------------------------------------------------
+
+    /** Mostly read-only terminal state class.
+     */
+    static class TerminalState extends State
+    {
+        /** Construct.
+         */
+        TerminalState()
+        {
+            super( "state.terminal",
+                   "terminal state" );
+        }
+
+        /** Set description.
+         *
+         *  @param description The description.
+         */
+        public void setDescription(String description)
+        {
+            // intentionally left blank
+        }
+
+        /** Set the activity.
+         *
+         *  @param activity The activity.
+         */
+        public void setActivity(Activity activity)
+        {
+            // intentionally left blank
+        }
+
+        /** Add a transition.
+         *
+         *  @param destination The destination.
+         *  @param description The description.
+         *
+         *  @return The new transition.
+         */
+        public Transition addTransition(State destination,
+                                        String description)
+        {
+            return null;
+        };
+
+        /** Add a transition.
+         *
+         *  @param destination The destination.
+         *  @param guard The guard.
+         *  @param description The description.
+         *
+         *  @return The new transition.
+         */
+        public Transition addTransition(State destination,
+                                        Guard guard,
+                                        String description)
+        {
+            return null;
+        };
+    };
 }
