@@ -41,6 +41,35 @@
   </test:case>
 
   <!--
+    ||     <start>
+    -->
+
+  <test:case name="testStartEngineTag">
+    <engine var="theEngine"/>
+    <test:assert test="${!theEngine.started}">engine not running</test:assert>
+    <start-engine engine="${theEngine}"/>
+    <test:assert test="${theEngine.started}">engine is running</test:assert>
+    <start-engine engine="${theEngine}"/>
+    <start-engine engine="${theEngine}"/>
+    <test:assert test="${theEngine.started}">engine is running</test:assert>
+  </test:case>
+
+  <!--
+    ||     <stop>
+    -->
+
+  <test:case name="testStartEngineTag">
+    <engine var="theEngine"/>
+    <test:assert test="${!theEngine.started}">engine not running</test:assert>
+    <stop-engine engine="${theEngine}"/>
+    <test:assert test="${!theEngine.started}">engine not running</test:assert>
+    <start-engine engine="${theEngine}"/>
+    <test:assert test="${theEngine.started}">engine is running</test:assert>
+    <stop-engine engine="${theEngine}"/>
+    <test:assert test="${!theEngine.started}">engine not running</test:assert>
+  </test:case>
+
+  <!--
     ||     <process>
     -->
 
