@@ -2,38 +2,51 @@
 
 <document>
 
-  <properties>
-    <author email="bob@eng.werken.com">bob mcwhirter</author>
-    <title>Releases</title>
-  </properties>
+    <properties>
+        <author email="bob@eng.werken.com">bob mcwhirter</author>
+        <title>Releases</title>
+    </properties>
 
-  <body>
-    <section name="Official Builds">
-      <p>
-      Official builds can be found <a href="http://blissed.werken.com/dists/">in the blissed distribution directory</a>.
-      </p>
+    <body>
+        <section name="Official Builds">
+            <p>
+                Official builds can be found
+                <a href="http://blissed.werken.com/dists/">in the blissed distribution directory</a>.
+            </p>
 
-      <p>
-      The latest official build is <b>1.0-beta-1</b>.
-      </p>
+            <p>
+                The latest official build is
+                <b>1.0-beta-1</b>.
+            </p>
 
-      <subsection name="Binary Distributions">
-        <ul>
-          <li><a href="http://blissed.werken.com/dists/blissed-1.0-beta-1.zip">1.0-beta-1 in zip format.</a></li>
-          <li><a href="http://blissed.werken.com/dists/blissed-1.0-beta-1.tar.gz">1.0-beta-1 in tar/gz format.</a></li>
-        </ul>
-      </subsection>
+            <subsection name="Binary Distributions">
+                <ul>
+                    <li>
+                        <a href="http://blissed.werken.com/dists/blissed-1.0-beta-1.zip">1.0-beta-1 in zip format.</a>
+                    </li>
+                    <li>
+                        <a href="http://blissed.werken.com/dists/blissed-1.0-beta-1.tar.gz">1.0-beta-1 in tar/gz format.</a>
+                    </li>
+                </ul>
+            </subsection>
 
-      <subsection name="Source Distributions">
-        <ul>
-          <li><a href="http://blissed.werken.com/dists/blissed-1.0-beta-1-src.zip">1.0-beta-1 in zip format.</a></li>
-          <li><a href="http://blissed.werken.com/dists/blissed-1.0-beta-1-src.tar.gz">1.0-beta-1 in tar/gz format.</a></li>
-        </ul>
-      </subsection>
+            <subsection name="Source Distributions">
+                <ul>
+                    <li>
+                        <a href="http://blissed.werken.com/dists/blissed-1.0-beta-1-src.zip">1.0-beta-1 in zip format.</a>
+                    </li>
+                    <li>
+                        <a href="http://blissed.werken.com/dists/blissed-1.0-beta-1-src.tar.gz">1.0-beta-1 in tar/gz format.</a>
+                    </li>
+                </ul>
+            </subsection>
 
-    </section>
+        </section>
 
-  </body>
+        <section name="Development Versions">
+          Please see <a href="/cvs.html">CVS</a> for up-to-date code.
+        </section>
+    </body>
 
 </document>
 
