@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Transition.java,v 1.1.1.1 2002-07-02 14:28:05 werken Exp $
+ $Id: Transition.java,v 1.2 2002-07-02 15:40:12 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -128,7 +128,14 @@ public class Transition implements Described
      */
     boolean test(WorkSlip workSlip)
     {
-        return getPredicate().performTest( workSlip );
+        boolean result = getPredicate().performTest( workSlip );
+
+        if ( result )
+        {
+            getDestination().accept( workSlip );
+        }
+
+        return result;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Finish.java,v 1.1.1.1 2002-07-02 14:28:07 werken Exp $
+ $Id: Finish.java,v 1.2 2002-07-02 15:40:12 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -65,6 +65,15 @@ public class Finish extends Node
         super( process,
                "blissed.finish",
                "finish for " + process.getName() );
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    //     com.werken.blissed.Node
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+    public void accept(WorkSlip workSlip)
+    {
+        getProcess().fireProcessFinished( workSlip );
     }
 }
 

@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Predicate.java,v 1.1.1.1 2002-07-02 14:28:05 werken Exp $
+ $Id: Predicate.java,v 1.2 2002-07-02 15:40:12 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -209,7 +209,7 @@ public abstract class Predicate implements Described
         PredicatePassedEvent event = new PredicatePassedEvent( this,
                                                                 workSlip );
 
-        firePredicateTested( event );
+        firePredicateTestedEvent( event );
     }
 
     /** Fire an event indicating this predicate failed
@@ -223,14 +223,14 @@ public abstract class Predicate implements Described
         PredicateFailedEvent event = new PredicateFailedEvent( this,
                                                                workSlip );
 
-        firePredicateTested( event );
+        firePredicateTestedEvent( event );
     }
 
     /** Fire an event indicating this predicate was tested.
      *
      *  @param event The event to fire.
      */
-    void firePredicateTested(PredicateTestedEvent event)
+    void firePredicateTestedEvent(PredicateTestedEvent event)
     {
         Iterator listenerIter = getPredicateTestedListeners().iterator();
         PredicateTestedListener eachListener = null;
