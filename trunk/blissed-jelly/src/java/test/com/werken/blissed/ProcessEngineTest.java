@@ -410,5 +410,35 @@ public class ProcessEngineTest extends TestCase
         this.engine.enterState( this.state1,
                                 context );
     }
+
+    public void testAddToCheckTransitionsQueue() throws Exception
+    {
+        ProcessContext context = this.engine.spawn( this.process );
+
+        assertSame( this.process,
+                    context.getCurrentProcess() );
+
+        assertSame( this.state1,
+                    context.getCurrentState() );
+
+        this.engine.addToCheckTransitionsQueue( context );
+
+        assertTrue( this.engine.peekNextToService() instanceof CheckTransitionsEntry );
+
+        assertSame( context,
+                    this.engine.peekNextToService().getProcessContext() );
+
+        this.engine.start();
+
+        Thread.sleep( 1000 );
+
+        assertNull( this.engine.peekNextToService() );
+
+        assertSame( this.process,
+                    context.getCurrentProcess() );
+
+        assertSame( this.state1,
+                    context.getCurrentState() );
+    }
 }
 
