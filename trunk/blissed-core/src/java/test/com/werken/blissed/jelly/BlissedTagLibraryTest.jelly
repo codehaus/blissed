@@ -269,6 +269,15 @@
     <test:assert test="${theContext != null}"/>
   </test:case>
 
+  <test:case name="testSpawn_Valid_NoContext_WithVar_Async">
+    <process name="theProcess" var="theProcess" start="start">
+      <state name="start" terminal="true"/>
+    </process>
+    <engine var="engine"/>
+    <spawn process="${theProcess}" engine="${engine}" var="theContext" async="true"/>
+    <test:assert test="${theContext != null}">context not null</test:assert>
+  </test:case>
+
   <test:case name="testSpawn_Nested">
 
     <process name="theProcess" var="theProcess" start="start">

@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: ProcessEngine.java,v 1.7 2002-09-18 06:19:25 bob Exp $
+ $Id: ProcessEngine.java,v 1.8 2002-09-18 15:49:17 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -54,7 +54,7 @@ import java.util.Iterator;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ProcessEngine.java,v 1.7 2002-09-18 06:19:25 bob Exp $
+ *  @version $Id: ProcessEngine.java,v 1.8 2002-09-18 15:49:17 bob Exp $
  */
 public class ProcessEngine implements Runnable
 {
@@ -165,14 +165,15 @@ public class ProcessEngine implements Runnable
      */
     public void run()
     {
-        ProcessContext context = null;
+        QueueEntry entry = null;
 
         while ( this.shouldRun )
         {
             try
             {
-                context = getNextToCheck();
-                checkTransitions( context );
+                entry = getNextToService();
+
+                entry.service( this );
             }
             catch (InterruptedException e)
             {
@@ -189,11 +190,22 @@ public class ProcessEngine implements Runnable
      *
      *  @param context The process context to add to the queue.
      */
-    public void addToCheckQueue(ProcessContext context)
+    void addToCheckTransitionsQueue(ProcessContext context)
     {
         synchronized ( this.queue )
         {
-            this.queue.addLast( context );
+            this.queue.addLast( new CheckTransitionsEntry( context ) );
+            this.queue.notifyAll();
+        }
+    }
+
+    void addToStartProcessQueue(Process process,
+                                ProcessContext context)
+    {
+        synchronized ( this.queue )
+        {
+            this.queue.addLast( new StartProcessEntry( process,
+                                                       context ) );
             this.queue.notifyAll();
         }
     }
@@ -202,27 +214,27 @@ public class ProcessEngine implements Runnable
      *  waiting in the queue.
      *
      *  @return <code>true</code> if a process context is available
-     *          for transition checking, otherwise <code>false</code>.
+     *          for servicing, otherwise <code>false</code>.
      */
-    public boolean hasContextToCheck()
+    public boolean hasContextToService()
     {
         synchronized ( this.queue )
         {
             return ! this.queue.isEmpty();
         }
     }
-    
+
     /** Wait for and retrieve the next <code>ProcessContext</code>
-     *  from the queue to check.
+     *  from the queue to service.
      *
      *  @return The next <code>ProcessContext</code>.
      *
      *  @throws InterruptedException If the blocking-read of the queue
      *          is interrupted before returning.
      */
-    protected ProcessContext getNextToCheck() throws InterruptedException
+    QueueEntry getNextToService() throws InterruptedException
     {
-        ProcessContext context = null;
+        QueueEntry context = null;
 
         synchronized( this.queue )
         {
@@ -235,7 +247,7 @@ public class ProcessEngine implements Runnable
 
                 if ( ! this.queue.isEmpty() )
                 {
-                    context = (ProcessContext) this.queue.removeFirst();
+                    context = (QueueEntry) this.queue.removeFirst();
                     break;
                 }
             }
@@ -244,6 +256,28 @@ public class ProcessEngine implements Runnable
         return context;
     }
 
+    /** Peek for and retrieve the next <code>ProcessContext</code>
+     *  from the queue to service.
+     *
+     *  @return The next <code>ProcessContext</code> or <code>null</code>
+     *          if none is available.
+     */
+    QueueEntry peekNextToService() 
+    {
+        QueueEntry context = null;
+
+        synchronized( this.queue )
+        {
+            if ( this.queue.isEmpty() )
+            {
+                return null;
+            }
+
+            context = (QueueEntry) this.queue.getFirst();
+        }
+
+        return context;
+    }
     /** Spawn an instance of a <code>Process</code>.
      *
      *  @param process The process to spawn.
@@ -282,15 +316,17 @@ public class ProcessEngine implements Runnable
         ProcessContext context = new ProcessContext( this,
                                                      process );
 
-        startProcess( process,
-                      context );
 
         if ( async )
         {
-            addToCheckQueue( context );
+            addToStartProcessQueue( process,
+                                    context );
         }
         else
         {
+            startProcess( process,
+                          context );
+
             checkTransitions( context );
         }
 
@@ -319,10 +355,8 @@ public class ProcessEngine implements Runnable
 
         parent.addChild( context );
 
-        startProcess( process,
-                      context );
-
-        addToCheckQueue( context );
+        addToStartProcessQueue( process,
+                                context );
 
         return context;
     }
@@ -341,8 +375,6 @@ public class ProcessEngine implements Runnable
     {
         startProcess( process,
                       context );
-
-        checkTransitions( context );
     }
 
     /** Begin a <code>Process</code> for a particular
@@ -366,6 +398,8 @@ public class ProcessEngine implements Runnable
 
         enterState( startState,
                     context );
+
+        checkTransitions( context );
     }
 
     /** Enter a <code>State</code> for a particular

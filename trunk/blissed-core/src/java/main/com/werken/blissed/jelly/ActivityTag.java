@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: ActivityTag.java,v 1.10 2002-09-18 06:04:44 bob Exp $
+ $Id: ActivityTag.java,v 1.11 2002-09-18 15:49:17 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -58,7 +58,7 @@ import org.apache.commons.jelly.JellyException;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ActivityTag.java,v 1.10 2002-09-18 06:04:44 bob Exp $
+ *  @version $Id: ActivityTag.java,v 1.11 2002-09-18 15:49:17 bob Exp $
  */
 public class ActivityTag extends DefinitionTagSupport
 {
@@ -115,8 +115,6 @@ public class ActivityTag extends DefinitionTagSupport
      */
     public void doTag(XMLOutput output) throws Exception
     {
-        System.err.println("ActivityTag.doTag()" );
-
         State state = null;
 
         try

@@ -83,6 +83,10 @@ public class SpawnActivityTest extends TestCase
         assertSame( this.state,
                     context.getCurrentState() );
 
+        engine.start();
+
+        Thread.sleep( 1000 );
+
         Set children = context.getChildren();
 
         assertEquals( 1,
