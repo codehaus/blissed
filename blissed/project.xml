@@ -11,7 +11,7 @@
   <organization>
     <name>codehaus</name>
     <url>http://codehaus.org</url>
-    <logo>http://images.werken.com/codehaus.gif</logo>
+    <logo>http://codehaus.org/codehaus.gif</logo>
   </organization>
   <inceptionYear>2002</inceptionYear>
   <package>org.codehaus.blissed</package>
@@ -43,8 +43,8 @@
   <issueTrackingUrl>http://jira.codehaus.org/secure/BrowseProject.jspa?id=10011&amp;report=roadmap</issueTrackingUrl>
 
   <repository>
-    <connection>scm:cvs:pserver:anonymous@cvs.codehaus.org:/cvsroot/blissed:blissed</connection>
-    <url>http://cvs.codehaus.org/viewcvs.cgi/blissed/blissed/</url>
+    <connection>scm:cvs:pserver:anonymous@cvs.codehaus.org:/scm/cvspublic:blissed</connection>
+    <url>http://cvs.codehaus.org/viewcvs.cgi/blissed/?root=codehaus</url>
   </repository>
 
   <developers>
@@ -61,10 +61,11 @@
       <name>peter royal</name>
       <id>proyal</id>
       <roles>
-        <role>Developer</role>
+        <role>Project Lead</role>
       </roles>
-      <email>proyal@pace2020.com</email>
-      <organization>Pace Systems Group</organization>
+      <email>peter.royal@pobox.com</email>
+      <timezone>-5</timezone>
+      <url>http://fotap.org/~osi</url>
     </developer>
   </developers>
 
