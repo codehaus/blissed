@@ -1,5 +1,7 @@
+
+
 /*
- $Id: LICENSE.txt,v 1.1.1.1 2002-07-02 14:28:05 werken Exp $
+ $Id: LICENSE.txt,v 1.2 2002-07-02 20:32:06 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
