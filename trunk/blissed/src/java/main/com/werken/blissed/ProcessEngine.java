@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: ProcessEngine.java,v 1.5 2002-09-18 04:05:31 bob Exp $
+ $Id: ProcessEngine.java,v 1.6 2002-09-18 05:04:58 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -54,7 +54,7 @@ import java.util.Iterator;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ProcessEngine.java,v 1.5 2002-09-18 04:05:31 bob Exp $
+ *  @version $Id: ProcessEngine.java,v 1.6 2002-09-18 05:04:58 bob Exp $
  */
 public class ProcessEngine implements Runnable
 {
@@ -237,7 +237,7 @@ public class ProcessEngine implements Runnable
      *  @throws InvalidMotionException If a motion error occurs while
      *          attempting to spawn the process.
      */
-    public ProcessContext spawn(Process process) throws InvalidMotionException
+    public ProcessContext spawn(Process process) throws ActivityException, InvalidMotionException
     {
         return spawn( process,
                       false );
@@ -257,7 +257,7 @@ public class ProcessEngine implements Runnable
      *          attempting to spawn the process.
      */
     public ProcessContext spawn(Process process,
-                                boolean async) throws InvalidMotionException
+                                boolean async) throws ActivityException, InvalidMotionException
     {
 
         ProcessContext context = new ProcessContext( this,
@@ -291,7 +291,7 @@ public class ProcessEngine implements Runnable
      *          attempting to spawn the process.
      */
     public ProcessContext spawn(Process process,
-                                ProcessContext parent) throws InvalidMotionException
+                                ProcessContext parent) throws ActivityException, InvalidMotionException
     {
         ProcessContext context = new ProcessContext( this,
                                                      process,
@@ -316,7 +316,7 @@ public class ProcessEngine implements Runnable
      *          attempting to spawn the process.
      */
     public void call(Process process,
-                     ProcessContext context) throws InvalidMotionException
+                     ProcessContext context) throws ActivityException, InvalidMotionException
     {
         startProcess( process,
                       context );
@@ -334,14 +334,49 @@ public class ProcessEngine implements Runnable
      *          attempting to begin a process.
      */
     protected void startProcess(Process process,
-                                ProcessContext context) throws InvalidMotionException
+                                ProcessContext context) throws ActivityException, InvalidMotionException
     {
         State startState = process.getStartState();
 
         Location location = context.getLocation();
 
         location.startProcess( process );
-        location.enterState( startState );
+
+        enterState( startState,
+                    context );
+    }
+
+    protected void enterState(State state,
+                              ProcessContext context) throws ActivityException, InvalidMotionException
+    {
+        Location location = context.getLocation();
+
+        location.enterState( state );
+
+        Activity activity = state.getActivity();
+
+        if ( activity == null )
+        {
+            return;
+        }
+
+        activity.perform( context );
+    }
+
+    protected void exitState(State state,
+                             ProcessContext context) throws InvalidMotionException
+    {
+        Location location = context.getLocation();
+
+        location.exitState( state );
+    }
+
+    protected void finishProcess(Process process,
+                                 ProcessContext context) throws InvalidMotionException
+    {
+        Location location = context.getLocation();
+
+        location.finishProcess( process );
     }
 
     /** Check a <code>ProcessContext</code> for progress possibilities.
@@ -354,7 +389,7 @@ public class ProcessEngine implements Runnable
      *  @throws InvalidMotionException If the transitions of the context attempt
      *          an invalid motion.
      */
-    public boolean checkTransitions(ProcessContext context) throws InvalidMotionException
+    public boolean checkTransitions(ProcessContext context) throws ActivityException, InvalidMotionException
     {
         boolean transitioned = false;
 
@@ -403,7 +438,7 @@ public class ProcessEngine implements Runnable
      *          transition.
      */ 
     protected void followTransition(ProcessContext context,
-                                    Transition transition) throws InvalidMotionException
+                                    Transition transition) throws ActivityException, InvalidMotionException
     {
         State destination = transition.getDestination();
         State origin = transition.getOrigin();
@@ -415,12 +450,18 @@ public class ProcessEngine implements Runnable
             throw new InvalidMotionException( "Not in state " + origin.getName() );
         }
 
-        location.exitState( origin );
-        location.enterState( destination );
-        
+        exitState( origin,
+                   context );
+
         if ( destination == null )
         {
-            location.finishProcess( context.getCurrentProcess() );
+            finishProcess( context.getCurrentProcess(),
+                           context );
+        }
+        else
+        {
+            enterState( destination,
+                        context );
         }
     }
 }
