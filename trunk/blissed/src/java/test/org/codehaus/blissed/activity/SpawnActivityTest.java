@@ -65,7 +65,7 @@ public class SpawnActivityTest extends TestCase
 
         ProcessEngine engine = new ProcessEngine();
 
-        ProcessContext context = engine.spawn( this.process );
+        ProcessContext context = engine.spawn( this.process, null, false );
 
         assertSame( this.process,
                     context.getCurrentProcess() );

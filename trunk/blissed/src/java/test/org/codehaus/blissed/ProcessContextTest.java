@@ -35,7 +35,7 @@ public class ProcessContextTest extends TestCase
 
     public void testGetProcessEngine() throws Exception
     {
-        ProcessContext context = this.engine.spawn( this.process );
+        ProcessContext context = this.engine.spawn( this.process, null, false );
 
         assertSame( this.engine,
                     context.getProcessEngine() );
@@ -43,7 +43,7 @@ public class ProcessContextTest extends TestCase
 
     public void testGetProcess() throws Exception
     {
-        ProcessContext context = this.engine.spawn( this.process );
+        ProcessContext context = this.engine.spawn( this.process, null, false );
 
         assertSame( this.process,
                     context.getCurrentProcess() );
@@ -51,17 +51,18 @@ public class ProcessContextTest extends TestCase
 
     public void testGetParent_None() throws Exception
     {
-        ProcessContext context = this.engine.spawn( this.process );
+        ProcessContext context = this.engine.spawn( this.process, null, false );
 
         assertNull( context.getParent() );
     }
      
     public void testGetParent_Nested() throws Exception
     {
-        ProcessContext context = this.engine.spawn( this.process );
+        ProcessContext context = this.engine.spawn( this.process, null, false );
 
         ProcessContext child = this.engine.spawn( this.process,
-                                                  context );
+                                                  context,
+                                                  null );
 
         assertSame( context,
                     child.getParent() );
@@ -69,13 +70,22 @@ public class ProcessContextTest extends TestCase
 
     public void testProcessData_GetSet() throws Exception
     {
-        ProcessContext context = this.engine.spawn( this.process );
+        ProcessContext context = this.engine.spawn( this.process, null, false );
 
         assertNull( context.getProcessData() );
 
         Object data = new Object();
 
         context.setProcessData( data );
+
+        assertSame( data,
+                    context.getProcessData() );
+    }
+
+    public void testProcessData_Spawn() throws Exception
+    {
+        Object data = new Object();
+        ProcessContext context = this.engine.spawn( this.process, data, false );
 
         assertSame( data,
                     context.getProcessData() );

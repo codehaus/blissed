@@ -319,7 +319,7 @@
 
     <test:assert test="${theContext != null}">root spawned</test:assert>
 
-    <j:set var="org.codehaus.blissed.ProcessContext.current" value="${theContext}"/>
+    <j:set var="processContext" value="${theContext}"/>
 
     <spawn process="${theProcess}" var="nestedContext"/>
     <test:assert test="${nestedContext != null}">child exists</test:assert>
@@ -327,7 +327,7 @@
     <test:assert test="${nestedContext.parent == theContext}">child has parent</test:assert>
     <test:assert test="${theContext.children.iterator().next() == nestedContext}">parent has child</test:assert>
 
-    <j:set var="org.codehaus.blissed.ProcessContext.current" value="${nestedContext}"/>
+    <j:set var="processContext" value="${nestedContext}"/>
 
     <spawn process="${theProcess}"/>
 
@@ -393,7 +393,7 @@
     <test:assert test="${theContext.currentProcess == processOne}">process one</test:assert>
     <test:assert test="${theContext.currentState == processOne.getState('p1.stateOne')}">process one, state one</test:assert>
 
-    <j:set var="org.codehaus.blissed.ProcessContext.current" value="${theContext}"/>
+    <j:set var="processContext" value="${theContext}"/>
 
     <call process="${processTwo}"/>
 
@@ -530,7 +530,7 @@
       <state name="start"/>
     </process> 
     <activity var="theActivity">
-      ${context.setProcessData( 'cheese' )}
+      ${processContext.setProcessData( 'cheese' )}
     </activity>
     <spawn engine="${theEngine}" 
            process="${theProcess}" 

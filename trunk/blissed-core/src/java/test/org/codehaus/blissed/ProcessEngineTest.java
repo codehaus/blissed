@@ -91,7 +91,7 @@ public class ProcessEngineTest extends TestCase
 
     public void testSpawn_Root() throws Exception
     {
-        ProcessContext context = this.engine.spawn( this.process );
+        ProcessContext context = this.engine.spawn( this.process, null, false );
 
         assertNotNull( context );
 
@@ -107,6 +107,7 @@ public class ProcessEngineTest extends TestCase
     public void testSpawn_Root_Async() throws Exception
     {
         ProcessContext context = this.engine.spawn( this.process,
+                                                    null,
                                                     true );
 
         assertTrue( context.isStatus( ProcessContext.PROCESS_NOT_STARTED ) );
@@ -127,7 +128,7 @@ public class ProcessEngineTest extends TestCase
 
     public void testServiceThread() throws Exception
     {
-        this.engine.spawn( this.process, true );
+        this.engine.spawn( this.process, null, true );
 
         assertTrue( this.engine.hasContextToService() );
 
@@ -164,10 +165,9 @@ public class ProcessEngineTest extends TestCase
 
     public void testSpawn_Nested() throws Exception
     {
-        ProcessContext context = this.engine.spawn( this.process );
+        ProcessContext context = this.engine.spawn( this.process, null, false );
 
-        ProcessContext nested = this.engine.spawn( this.process,
-                                                   context );
+        ProcessContext nested = this.engine.spawn( this.process, context, null );
 
         assertNull( nested.getCurrentProcess() );
         assertNull( nested.getCurrentState() );
@@ -199,13 +199,11 @@ public class ProcessEngineTest extends TestCase
 
     public void testSpawn_MultipleNested() throws Exception
     {
-        ProcessContext context = this.engine.spawn( this.process );
+        ProcessContext context = this.engine.spawn( this.process, null, false );
 
-        ProcessContext nested1 = this.engine.spawn( this.process,
-                                                    context );
+        ProcessContext nested1 = this.engine.spawn( this.process, context, null );
 
-        ProcessContext nested2 = this.engine.spawn( this.process,
-                                                    context );
+        ProcessContext nested2 = this.engine.spawn( this.process, context, null );
 
         assertNull( nested1.getCurrentProcess() );
         assertNull( nested1.getCurrentState() );
@@ -253,7 +251,7 @@ public class ProcessEngineTest extends TestCase
 
         anotherProcess.setStartState( anotherState );
 
-        ProcessContext context = this.engine.spawn( this.process );
+        ProcessContext context = this.engine.spawn( this.process, null, false );
 
         this.engine.call( anotherProcess,
                           context );
@@ -267,7 +265,7 @@ public class ProcessEngineTest extends TestCase
 
     public void testFollowTransition_InvalidMotion() throws Exception
     {
-        ProcessContext context = this.engine.spawn( this.process );
+        ProcessContext context = this.engine.spawn( this.process, null, false );
 
         try
         {
@@ -284,7 +282,7 @@ public class ProcessEngineTest extends TestCase
 
     public void testFollowTransition_Valid() throws Exception
     {
-        ProcessContext context = this.engine.spawn( this.process );
+        ProcessContext context = this.engine.spawn( this.process, null, false );
 
         this.engine.followTransition( context,
                                       this.transition1_2 );
@@ -298,7 +296,7 @@ public class ProcessEngineTest extends TestCase
 
     public void testCheckTransitions_Stagnant() throws Exception
     {
-        ProcessContext context = this.engine.spawn( this.process );
+        ProcessContext context = this.engine.spawn( this.process, null, false );
 
         assertSame( this.process,
                     context.getCurrentProcess() );
@@ -317,7 +315,7 @@ public class ProcessEngineTest extends TestCase
 
     public void testCheckTransitions_Mobile() throws Exception
     {
-        ProcessContext context = this.engine.spawn( this.process );
+        ProcessContext context = this.engine.spawn( this.process, null, false );
 
         assertSame( this.process,
                     context.getCurrentProcess() );
@@ -357,7 +355,7 @@ public class ProcessEngineTest extends TestCase
 
     public void testCheckTransitions_EndOfProcess() throws Exception
     {
-        ProcessContext context = this.engine.spawn( this.process );
+        ProcessContext context = this.engine.spawn( this.process, null, false );
 
         assertSame( this.process,
                     context.getCurrentProcess() );
@@ -375,7 +373,7 @@ public class ProcessEngineTest extends TestCase
 
     public void testEnterState() throws Exception
     {
-        ProcessContext context = this.engine.spawn( this.process );
+        ProcessContext context = this.engine.spawn( this.process, null, false );
 
         this.state1.setActivity( new Activity()
             {
@@ -403,7 +401,7 @@ public class ProcessEngineTest extends TestCase
 
     public void testEnterState_NullActivity() throws Exception
     {
-        ProcessContext context = this.engine.spawn( this.process );
+        ProcessContext context = this.engine.spawn( this.process, null, false );
 
         this.state1.setActivity( null );
 
@@ -416,7 +414,7 @@ public class ProcessEngineTest extends TestCase
 
     public void testAddToCheckTransitionsQueue() throws Exception
     {
-        ProcessContext context = this.engine.spawn( this.process );
+        ProcessContext context = this.engine.spawn( this.process, null, false );
 
         assertSame( this.process,
                     context.getCurrentProcess() );
