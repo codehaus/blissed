@@ -2,6 +2,21 @@
 <project default="java:jar"
          xmlns:j="jelly:core">
 
+
+
+  <postGoal name="clover">
+    <copy tofile="${basedir}/target/docs/clover/style.css"
+          file="${basedir}/xdocs/stylesheets/clover-style.css"
+          overwrite="true"/>
+    <copy tofile="${basedir}/target/docs/clover/pkgs-summary"
+          file="${basedir}/target/docs/clover/pkgs-summary.html"/>
+  </postGoal>
+
+  <preGoal name="site:generate">
+    <attainGoal name="clover"/>
+  </preGoal>
+
+
   <goal name="blissed:install"
         prereqs="java:jar">
 

@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: InvalidMotionException.java,v 1.3 2002-07-06 21:23:38 werken Exp $
+ $Id: InvalidMotionException.java,v 1.4 2002-09-17 05:13:34 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -55,12 +55,6 @@ public class InvalidMotionException extends BlissedException
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
-
-    /** Contsruct.
-     */
-    protected InvalidMotionException()
-    {
-    }
 
     /** Construct with a message.
      *

@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Process.java,v 1.25 2002-09-16 15:39:50 bob Exp $
+ $Id: Process.java,v 1.26 2002-09-17 05:13:34 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -148,10 +148,10 @@ public class Process implements Named, Described, DirectedGraph
      *
      *  @param state The state to remove.
      *
-     *  @return The removed state or <code>null</code>
-     *          if the state was not removed.
+     *  @return <code>true</code> if the state was removed,
+     *          otherwise <code>false</code>.
      */
-    protected State removeState(State state)
+    protected boolean removeState(State state)
     {
         // Since we do a name-based lookup, and multiple
         // states from multiple processes might have the
@@ -163,10 +163,14 @@ public class Process implements Named, Described, DirectedGraph
 
         if ( removed == state )
         {
-            return (State) this.states.remove( removed.getName() );
+            this.states.remove( removed.getName() );
+
+            removed.clearTransitions();
+
+            return true;
         }
 
-        return null;
+        return false;
     }
 
     /** Create a new state for this process.
@@ -264,8 +268,8 @@ public class Process implements Named, Described, DirectedGraph
     {
         Set edges = new HashSet();
 
-        edges.add( getInbound( vertex ) );
-        edges.add( getOutbound( vertex ) );
+        edges.addAll( getInbound( vertex ) );
+        edges.addAll( getOutbound( vertex ) );
 
         return edges;
     }

@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: ProcessEngine.java,v 1.3 2002-09-16 14:59:51 bob Exp $
+ $Id: ProcessEngine.java,v 1.4 2002-09-17 05:13:34 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -54,7 +54,7 @@ import java.util.Iterator;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ProcessEngine.java,v 1.3 2002-09-16 14:59:51 bob Exp $
+ *  @version $Id: ProcessEngine.java,v 1.4 2002-09-17 05:13:34 bob Exp $
  */
 public class ProcessEngine 
 {
@@ -73,26 +73,12 @@ public class ProcessEngine
      */
     public ProcessEngine()
     {
-        // intentionally left blank
+        this.queue = new LinkedList();
     }
 
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
-
-    /** Start.
-     */
-    public void start()
-    {
-
-    }
-
-    /** Stop.
-     */
-    public void stop()
-    {
-
-    }
 
     /** Add a <code>ProcessContext</code> to the check queue.
      *
@@ -121,9 +107,12 @@ public class ProcessEngine
 
         synchronized( this.queue )
         {
-            while ( this.queue.isEmpty() )
+            while ( true )
             {
-                this.queue.wait();
+                if ( this.queue.isEmpty() )
+                {
+                    this.queue.wait();
+                }
 
                 if ( ! this.queue.isEmpty() )
                 {
@@ -154,7 +143,7 @@ public class ProcessEngine
         startProcess( process,
                       context );
 
-        check( context );
+        checkTransitions( context );
 
         return context;
     }
@@ -178,6 +167,8 @@ public class ProcessEngine
                                                      process,
                                                      parent );
 
+        parent.addChild( context );
+
         startProcess( process,
                       context );
 
@@ -199,6 +190,8 @@ public class ProcessEngine
     {
         startProcess( process,
                       context );
+
+        checkTransitions( context );
     }
 
     /** Begin a <code>Process</code> for a particular
@@ -215,8 +208,10 @@ public class ProcessEngine
     {
         State startState = process.getStartState();
 
-        context.startProcess( process );
-        context.enterState( startState );
+        Location location = context.getLocation();
+
+        location.startProcess( process );
+        location.enterState( startState );
     }
 
     /** Check a <code>ProcessContext</code> for progress possibilities.
@@ -229,7 +224,7 @@ public class ProcessEngine
      *  @throws InvalidMotionException If the transitions of the context attempt
      *          an invalid motion.
      */
-    public boolean check(ProcessContext context) throws InvalidMotionException
+    public boolean checkTransitions(ProcessContext context) throws InvalidMotionException
     {
         boolean transitioned = false;
 
@@ -281,16 +276,21 @@ public class ProcessEngine
                                     Transition transition) throws InvalidMotionException
     {
         State destination = transition.getDestination();
+        State origin = transition.getOrigin();
 
-        context.exitState( context.getCurrentState() );
+        Location location = context.getLocation();
 
+        if ( location.getCurrentState() != origin )
+        {
+            throw new InvalidMotionException( "Not in state " + origin.getName() );
+        }
+
+        location.exitState( origin );
+        location.enterState( destination );
+        
         if ( destination == null )
         {
-            context.finishProcess( context.getCurrentProcess() );
-        }
-        else
-        {
-            context.enterState( destination );
+            location.finishProcess( context.getCurrentProcess() );
         }
     }
 }

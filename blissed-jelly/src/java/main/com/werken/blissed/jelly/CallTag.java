@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: CallTag.java,v 1.3 2002-09-16 14:59:51 bob Exp $
+ $Id: CallTag.java,v 1.4 2002-09-17 05:13:34 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -47,14 +47,10 @@ package com.werken.blissed.jelly;
  */
 
 import com.werken.blissed.Process;
-import com.werken.blissed.State;
-import com.werken.blissed.Activity;
-import com.werken.blissed.activity.NoOpActivity;
-import com.werken.blissed.activity.CallActivity;
+import com.werken.blissed.ProcessEngine;
+import com.werken.blissed.ProcessContext;
 
-import org.apache.commons.jelly.Tag;
 import org.apache.commons.jelly.XMLOutput;
-import org.apache.commons.jelly.JellyException;
 import org.apache.commons.jelly.MissingAttributeException;
 
 /** Call a process.
@@ -72,8 +68,8 @@ public class CallTag extends BlissedTagSupport
     //     Instance members
     // ------------------------------------------------------------
 
-    /** The name of the process to call. */
-    private String name;
+    /** The process to call. */
+    private Process process;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -90,24 +86,22 @@ public class CallTag extends BlissedTagSupport
     //     Instance methods
     // ------------------------------------------------------------
 
-    /** Set the name of the process to perform.
+    /** Set the process to perform.
      *
-     *  @param name The name of the process.
+     *  @param process The process.
      */
-    public void setName(String name)
+    public void setProcess(Process process)
     {
-        this.name = name;
+        this.process = process;
     }
 
     /** Retrieve the process.
      *
      *  @return The process.
-     *
-     *  @throws Exception If a process library cannot be found.
      */
-    protected Process getProcess() throws Exception
+    public Process getProcess() 
     {
-        return getProcess( this.name );
+        return this.process;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -123,38 +117,16 @@ public class CallTag extends BlissedTagSupport
      */
     public void doTag(XMLOutput output) throws Exception
     {
-        Tag parent = getParent();
-
-        if ( ( parent == null )
-             ||
-             ! ( parent instanceof StateTag ) )
+        if ( this.process == null )
         {
-            throw new JellyException( "Parent is not a state" );
+            throw new MissingAttributeException( "process" );
         }
 
-        StateTag stateTag = (StateTag) parent;
+        ProcessContext context = getProcessContext();
+        ProcessEngine  engine  = getProcessEngine();
 
-        State state = stateTag.getState();
-
-        if ( state.getActivity() != null
-             &&
-             ! ( state.getActivity() instanceof NoOpActivity ) )
-        {
-            throw new JellyException( "Activity already defined for state \""
-                                      + state.getName()
-                                      + "\"" );
-        }
-
-        if ( this.name == null )
-        {
-            throw new MissingAttributeException( "name" );
-        }
-
-        final String processName = this.name;
-
-        Activity activity = new CallActivity( getProcess() );
-
-        state.setActivity( activity );
+        engine.call( getProcess(),
+                     context );
     }
 }
 

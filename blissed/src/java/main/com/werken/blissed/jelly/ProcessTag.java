@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: ProcessTag.java,v 1.7 2002-07-18 18:32:58 bob Exp $
+ $Id: ProcessTag.java,v 1.8 2002-09-17 05:13:34 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -76,6 +76,9 @@ public class ProcessTag extends BlissedTagSupport implements DescribedTag
     /** The start state name. */
     private String start;
 
+    /** Storage variable name. */
+    private String var;
+
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
@@ -118,6 +121,26 @@ public class ProcessTag extends BlissedTagSupport implements DescribedTag
         this.start = start;
     }
 
+    /** Set the name of the variable in which
+     *  to store the <code>Process</code.
+     *
+     *  @param var The variable name.
+     */
+    public void setVar(String var)
+    {
+        this.var = var;
+    }
+
+    /** Retrieve the name of the variable in which
+     *  to store the <code>Process</code.
+     *
+     *  @return The variable name.
+     */
+    public String getVar()
+    {
+        return this.var;
+    }
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     //     com.werken.blissed.jelly.BlissedTag
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -157,13 +180,6 @@ public class ProcessTag extends BlissedTagSupport implements DescribedTag
      */
     public void doTag(XMLOutput output) throws Exception
     {
-        ProcessLibrary library = (ProcessLibrary) findAncestorWithClass( ProcessLibrary.class );
-
-        if ( library == null )
-        {
-            throw new JellyException( "Not within a process library" );
-        }
-
         if ( this.name == null )
         {
             throw new MissingAttributeException( "name" );
@@ -188,6 +204,10 @@ public class ProcessTag extends BlissedTagSupport implements DescribedTag
 
         this.process.setStartState( startState );
 
-        library.addProcess( this.process );
+        if ( this.var != null )
+        {
+            getContext().setVariable( this.var,
+                                      this.process );
+        }
     }
 }
