@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: ActivityTag.java,v 1.7 2002-09-17 16:02:51 bob Exp $
+ $Id: ActivityTag.java,v 1.8 2002-09-17 21:36:43 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -61,6 +61,13 @@ import org.apache.commons.jelly.JellyException;
 public class ActivityTag extends DefinitionTagSupport
 {
     // ------------------------------------------------------------
+    //     Instance members
+    // ------------------------------------------------------------
+
+    /** Storage variable. */
+    private String var;
+
+    // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
 
@@ -75,6 +82,15 @@ public class ActivityTag extends DefinitionTagSupport
     //     Instance methods
     // ------------------------------------------------------------
 
+    public void setVar(String var)
+    {
+        this.var = var;
+    }
+
+    public String getVar()
+    {
+        return this.var;
+    }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     //     org.apache.commons.jelly.Tag
@@ -89,28 +105,46 @@ public class ActivityTag extends DefinitionTagSupport
      */
     public void doTag(XMLOutput output) throws Exception
     {
-        StateTag stateTag = (StateTag) findAncestorWithClass( StateTag.class );
+        State state = null;
 
-        if ( stateTag == null )
+        try
+        {     
+            state = getCurrentState();
+        }
+        catch (JellyException e)
         {
-            throw new JellyException( "Unable to locate a state." );
+            // ignore
         }
 
-        State state = stateTag.getState();
-
-        if ( state.getActivity() != null
-             &&
-             ! ( state.getActivity() instanceof NoOpActivity ) )
+        if ( state != null )
         {
-            throw new JellyException( "Activity already defined for state \""
-                                      + state.getName()
-                                      + "\"" );
+            if ( state.getActivity() != null
+                 &&
+                 ! ( state.getActivity() instanceof NoOpActivity ) )
+            {
+                throw new JellyException( "Activity already defined for state \""
+                                          + state.getName()
+                                          + "\"" );
+            }
         }
+
+        // - - - - - - - - - - - - - - - 
 
         Script script = getBody();
         
         Activity activity = new JellyActivity( script );
 
-        state.setActivity( activity );
+        if ( getVar() != null )
+        {
+            getContext().setVariable( getVar(),
+                                      activity );
+        }
+
+        // - - - - - - - - - - - - - - - 
+
+        if ( state != null )
+        {
+            state.setActivity( activity );
+        }
     }
 }

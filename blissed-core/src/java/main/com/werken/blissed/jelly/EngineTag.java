@@ -1,9 +1,9 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: GuardTag.java,v 1.7 2002-09-17 21:36:43 bob Exp $
+ $Id: EngineTag.java,v 1.1 2002-09-17 21:36:43 bob Exp $
 
- Copyright 2001 (C) The Werken Company. All Rights Reserved.
+ Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
  Redistribution and use of this software and associated documentation
  ("Software"), with or without modification, are permitted provided
@@ -46,25 +46,23 @@ package com.werken.blissed.jelly;
  
  */
 
-import com.werken.blissed.Transition;
-import com.werken.blissed.ProcessContext;
-import com.werken.blissed.Guard;
+import com.werken.blissed.ProcessEngine;
 
-import org.apache.commons.jelly.Script;
 import org.apache.commons.jelly.XMLOutput;
-import org.apache.commons.jelly.JellyException;
 
-/** Create a Guard
+/** Create a new blissed <code>ProcessEngine</code>.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ *
+ *  @version $Id: EngineTag.java,v 1.1 2002-09-17 21:36:43 bob Exp $
  */
-public class GuardTag extends DefinitionTagSupport
+public class EngineTag extends RuntimeTagSupport
 {
     // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------
 
-    /** Storage variable. */
+    /** Storage variable name. */
     private String var;
 
     // ------------------------------------------------------------
@@ -73,13 +71,10 @@ public class GuardTag extends DefinitionTagSupport
 
     /** Construct.
      */
-    public GuardTag()
+    public EngineTag()
     {
+        // intentionally left blank
     }
-
-    // ------------------------------------------------------------
-    //     Instance methods
-    // ------------------------------------------------------------
 
     public void setVar(String var)
     {
@@ -91,7 +86,10 @@ public class GuardTag extends DefinitionTagSupport
         return this.var;
     }
 
-
+    // ------------------------------------------------------------
+    //     Instance methods
+    // ------------------------------------------------------------
+    
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     //     org.apache.commons.jelly.Tag
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -103,32 +101,14 @@ public class GuardTag extends DefinitionTagSupport
      *
      *  @throws Exception if an error occurs.
      */
-    public void doTag(final XMLOutput output) throws Exception
+    public void doTag(XMLOutput output) throws Exception
     {
-        Script script = getBody();
-        
-        Guard guard = new JellyGuard( script );
+        checkStringAttribute( "var",
+                              getVar() );
 
-        if ( getVar() != null )
-        {
-            getContext().setVariable( getVar(),
-                                      guard );
-        }
-        
-        TransitionTag transitionTag = (TransitionTag) findAncestorWithClass( TransitionTag.class );
+        ProcessEngine engine = new ProcessEngine();
 
-        if ( transitionTag == null )
-        {
-            return;
-        }
-
-        Transition transition = transitionTag.getTransition();
-
-        if ( transition.getGuard() != null )
-        {
-            throw new JellyException( "Guard already defined for transition" );
-        }
-
-        transition.setGuard( guard );
+        getContext().setVariable( getVar(),
+                                  engine );
     }
 }

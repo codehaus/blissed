@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: SpawnTag.java,v 1.1 2002-09-17 16:02:51 bob Exp $
+ $Id: SpawnTag.java,v 1.2 2002-09-17 21:36:43 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -67,6 +67,8 @@ import org.apache.commons.jelly.MissingAttributeException;
  *  </p>
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ *
+ *  @version $Id: SpawnTag.java,v 1.2 2002-09-17 21:36:43 bob Exp $
  */
 public class SpawnTag extends RuntimeTagSupport 
 {
@@ -74,8 +76,14 @@ public class SpawnTag extends RuntimeTagSupport
     //     Instance members
     // ------------------------------------------------------------
 
+    /** The process engine if non-nested. */
+    private ProcessEngine engine;
+
     /** Name of the process to spawn. */
     private Process process;
+
+    /** Storage variable for spawned process. */
+    private String var;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -112,6 +120,36 @@ public class SpawnTag extends RuntimeTagSupport
         return this.process;
     }
 
+    /** Set the <code>ProcessEngine</code> to use if spawning
+     *  a non-nested process.
+     *
+     *  @param engine The process engine.
+     */
+    public void setEngine(ProcessEngine engine)
+    {
+        this.engine = engine;
+    }
+
+    /** Retrieve the <code>ProcessEngine</code> to use if spawning
+     *  a non-nested process.
+     *
+     *  @return The process engine.
+     */
+    public ProcessEngine getEngine()
+    {
+        return this.engine;
+    }
+
+    public void setVar(String var)
+    {
+        this.var = var;
+    }
+
+    public String getVar()
+    {
+        return this.var;
+    }
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     //     org.apache.commons.jelly.Tag
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -125,15 +163,37 @@ public class SpawnTag extends RuntimeTagSupport
      */
     public void doTag(XMLOutput output) throws Exception
     {
-        if ( this.process == null )
-        {
-            throw new MissingAttributeException( "process" );
-        }
+        checkObjectAttribute( "process",
+                              this.process );
 
         ProcessContext context = getProcessContext();
-        ProcessEngine  engine  = getProcessEngine();
 
-        engine.spawn( getProcess(),
-                      context );
+        ProcessEngine  engine  = null;
+        ProcessContext spawned = null;
+
+        if ( context == null )
+        {
+            engine = getEngine();
+
+            if ( engine == null )
+            {
+                throw new MissingAttributeException( "engine" );
+            }
+
+            spawned = engine.spawn( getProcess() );
+        }
+        else
+        {
+            engine  = context.getProcessEngine();
+
+            spawned = engine.spawn( getProcess(),
+                                    context );
+        }
+
+        if ( getVar() != null )
+        {
+            getContext().setVariable( getVar(),
+                                      spawned );
+        }
     }
 }

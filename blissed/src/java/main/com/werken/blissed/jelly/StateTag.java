@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: StateTag.java,v 1.8 2002-09-17 16:02:51 bob Exp $
+ $Id: StateTag.java,v 1.9 2002-09-17 21:36:43 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -150,8 +150,8 @@ public class StateTag extends DefinitionTagSupport implements DescribedTag
     {
         Process process = getCurrentProcess();
 
-        checkAttribute( "name",
-                        this.name );
+        checkStringAttribute( "name",
+                              this.name );
 
         this.state = process.addState( this.name,
                                        this.description );
