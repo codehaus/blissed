@@ -1,4 +1,6 @@
 
 <project default="java:jar">
 
+  <echo>${maven.home}</echo>
+
 </project>

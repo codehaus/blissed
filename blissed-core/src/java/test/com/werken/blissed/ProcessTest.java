@@ -86,4 +86,37 @@ public class ProcessTest extends TestCase
             fail( e.getLocalizedMessage() );
         }
     }
+
+    public void testSpawn_Child()
+    {
+        try
+        {
+            Context context = this.process.spawn();
+            
+            assertSame( this.process,
+                        context.getCurrentProcess() );
+            
+            assertSame( this.state1,
+                        context.getCurrentNode() );
+
+            Context child = this.process.spawn( context );
+
+            assertSame( this.process,
+                        child.getCurrentProcess() );
+
+            assertSame( this.state1,
+                        child.getCurrentNode() );
+
+            assertSame( context,
+                        child.getParent() );
+        }
+        catch (InvalidMotionException e)
+        {
+            fail( e.getLocalizedMessage() );
+        }
+        catch (ActivityException e)
+        {
+            fail( e.getLocalizedMessage() );
+        }
+    }
 }

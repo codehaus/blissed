@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
-  $Id: Context.java,v 1.6 2002-07-06 14:51:20 werken Exp $
+  $Id: Context.java,v 1.7 2002-07-06 15:44:54 werken Exp $
 
   Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -238,15 +238,20 @@ public class Context implements Named
     public Context spawn(Process process) throws InvalidMotionException, ActivityException
     {
         Context spawned = process.spawn( this );
-                                          
+
+        addChild( spawned );
+
+        return spawned;
+    }
+
+    void addChild(Context child)
+    {
         if ( this.children == Collections.EMPTY_SET )
         {
             this.children = new HashSet();
         }
 
-        this.children.add( spawned );
-
-        return spawned;
+        this.children.add( child );
     }
 
     /** Retrieve an unmodifiable set of all children
