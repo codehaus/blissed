@@ -41,7 +41,7 @@ public class ProcessTest extends TestCase
         this.process = null;
     }
 
-    public void testAddState() throws Exception
+    public void testAddState_Valid() throws Exception
     {
         State state2 = this.process.addState( "state.2",
                                               "state two" );
@@ -50,7 +50,23 @@ public class ProcessTest extends TestCase
                     this.process.getState( "state.2" ) );
     }
     
-    public void testRemoveState() throws Exception
+
+    public void testAddState_Duplicate() throws Exception
+    {
+        try
+        {
+            State state2 = this.process.addState( "state.1",
+                                                  "state one" );
+            
+            fail( "Should have thrown DuplicateStateException" );
+        }
+        catch (DuplicateStateException e)
+        {
+            // expected and correct
+        }
+    }
+
+    public void testRemoveState_Valid() throws Exception
     {
         State state2 = this.process.addState( "state.2",
                                               "state two" );
@@ -58,8 +74,22 @@ public class ProcessTest extends TestCase
         assertSame( state2,
                     this.process.getState( "state.2" ) );
         
-        this.process.removeState( state2 );
+        assertNotNull( this.process.removeState( state2 ) );
         
         assertNull( this.process.getState( "state.2" ) );
+    }
+
+    public void testRemoveState_Invalid() throws Exception
+    {
+        Process otherProcess = new Process( "other.process",
+                                            "other process" );
+
+        State otherState = otherProcess.addState( "state.1",
+                                                  "state one" );
+
+        assertNull( this.process.removeState( otherState ) );
+
+        assertSame( state1,
+                    this.process.getState( "state.1" ) );
     }
 }
