@@ -1,7 +1,7 @@
 package com.werken.blissed.event;
 
 /*
- $Id: ProcessStartedEvent.java,v 1.1 2002-07-02 15:40:12 werken Exp $
+ $Id: ProcessStartedEvent.java,v 1.2 2002-07-02 20:17:37 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -51,10 +51,24 @@ import com.werken.blissed.WorkSlip;
 
 import java.util.EventObject;
 
+/** Event indicating a process instance was started.
+ *
+ *  @see Process#start
+ *  @see WorkSlip#start
+ *
+ *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ */
 public class ProcessStartedEvent extends ProcessEvent 
 {
-    private WorkSlip workSlip;
+    // ------------------------------------------------------------
+    //     Constructors
+    // ------------------------------------------------------------
 
+    /** Construct.
+     *
+     *  @param process The process event source.
+     *  @param workSlip The workslip context.
+     */
     public ProcessStartedEvent(Process process,
                                WorkSlip workSlip)
     {

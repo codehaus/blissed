@@ -1,7 +1,7 @@
 package com.werken.blissed.event;
 
 /*
- $Id: PredicateListener.java,v 1.1 2002-07-02 16:16:40 werken Exp $
+ $Id: PredicateListener.java,v 1.2 2002-07-02 20:17:37 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -48,8 +48,26 @@ package com.werken.blissed.event;
 
 import java.util.EventListener;
 
+/** Interface for receiving <code>PredicateEvent</code>s.
+ *
+ *  @see PredicateEvent
+ *  @see com.werken.blissed.Predicate
+ *
+ *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ */
 public interface PredicateListener extends EventListener
 {
+    /** Receive notification of a predicate's test
+     *  passing for a given workslip context.
+     *
+     *  @param event The predicate-passed event.
+     */
     void predicatePassed(PredicatePassedEvent event);
+
+    /** Receive notification of a predicate's test
+     *  failing for a given workslip context.
+     *
+     *  @param event The predicate-failed event.
+     */
     void predicateFailed(PredicateFailedEvent event);
 }

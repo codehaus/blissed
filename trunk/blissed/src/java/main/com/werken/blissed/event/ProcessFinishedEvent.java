@@ -1,7 +1,7 @@
 package com.werken.blissed.event;
 
 /*
- $Id: ProcessFinishedEvent.java,v 1.1 2002-07-02 15:40:12 werken Exp $
+ $Id: ProcessFinishedEvent.java,v 1.2 2002-07-02 20:17:37 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -49,12 +49,23 @@ package com.werken.blissed.event;
 import com.werken.blissed.Process;
 import com.werken.blissed.WorkSlip;
 
-import java.util.EventObject;
-
+/** Event indicating a process instance was finished.
+ *
+ *  @see com.werken.blissed.Finish
+ *
+ *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ */
 public class ProcessFinishedEvent extends ProcessEvent 
 {
-    private WorkSlip workSlip;
+    // ------------------------------------------------------------
+    //     Constructors
+    // ------------------------------------------------------------
 
+    /** Construct.
+     *
+     *  @param process The process event-source.
+     *  @param workSlip The workslip context.
+     */
     public ProcessFinishedEvent(Process process,
                                 WorkSlip workSlip)
     {

@@ -1,7 +1,7 @@
 package com.werken.blissed.event;
 
 /*
- $Id: ProcessEvent.java,v 1.1 2002-07-02 15:40:12 werken Exp $
+ $Id: ProcessEvent.java,v 1.2 2002-07-02 20:17:37 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -49,27 +49,41 @@ package com.werken.blissed.event;
 import com.werken.blissed.Process;
 import com.werken.blissed.WorkSlip;
 
-import java.util.EventObject;
-
-public abstract class ProcessEvent extends EventObject
+/** Abstract class for any event event occuring on a <code>Process</code>.
+ *
+ *  @see Process
+ *
+ *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ */
+public abstract class ProcessEvent extends BlissedEvent
 {
-    private WorkSlip workSlip;
+    // ------------------------------------------------------------
+    //     Constructors
+    // ------------------------------------------------------------
 
+    /** Construct.
+     *
+     *  @param process The process event source.
+     *  @param workSlip The workslip context.
+     */
     public ProcessEvent(Process process,
                         WorkSlip workSlip)
     {
-        super( process );
-        this.workSlip = workSlip;
+        super( process,
+               workSlip );
     }
 
+    // ------------------------------------------------------------
+    //     Instance methods
+    // ------------------------------------------------------------
+
+    /** Retrieve the process event source.
+     *
+     *  @return The process event source.
+     */
     public Process getProcess()
     {
         return (Process) getSource();
-    }
-
-    public WorkSlip getWorkSlip()
-    {
-        return this.workSlip;
     }
 }
 
