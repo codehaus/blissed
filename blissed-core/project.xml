@@ -7,14 +7,14 @@
   <name>blissed</name>
 
   <id>blissed</id>
-  <currentVersion>1.0-beta-2-dev</currentVersion>
+  <currentVersion>1.0-beta-3-dev</currentVersion>
   <organization>
-    <name>The Werken Company</name>
-    <url>http://www.werken.com</url>
-    <logo>http://images.werken.com/werken_large.gif</logo>
+    <name>codehaus</name>
+    <url>http://codehaus.org</url>
+    <logo>http://images.werken.com/codehaus.gif</logo>
   </organization>
   <inceptionYear>2002</inceptionYear>
-  <package>com.werken.blissed</package>
+  <package>org.codehaus.blissed</package>
   <shortDescription>blissed: Java state-machine framework</shortDescription>
   <logo>http://images.werken.com/blissed.gif</logo>
 
@@ -26,16 +26,15 @@
   <mailingLists>
     <mailingList>
       <name>blissed interest</name>
-      <subscribe>http://lists.werken.com/mailman/listinfo/blissed-interest</subscribe>
-      <unsubscribe>http://lists.werken.com/mailman/listinfo/blissed-interest</unsubscribe>
-      <archive>http://lists.werken.com/pipermail/blissed-interest/</archive>
+      <subscribe>http://lists.codehaus.org/mailman/listinfo/blissed-interest</subscribe>
+      <unsubscribe>http://lists.codehaus.org/mailman/listinfo/blissed-interest</unsubscribe>
+      <archive>http://lists.codehaus.org/pipermail/blissed-interest/</archive>
     </mailingList>
     <mailingList>
       <name>blissed cvs messages</name>
-      <subscribe>http://lists.werken.com/mailman/listinfo/blissed-cvs</subscribe>
-      <unsubscribe>http://lists.werken.com/mailman/listinfo/blissed-cvs</unsubscribe>
-      <archive>http://lists.werken.com/pipermail/blissed-interest/</archive>
-      <archive>http://lists.werken.com/pipermail/blissed-cvs/</archive>
+      <subscribe>http://lists.codehaus.org/mailman/listinfo/blissed-cvs</subscribe>
+      <unsubscribe>http://lists.codehaus.org/mailman/listinfo/blissed-cvs</unsubscribe>
+      <archive>http://lists.codehaus.org/pipermail/blissed-cvs/</archive>
     </mailingList>
   </mailingLists>
 
@@ -44,8 +43,8 @@
   <issueTrackingUrl>http://jira.werken.com/secure/BrowseProject.jspa?id=10011&amp;report=roadmap</issueTrackingUrl>
 
   <repository>
-    <connection>scm:cvs:pserver:anonymous@cvs.werken.com:/cvsroot/blissed:blissed</connection>
-    <url>http://cvs.werken.com/viewcvs.cgi/blissed/blissed/</url>
+    <connection>scm:cvs:pserver:anonymous@cvs.codehaus.org:/cvsroot/blissed:blissed</connection>
+    <url>http://cvs.codehaus.org/viewcvs.cgi/blissed/blissed/</url>
   </repository>
 
   <developers>
@@ -62,7 +61,7 @@
       <name>peter royal</name>
       <id>proyal</id>
       <roles>
-        <role>Hacker</role>
+        <role>Developer</role>
       </roles>
       <email>proyal@pace2020.com</email>
       <organization>Pace Systems Group</organization>
@@ -142,14 +141,23 @@
   </dependencies>
 
   <build>
-    <nagEmailAddress>bob@eng.werken.com</nagEmailAddress>
+    <nagEmailAddress>proyal@pace2020.com</nagEmailAddress>
     <sourceDirectory>src/java/main</sourceDirectory>
     <unitTestSourceDirectory>src/java/test</unitTestSourceDirectory>
     <aspectSourceDirectory/>
+
     <unitTest>
       <includes>
         <include>**/*Test.java</include>
       </includes>
+      <resources>
+        <resource>
+          <directory>src/java/test</directory>
+          <includes>
+            <include>**/*.jelly</include>
+          </includes>
+        </resource>
+      </resources>
     </unitTest>
 
     <resources>
@@ -157,15 +165,6 @@
         <include>log4j.properties</include>
       </includes>
     </resources>
-
-    <testResources>
-      <testResource>
-        <directory>src/java/test</directory>
-        <includes>
-          <include>**/*.xml</include>
-        </includes>
-      </testResource>
-    </testResources>
 
     <jars/>
   </build>
