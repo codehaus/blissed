@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Activity.java,v 1.2 2002-07-06 21:23:38 werken Exp $
+ $Id: Activity.java,v 1.3 2002-07-17 22:14:53 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -53,7 +53,7 @@ package com.werken.blissed;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public interface Activity extends Named, Described
+public interface Activity 
 {
     /** Perform this activity within the specified context.
      *

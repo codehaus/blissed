@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Start.java,v 1.10 2002-07-06 21:23:38 werken Exp $
+ $Id: Start.java,v 1.11 2002-07-17 22:14:53 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -119,5 +119,10 @@ public class Start extends Node
         release( context );
 
         getDestination().accept( context ); 
+    }
+
+    public String toString()
+    {
+        return "[Start: destination=" + getDestination().getName() + "]";
     }
 }

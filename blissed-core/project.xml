@@ -57,6 +57,22 @@
   <dependencies>
 
     <dependency>
+      <id>forehead</id>
+      <version>1.0-beta-2</version>
+      <url>http://forehead.werken.co/</url>
+    </dependency>
+
+    <dependency>
+      <id>commons-beanutils</id>
+      <version>1.4-dev</version>
+    </dependency>
+
+    <dependency>
+      <id>commons-collections</id>
+      <version>2.0</version>
+    </dependency>
+
+    <dependency>
       <id>commons-jelly</id>
       <version>SNAPSHOT</version>
       <url>http://jakarta.apache.org/commons/sandbox/jelly/</url>
@@ -78,6 +94,11 @@
       <id>junit</id>
       <version>3.7</version>
       <url>http://junit.org/</url>
+    </dependency>
+
+    <dependency>
+      <id>xerces</id>
+      <version>2.0.0</version>
     </dependency>
 
     <dependency>
