@@ -21,7 +21,7 @@
   <description>
   </description>
 
-  <url>http://blissed.werken.com/</url>
+  <url>http://blissed.codehaus.org/</url>
 
   <mailingLists>
     <mailingList>
@@ -38,9 +38,9 @@
     </mailingList>
   </mailingLists>
 
-  <siteAddress>blissed.werken.com</siteAddress>
-  <siteDirectory>/www/blissed.werken.com</siteDirectory>
-  <issueTrackingUrl>http://jira.werken.com/secure/BrowseProject.jspa?id=10011&amp;report=roadmap</issueTrackingUrl>
+  <siteAddress>blissed.codehaus.org</siteAddress>
+  <siteDirectory>/www/blissed.codehaus.org</siteDirectory>
+  <issueTrackingUrl>http://jira.codehaus.org/secure/BrowseProject.jspa?id=10011&amp;report=roadmap</issueTrackingUrl>
 
   <repository>
     <connection>scm:cvs:pserver:anonymous@cvs.codehaus.org:/cvsroot/blissed:blissed</connection>
