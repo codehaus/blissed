@@ -1,7 +1,7 @@
 package com.werken.blissed.event;
 
 /*
- $Id: StateEnteredEvent.java,v 1.4 2002-07-04 19:40:07 werken Exp $
+ $Id: StateEnteredEvent.java,v 1.5 2002-07-07 05:09:16 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -49,7 +49,7 @@ package com.werken.blissed.event;
 import com.werken.blissed.State;
 import com.werken.blissed.Context;
 
-/** Event indicating a state was entered by a given context context.
+/** Event indicating a state was entered by a given context.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
