@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: ProcessTag.java,v 1.4 2002-07-17 17:11:07 bob Exp $
+ $Id: ProcessTag.java,v 1.5 2002-07-17 22:14:53 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -47,16 +47,18 @@ package com.werken.blissed.jelly;
  */
 
 import com.werken.blissed.Process;
+import com.werken.blissed.State;
 import com.werken.blissed.Described;
 
 import org.apache.commons.jelly.XMLOutput;
 import org.apache.commons.jelly.MissingAttributeException;
+import org.apache.commons.jelly.JellyException;
 
 /** Create a new process.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class ProcessTag extends BlissedTag implements DescribedTag
+public class ProcessTag extends BlissedTagSupport implements DescribedTag
 {
     // ------------------------------------------------------------
     //     Instance members
@@ -70,6 +72,9 @@ public class ProcessTag extends BlissedTag implements DescribedTag
 
     /** The process. */
     private Process process;
+
+    /** The start state name. */
+    private String start;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -102,6 +107,15 @@ public class ProcessTag extends BlissedTag implements DescribedTag
     public void setDescription(String description)
     {
         this.description = description;
+    }
+
+    /** Set the first state of the process.
+     *
+     *  @param start The name of the start state.
+     */
+    public void setStart(String start)
+    {
+        this.start = start;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -143,12 +157,39 @@ public class ProcessTag extends BlissedTag implements DescribedTag
      */
     public void doTag(XMLOutput output) throws Exception
     {
+        BlissedTag blissedTag = (BlissedTag) findAncestorWithClass( BlissedTag.class );
+
+        if ( blissedTag == null )
+        {
+            throw new JellyException( "Not within a blissed element" );
+        }
+
         if ( this.name == null )
         {
             throw new MissingAttributeException( "name" );
         }
 
+        if ( this.start == null )
+        {
+            throw new MissingAttributeException( "start" );
+        }
+
         this.process = new Process( this.name,
                                     this.description );
+
+        invokeBody( output );
+
+        State startState = this.process.getState( this.start );
+
+        if ( startState == null )
+        {
+            throw new JellyException( "Start state \"" + this.start + "\" not found." );
+        }
+
+        this.process.setStartState( startState );
+
+        System.err.println( this.process.getStart() );
+
+        blissedTag.addProcess( this.process );
     }
 }

@@ -1,0 +1,60 @@
+
+<blissed>
+
+  <process name="example"
+           start="1">
+
+    <state name="1">
+      <description>
+        This is state #1.
+      </description>
+      <activity>
+        Doing state #1 
+      </activity>
+    </state>
+
+    <state name="2"
+           terminal="true">
+      <description>
+        This is state #2.
+      </description>
+      <activity>
+        Doing state #2 
+      </activity>
+    </state>
+
+    <state name="3"
+           terminal="true">
+      <description>
+        This is state #3.
+      </description>
+      <activity>
+        Doing state #3 
+      </activity>
+    </state>
+
+    <transition from="1"
+                  to="2">
+      <description>
+        Go from #1 to #2
+      </description>
+      <guard>
+        Testing guard for 1->2
+        <fail/>
+      </guard>
+    </transition>
+
+    <transition from="1"
+                  to="3">
+      <description>
+        Go from #1 to #3
+      </description>
+      <guard>
+        Testing guard for 1->3
+      </guard>
+    </transition>
+  </process>
+
+  <start-process name="example"/>
+
+</blissed>

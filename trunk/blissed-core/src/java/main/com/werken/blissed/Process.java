@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Process.java,v 1.17 2002-07-17 17:11:07 bob Exp $
+ $Id: Process.java,v 1.18 2002-07-17 22:14:53 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -130,6 +130,23 @@ public class Process implements Named, Described, Activity
     public Start getStart()
     {
         return this.start;
+    }
+
+    /** Set the start state.
+     *
+     *  @param start The start state, or <code>null</code> to
+     *         remove the start state.
+     */
+    public void setStartState(State start)
+    {
+        if ( start == null )
+        {
+            getStart().setDestination( getFinish() );
+        }
+        else
+        {
+            getStart().setDestination( start );
+        }
     }
 
     /** Retrieve the exit-point finish node of this process.

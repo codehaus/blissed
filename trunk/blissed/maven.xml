@@ -1,4 +1,57 @@
 
-<project default="java:jar">
+<project default="java:jar"
+         xmlns:j="jelly:core">
+
+  <goal name="blissed:install"
+        prereqs="java:jar">
+
+    <echo>
+    ----------------------------------------------------------------------
+    Install to ${blissed.home}
+    ----------------------------------------------------------------------
+    </echo>
+
+    <delete dir="${blissed.home}"/>
+
+    <mkdir dir="${blissed.home}"/>
+    <mkdir dir="${blissed.home}/lib"/>
+    <mkdir dir="${blissed.home}/bin"/>
+
+    <copy file="${basedir}/target/${maven.final.name}.jar"
+          todir="${blissed.home}/lib"/>
+
+    <copy todir="${blissed.home}/lib"
+          flatten="true">
+      <fileset dir="${maven.repo.local}">
+        <j:forEach var="dep" items="${pom.dependencies}">
+          <include name="${dep.id}/jars/${dep.jar}"/>  
+        </j:forEach>
+      </fileset>
+    </copy>
+
+    <copy todir="${blissed.home}/bin">
+      <fileset dir="${maven.src.dir}/bin"/>
+    </copy>
+    <chmod perm="+x">
+      <fileset dir="${blissed.home}/bin"/>
+    </chmod>
+    <copy todir="${blissed.home}/conf">
+      <fileset dir="${maven.src.dir}/conf"/>
+    </copy>
+
+    <echo>
+    ----------------------------------------------------------------------
+    Installed to ${blissed.home}
+    ----------------------------------------------------------------------
+    Please ensure that ${blissed.home}/bin is in your $PATH.
+
+    You may create the file ${user.home}/.blissedrc and 
+    add the following line:
+      
+      export BLISSED_HOME=${blissed.home}
+    ----------------------------------------------------------------------
+    </echo>
+
+  </goal>
 
 </project>
