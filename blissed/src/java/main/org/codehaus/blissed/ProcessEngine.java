@@ -1,7 +1,7 @@
 package org.codehaus.blissed;
 
 /*
- $Id: ProcessEngine.java,v 1.1 2003-06-04 15:15:04 proyal Exp $
+ $Id: ProcessEngine.java,v 1.2 2003-06-04 21:28:46 proyal Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -46,18 +46,24 @@ package org.codehaus.blissed;
 
  */
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Iterator;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /** Process controller engine.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ProcessEngine.java,v 1.1 2003-06-04 15:15:04 proyal Exp $
+ *  @version $Id: ProcessEngine.java,v 1.2 2003-06-04 21:28:46 proyal Exp $
  */
 public class ProcessEngine implements Runnable
 {
+    /** The Log to which logging calls will be made. */
+    private static final Log log = LogFactory.getLog( ProcessEngine.class );
+
     // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------
@@ -191,7 +197,7 @@ public class ProcessEngine implements Runnable
             }
             catch( Exception e )
             {
-                e.printStackTrace();
+                log.error( "Exception serviceing entry", e );
             }
         }
     }
@@ -364,7 +370,7 @@ public class ProcessEngine implements Runnable
                                  ProcessContext parent )
         throws ActivityException, InvalidMotionException
     {
-        ProcessContext processContext =  new ProcessContext( this, parent );
+        ProcessContext processContext = new ProcessContext( this, parent );
 
         parent.addChild( processContext );
 
