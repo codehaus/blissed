@@ -1,7 +1,7 @@
 package org.codehaus.blissed.jelly;
 
 /*
- $Id: JellyGuard.java,v 1.3 2003-06-11 00:24:40 proyal Exp $
+ $Id: AbstractJellyScript.java,v 1.1 2003-06-11 00:24:40 proyal Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -48,93 +48,102 @@ package org.codehaus.blissed.jelly;
 
 import java.io.UnsupportedEncodingException;
 
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.jelly.JellyTagException;
 import org.apache.commons.jelly.Script;
+import org.apache.commons.jelly.JellyTagException;
+import org.apache.commons.jelly.JellyContext;
+import org.apache.commons.jelly.XMLOutput;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.beanutils.PropertyUtils;
 
-import org.codehaus.blissed.Guard;
 import org.codehaus.blissed.ProcessContext;
-import org.codehaus.blissed.Transition;
 
 /**
- *  Transition <code>Guard</code> implemented using a Jelly <code>Script</code>.
- *
- *  <p>
- *  Within the jelly script, the tags &lt;pass&gt; and &lt;fail&gt; can be
- *  used to immediately signal guard passage or failure and circumvent the
- *  evaluation of the remainder of the script.  If the script processes entirely
- *  without encountering an exception, it is considered to have passed, and
- *  {@link #test} returns <code>true</code>.
- *  </p>
+ *  Abstract class to help with running a Jelly <code>Script</code>.
  *
  *  <p>
  *  If a ProcessContext has data associated with it, an attempt will be made to treat that
  *  data as a bean, and add all properties to the JellyContext
  *  </p>
  *
- *  @see BeanUtils#describe
+ *  @see PropertyUtils#describe
  *
- *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *  @author <a href="mailto:proyal@codehaus.org">peter royal</a>
  *
  *  @version $Id $
  */
-public class JellyGuard extends AbstractJellyScript implements Guard
+public abstract class AbstractJellyScript
 {
-    // ------------------------------------------------------------
-    //     Constructors
-    // ------------------------------------------------------------
+    /** The Log to which logging calls will be made. */
+    protected static final Log log = LogFactory.getLog( AbstractJellyScript.class );
 
-    /** Construct.
-     *
-     *  @param script The jelly guard script.
-     */
-    public JellyGuard( Script script )
+    /** The jelly script. */
+    private Script script;
+
+    /** The parent JellyContext */
+    private JellyContext parentContext;
+
+    public JellyContext getParentContext()
     {
-        setScript( script );
+        return parentContext;
     }
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    //     org.codehaus.blissed.Guard
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-    /** Test this guard against a procession.
-     *
-     *  @param transition The transition this guard guards.
-     *  @param context The process context.
-     *
-     *  @return <code>true</code> if the procession passes
-     *          this guard, otherwise <code>false</code>.
-     */
-    public boolean test( Transition transition,
-                         ProcessContext context )
+    public void setParentContext( JellyContext parentContext )
     {
-        try
-        {
-            runScript( context );
-        }
-        catch( JellyTagException e )
-        {
-            final Throwable cause = e.getCause();
+        this.parentContext = parentContext;
+    }
 
-            if( cause instanceof PassException )
-            {
-                return true;
-            }
-            else if( cause instanceof FailException )
-            {
-                return false;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        catch( UnsupportedEncodingException e )
+    /** Retrieve the Jelly script.
+     *
+     *  @return The jelly script.
+     */
+    public Script getScript()
+    {
+        return this.script;
+    }
+
+    public void setScript( Script script )
+    {
+        this.script = script;
+    }
+
+    protected void runScript( final ProcessContext context )
+        throws UnsupportedEncodingException, JellyTagException
+    {
+        final JellyContext jellyContext = createJellyContext();
+
+        if( null != context )
         {
-            throw new RuntimeException( "Unable to create Jelly XMLOutput: " + e.getMessage() );
+            final Object processData = context.getProcessData();
+
+            if( null != processData )
+            {
+                try
+                {
+                    jellyContext.setVariables( PropertyUtils.describe( processData ) );
+                }
+                catch( Exception e )
+                {
+                    log.warn( "Unable to describe process data for JellyContext", e );
+                }
+            }
         }
 
-        return true;
+        jellyContext.setVariable( RuntimeTagSupport.PROCESS_CONTEXT_KEY, context );
+
+        getScript().run( jellyContext,
+                         XMLOutput.createXMLOutput( System.err, false ) );
+    }
+
+    private JellyContext createJellyContext()
+    {
+        if( null == getParentContext() )
+        {
+            return new JellyContext();
+        }
+        else
+        {
+            return new JellyContext( getParentContext() );
+        }
     }
 }

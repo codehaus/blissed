@@ -1,7 +1,7 @@
 package org.codehaus.blissed.jelly;
 
 /*
- $Id: JellyActivity.java,v 1.2 2003-06-05 19:56:08 proyal Exp $
+ $Id: JellyActivity.java,v 1.3 2003-06-11 00:24:40 proyal Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,31 +46,21 @@ package org.codehaus.blissed.jelly;
  
  */
 
-import org.codehaus.blissed.Activity;
-import org.codehaus.blissed.ProcessContext;
-import org.codehaus.blissed.ActivityException;
-
 import org.apache.commons.jelly.JellyContext;
 import org.apache.commons.jelly.Script;
-import org.apache.commons.jelly.XMLOutput;
+
+import org.codehaus.blissed.Activity;
+import org.codehaus.blissed.ActivityException;
+import org.codehaus.blissed.ProcessContext;
 
 /** State activity based upon a Jelly script.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: JellyActivity.java,v 1.2 2003-06-05 19:56:08 proyal Exp $
+ *  @version $Id: JellyActivity.java,v 1.3 2003-06-11 00:24:40 proyal Exp $
  */
-public class JellyActivity implements Activity
+public class JellyActivity extends AbstractJellyScript implements Activity
 {
-    // ------------------------------------------------------------
-    //     Instance members
-    // ------------------------------------------------------------
-
-    /** Jellyscript. */
-    private Script script;
-
-    private JellyContext parentContext;
-
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
@@ -78,27 +68,19 @@ public class JellyActivity implements Activity
     /** Construct.
      *
      *  @param script The jelly script.
+     *  @param parentContext parent Jelly Context
      */
     public JellyActivity(Script script, JellyContext parentContext)
     {
-        this.script = script;
-        this.parentContext = parentContext;
+        setScript(script );
+        setParentContext(parentContext );
     }
 
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
 
-    /** Retrieve the Jelly script.
-     *
-     *  @return The jelly script.
-     */
-    public Script getScript()
-    {
-        return this.script;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     //     org.codehaus.blissed.Activity
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -110,23 +92,13 @@ public class JellyActivity implements Activity
      */
     public void perform(ProcessContext context) throws ActivityException
     {
-        JellyContext jellyContext = new JellyContext(this.parentContext);
-
-        jellyContext.setVariable( RuntimeTagSupport.PROCESS_CONTEXT_KEY,
-                                   context );
-
         try
         {
-            XMLOutput output = XMLOutput.createXMLOutput( System.err,
-                                                          false );
-
-            getScript().run( jellyContext,
-                             output );
+            runScript(context );
         }
         catch (Exception e)
         {
             throw new ActivityException( e );
         }
     }
-   
 }

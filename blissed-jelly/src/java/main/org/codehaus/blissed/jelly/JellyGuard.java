@@ -1,10 +1,10 @@
 package org.codehaus.blissed.jelly;
 
 /*
- $Id: JellyGuard.java,v 1.2 2003-06-05 19:56:08 proyal Exp $
+ $Id: JellyGuard.java,v 1.3 2003-06-11 00:24:40 proyal Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
- 
+
  Redistribution and use of this software and associated documentation
  ("Software"), with or without modification, are permitted provided
  that the following conditions are met:
@@ -12,25 +12,25 @@ package org.codehaus.blissed.jelly;
  1. Redistributions of source code must retain copyright
     statements and notices.  Redistributions must also contain a
     copy of this document.
- 
+
  2. Redistributions in binary form must reproduce the
     above copyright notice, this list of conditions and the
     following disclaimer in the documentation and/or other
     materials provided with the distribution.
- 
+
  3. The name "blissed" must not be used to endorse or promote
     products derived from this Software without prior written
     permission of The Werken Company.  For written permission,
     please contact bob@werken.com.
- 
+
  4. Products derived from this Software may not be called "blissed"
     nor may "blissed" appear in their names without prior written
     permission of The Werken Company. blissed is a registered
     trademark of The Werken Company.
- 
+
  5. Due credit should be given to the blissed Project
     (http://blissed.werken.com/).
- 
+
  THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS
  ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
  NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
@@ -43,21 +43,21 @@ package org.codehaus.blissed.jelly;
  STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  OF THE POSSIBILITY OF SUCH DAMAGE.
- 
+
  */
 
 import java.io.UnsupportedEncodingException;
 
-import org.codehaus.blissed.Guard;
-import org.codehaus.blissed.Transition;
-import org.codehaus.blissed.ProcessContext;
-
-import org.apache.commons.jelly.JellyContext;
-import org.apache.commons.jelly.Script;
-import org.apache.commons.jelly.XMLOutput;
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.jelly.JellyTagException;
+import org.apache.commons.jelly.Script;
 
-/** Transition <code>Guard</code> implemented using a Jelly <code>Script</code>.
+import org.codehaus.blissed.Guard;
+import org.codehaus.blissed.ProcessContext;
+import org.codehaus.blissed.Transition;
+
+/**
+ *  Transition <code>Guard</code> implemented using a Jelly <code>Script</code>.
  *
  *  <p>
  *  Within the jelly script, the tags &lt;pass&gt; and &lt;fail&gt; can be
@@ -67,48 +67,36 @@ import org.apache.commons.jelly.JellyTagException;
  *  {@link #test} returns <code>true</code>.
  *  </p>
  *
+ *  <p>
+ *  If a ProcessContext has data associated with it, an attempt will be made to treat that
+ *  data as a bean, and add all properties to the JellyContext
+ *  </p>
+ *
+ *  @see BeanUtils#describe
+ *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ *  @author <a href="mailto:proyal@codehaus.org">peter royal</a>
  *
  *  @version $Id $
  */
-public class JellyGuard implements Guard
+public class JellyGuard extends AbstractJellyScript implements Guard
 {
-    // ------------------------------------------------------------
-    //     Instance members
-    // ------------------------------------------------------------
-
-    /** The jelly script. */
-    private Script script;
-
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
 
     /** Construct.
-     * 
+     *
      *  @param script The jelly guard script.
      */
-    public JellyGuard(Script script)
+    public JellyGuard( Script script )
     {
-        this.script = script;
+        setScript( script );
     }
 
-    // ------------------------------------------------------------
-    //     Instance methods
-    // ------------------------------------------------------------
-
-    /** Retrieve the Jelly script.
-     *
-     *  @return The jelly script.
-     */
-    public Script getScript()
-    {
-        return this.script;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     //     org.codehaus.blissed.Guard
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     /** Test this guard against a procession.
      *
@@ -118,31 +106,22 @@ public class JellyGuard implements Guard
      *  @return <code>true</code> if the procession passes
      *          this guard, otherwise <code>false</code>.
      */
-    public boolean test(Transition transition,
-                        ProcessContext context)
+    public boolean test( Transition transition,
+                         ProcessContext context )
     {
-        JellyContext jellyContext = new JellyContext();
-
-        jellyContext.setVariable( RuntimeTagSupport.PROCESS_CONTEXT_KEY,
-                                  context );
-
         try
         {
-            XMLOutput output = XMLOutput.createXMLOutput( System.err,
-                                                          false );
-
-            getScript().run( jellyContext,
-                             output );
+            runScript( context );
         }
         catch( JellyTagException e )
         {
             final Throwable cause = e.getCause();
 
-            if ( cause instanceof PassException )
+            if( cause instanceof PassException )
             {
                 return true;
             }
-            else if ( cause instanceof FailException )
+            else if( cause instanceof FailException )
             {
                 return false;
             }
@@ -153,7 +132,7 @@ public class JellyGuard implements Guard
         }
         catch( UnsupportedEncodingException e )
         {
-            throw new RuntimeException( "Unable to create Jelly XMLOutput: " + e.getMessage());
+            throw new RuntimeException( "Unable to create Jelly XMLOutput: " + e.getMessage() );
         }
 
         return true;
