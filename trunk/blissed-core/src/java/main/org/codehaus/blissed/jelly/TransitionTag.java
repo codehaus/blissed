@@ -1,7 +1,7 @@
 package org.codehaus.blissed.jelly;
 
 /*
- $Id: TransitionTag.java,v 1.1 2003-06-04 15:15:04 proyal Exp $
+ $Id: TransitionTag.java,v 1.2 2003-06-05 19:56:38 proyal Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -141,7 +141,7 @@ public class TransitionTag extends DefinitionTagSupport implements DescribedTag
      *
      *  @param output The output sink.
      *
-     *  @throws Exception if an error occurs.
+     *  @throws JellyTagException if an error occurs.
      */
     public void doTag(XMLOutput output) throws JellyTagException
     {
