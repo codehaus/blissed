@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: BlissedTagSupport.java,v 1.6 2002-09-17 21:36:43 bob Exp $
+ $Id: BlissedTagSupport.java,v 1.7 2002-09-17 23:00:05 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -46,9 +46,6 @@ package com.werken.blissed.jelly;
  
  */
 
-import com.werken.blissed.ProcessContext;
-import com.werken.blissed.ProcessEngine;
-
 import org.apache.commons.jelly.TagSupport;
 import org.apache.commons.jelly.MissingAttributeException;
 
@@ -56,7 +53,7 @@ import org.apache.commons.jelly.MissingAttributeException;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: BlissedTagSupport.java,v 1.6 2002-09-17 21:36:43 bob Exp $
+ *  @version $Id: BlissedTagSupport.java,v 1.7 2002-09-17 23:00:05 bob Exp $
  */
 public abstract class BlissedTagSupport extends TagSupport
 {
@@ -71,6 +68,19 @@ public abstract class BlissedTagSupport extends TagSupport
         // intentionally left blank
     }
 
+    // ------------------------------------------------------------
+    //   Instance methods
+    // ------------------------------------------------------------
+
+    /** Check a string attribute to ensure it is not <code>null</code>
+     *  or the empty string.
+     *
+     *  @param name The name of the attribute.
+     *  @param value The value of the attribute.
+     *
+     *  @throws MissingAttributeException If the value is either <code>null</code>
+     *          or the empty string.
+     */
     protected void checkStringAttribute(String name,
                                         String value) throws MissingAttributeException
     {
@@ -83,6 +93,13 @@ public abstract class BlissedTagSupport extends TagSupport
         }
     }
 
+    /** Check an object attribute to ensure that it is not <code>null</code>.
+     *
+     *  @param name The attribute name.
+     *  @param value The attribute value.
+     *
+     *  @throws MissingAttributeException If the value is <code>null</code>.
+     */
     protected void checkObjectAttribute(String name,
                                         Object value) throws MissingAttributeException
     {

@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: GuardTag.java,v 1.7 2002-09-17 21:36:43 bob Exp $
+ $Id: GuardTag.java,v 1.8 2002-09-17 23:00:05 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -46,9 +46,8 @@ package com.werken.blissed.jelly;
  
  */
 
-import com.werken.blissed.Transition;
-import com.werken.blissed.ProcessContext;
 import com.werken.blissed.Guard;
+import com.werken.blissed.Transition;
 
 import org.apache.commons.jelly.Script;
 import org.apache.commons.jelly.XMLOutput;
@@ -57,6 +56,8 @@ import org.apache.commons.jelly.JellyException;
 /** Create a Guard
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ *
+ *  @version $Id: GuardTag.java,v 1.8 2002-09-17 23:00:05 bob Exp $
  */
 public class GuardTag extends DefinitionTagSupport
 {
@@ -75,22 +76,30 @@ public class GuardTag extends DefinitionTagSupport
      */
     public GuardTag()
     {
+        // intentionally left blank
     }
 
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
 
+    /** Set the variable name in which to store the <code>Guard</code>.
+     *
+     *  @param var The variable name.
+     */
     public void setVar(String var)
     {
         this.var = var;
     }
 
+    /** Retrieve the variable name in which to store the <code>Guard</code>.
+     *
+     *  @return The variable name.
+     */
     public String getVar()
     {
         return this.var;
     }
-
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     //     org.apache.commons.jelly.Tag

@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: JellyGuard.java,v 1.1 2002-09-17 21:36:43 bob Exp $
+ $Id: JellyGuard.java,v 1.2 2002-09-17 23:00:05 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -53,22 +53,68 @@ import com.werken.blissed.ProcessContext;
 import org.apache.commons.jelly.JellyContext;
 import org.apache.commons.jelly.Script;
 import org.apache.commons.jelly.XMLOutput;
-import org.apache.commons.jelly.JellyException;
 
+/** Transition <code>Guard</code> implemented using a Jelly <code>Script</code>.
+ *
+ *  <p>
+ *  Within the jelly script, the tags &lt;pass&gt; and &lt;fail&gt; can be
+ *  used to immediately signal guard passage or failure and circumvent the
+ *  evaluation of the remainder of the script.  If the script processes entirely
+ *  without encountering an exception, it is considered to have passed, and
+ *  {@link #test} returns <code>true</code>.
+ *  </p>
+ *
+ *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ *
+ *  @version $Id $
+ */
 public class JellyGuard implements Guard
 {
+    // ------------------------------------------------------------
+    //     Instance members
+    // ------------------------------------------------------------
+
+    /** The jelly script. */
     private Script script;
 
+    // ------------------------------------------------------------
+    //     Constructors
+    // ------------------------------------------------------------
+
+    /** Construct.
+     * 
+     *  @param script The jelly guard script.
+     */
     public JellyGuard(Script script)
     {
         this.script = script;
     }
 
+    // ------------------------------------------------------------
+    //     Instance methods
+    // ------------------------------------------------------------
+
+    /** Retrieve the Jelly script.
+     *
+     *  @return The jelly script.
+     */
     public Script getScript()
     {
         return this.script;
     }
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    //     com.werken.blissed.Guard
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+    /** Test this guard against a procession.
+     *
+     *  @param transition The transition this guard guards.
+     *  @param context The process context.
+     *
+     *  @return <code>true</code> if the procession passes
+     *          this guard, otherwise <code>false</code>.
+     */
     public boolean test(Transition transition,
                         ProcessContext context)
     {

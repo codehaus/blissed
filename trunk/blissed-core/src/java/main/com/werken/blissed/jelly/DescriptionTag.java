@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: DescriptionTag.java,v 1.3 2002-09-17 16:02:51 bob Exp $
+ $Id: DescriptionTag.java,v 1.4 2002-09-17 23:00:05 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -49,7 +49,6 @@ package com.werken.blissed.jelly;
 import com.werken.blissed.Described;
 
 import org.apache.commons.jelly.XMLOutput;
-import org.apache.commons.jelly.JellyException;
 
 /** Provide a long description.
  *

@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: ProcessTag.java,v 1.11 2002-09-17 21:36:43 bob Exp $
+ $Id: ProcessTag.java,v 1.12 2002-09-17 23:00:05 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -51,7 +51,6 @@ import com.werken.blissed.State;
 import com.werken.blissed.Described;
 
 import org.apache.commons.jelly.XMLOutput;
-import org.apache.commons.jelly.MissingAttributeException;
 import org.apache.commons.jelly.JellyException;
 
 /** Create a new process.
@@ -127,8 +126,7 @@ public class ProcessTag extends DefinitionTagSupport implements DescribedTag
         return this.start;
     }
 
-    /** Set the name of the variable in which
-     *  to store the <code>Process</code.
+    /** Set the variable name in which to store the <code>Activity</code>.
      *
      *  @param var The variable name.
      */
@@ -137,8 +135,7 @@ public class ProcessTag extends DefinitionTagSupport implements DescribedTag
         this.var = var;
     }
 
-    /** Retrieve the name of the variable in which
-     *  to store the <code>Process</code.
+    /** Retrieve the variable name in which to store the <code>Activity</code>.
      *
      *  @return The variable name.
      */
