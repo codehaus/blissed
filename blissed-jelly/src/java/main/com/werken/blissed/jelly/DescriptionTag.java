@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: DescriptionTag.java,v 1.1 2002-07-17 17:11:07 bob Exp $
+ $Id: DescriptionTag.java,v 1.2 2002-09-17 06:38:48 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -90,7 +90,7 @@ public class DescriptionTag extends TagSupport
 
         if ( describedTag == null )
         {
-            throw new JellyException( "Unable to locate an element to describe." );
+            throw new JellyException( "Unable to locate an element to describe" );
         }
 
         Described described = describedTag.getDescribed();

@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: ProcessTag.java,v 1.8 2002-09-17 05:13:34 bob Exp $
+ $Id: ProcessTag.java,v 1.9 2002-09-17 06:38:48 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -103,15 +103,6 @@ public class ProcessTag extends BlissedTagSupport implements DescribedTag
         this.name = name;
     }
 
-    /** Set the process description.
-     *
-     *  @param description The description.
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
-    }
-
     /** Set the first state of the process.
      *
      *  @param start The name of the start state.
@@ -204,9 +195,11 @@ public class ProcessTag extends BlissedTagSupport implements DescribedTag
 
         this.process.setStartState( startState );
 
-        if ( this.var != null )
+        String var = getVar();
+
+        if ( var != null )
         {
-            getContext().setVariable( this.var,
+            getContext().setVariable( var,
                                       this.process );
         }
     }
