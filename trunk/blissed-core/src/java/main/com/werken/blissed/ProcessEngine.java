@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: ProcessEngine.java,v 1.4 2002-09-17 05:13:34 bob Exp $
+ $Id: ProcessEngine.java,v 1.5 2002-09-18 04:05:31 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -54,9 +54,9 @@ import java.util.Iterator;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ProcessEngine.java,v 1.4 2002-09-17 05:13:34 bob Exp $
+ *  @version $Id: ProcessEngine.java,v 1.5 2002-09-18 04:05:31 bob Exp $
  */
-public class ProcessEngine 
+public class ProcessEngine implements Runnable
 {
     // ------------------------------------------------------------
     //     Instance members
@@ -64,6 +64,15 @@ public class ProcessEngine
 
     /** Queue of <code>ProcessContext</code>s requiring checking. */
     private LinkedList queue;
+
+    /** Number of service threads. */
+    private int numThreads;
+
+    /** Runnable flag. */
+    private boolean shouldRun;
+
+    /** Service threads. */
+    private ThreadGroup threads;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -73,12 +82,91 @@ public class ProcessEngine
      */
     public ProcessEngine()
     {
-        this.queue = new LinkedList();
+        this.queue      = new LinkedList();
+        this.numThreads = 1;
+        this.shouldRun  = false;
     }
 
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
+
+    public void setThreads(int numThreads)
+    {
+        this.numThreads = numThreads;
+    }
+
+    public int getThreads()
+    {
+        return this.numThreads;
+    }
+
+    public synchronized void start()
+    {
+        if ( this.threads != null )
+        {
+            return;
+        }
+
+        this.threads = new ThreadGroup( "com.werken.blissed.ProcessEngine" );
+
+        this.shouldRun = true;
+
+        Thread thread = null;
+
+        for ( int i = 0 ; i < this.numThreads; ++i )
+        {
+            thread = new Thread( this.threads,
+                                 this );
+
+            thread.start();
+        }
+    }
+
+    public synchronized void stop() throws InterruptedException
+    {
+        if ( this.threads == null )
+        {
+            return;
+        }
+
+        this.shouldRun = false;
+
+        Thread[] activeThreads = new Thread[ this.threads.activeCount() + 10 ];
+
+        int numThreads = this.threads.enumerate( activeThreads );
+
+        this.threads.interrupt();
+
+        for ( int i = 0 ; i < numThreads ; ++i )
+        {
+            activeThreads[i].join();
+        }
+
+        this.threads = null;
+    }
+
+    public void run()
+    {
+        ProcessContext context = null;
+
+        while ( this.shouldRun )
+        {
+            try
+            {
+                context = getNextToCheck();
+                checkTransitions( context );
+            }
+            catch (InterruptedException e)
+            {
+                break;
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+    }
 
     /** Add a <code>ProcessContext</code> to the check queue.
      *
@@ -90,6 +178,20 @@ public class ProcessEngine
         {
             this.queue.addLast( context );
             this.queue.notifyAll();
+        }
+    }
+
+    /** Determine if this engine has a <code>ProcessContext</code>
+     *  waiting in the queue.
+     *
+     *  @return <code>true</code> if a process context is available
+     *          for transition checking, otherwise <code>false</code>.
+     */
+    public boolean hasContextToCheck()
+    {
+        synchronized ( this.queue )
+        {
+            return ! this.queue.isEmpty();
         }
     }
     
@@ -116,7 +218,7 @@ public class ProcessEngine
 
                 if ( ! this.queue.isEmpty() )
                 {
-                    context = (ProcessContext) this.queue.getFirst();
+                    context = (ProcessContext) this.queue.removeFirst();
                     break;
                 }
             }
@@ -137,13 +239,41 @@ public class ProcessEngine
      */
     public ProcessContext spawn(Process process) throws InvalidMotionException
     {
+        return spawn( process,
+                      false );
+    }
+
+    /** Spawn an instance of a <code>Process</code>.
+     *
+     *  @param process The process to spawn.
+     *  @param async Flag indicating if processing of context should
+     *               occur asynchronously, or if it should use the
+     *               calling thread for motion.
+     *
+     *  @return The <code>ProcessContext</code> representing the
+     *          instance of the newly spawned process.
+     *
+     *  @throws InvalidMotionException If a motion error occurs while
+     *          attempting to spawn the process.
+     */
+    public ProcessContext spawn(Process process,
+                                boolean async) throws InvalidMotionException
+    {
+
         ProcessContext context = new ProcessContext( this,
                                                      process );
 
         startProcess( process,
                       context );
 
-        checkTransitions( context );
+        if ( async )
+        {
+            addToCheckQueue( context );
+        }
+        else
+        {
+            checkTransitions( context );
+        }
 
         return context;
     }
