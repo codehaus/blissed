@@ -37,7 +37,7 @@
 <pre>
     export CVS_RSH=ssh
  
-    cvs -z3 -d:ext:developername@cvs.codehaus.org:/scm/cvs co blissed
+    cvs -z3 -d:ext:developername@cvs.blissed.codehaus.org:/home/projects/blissed/scm co blissed
 </pre>
 
     </section>
