@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Transition.java,v 1.20 2002-09-17 05:13:34 bob Exp $
+ $Id: Transition.java,v 1.21 2002-09-18 04:05:31 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -194,23 +194,4 @@ public class Transition implements Described, Edge
     {
         this.description = description;
     }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    //     java.lang.Object
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-    /** Produce a string form suitable for debugging.
-     *
-     *  @return A string form suitable for debugging.
-     */
-    public String toString()
-    {
-        return "[Transition: origin=" + getOrigin().getName()
-            + "; destination=" + getDestination().getName()
-            + "; guard=" + getGuard() 
-            + "; description=" + getDescription()
-            + "]";
-    }
-
-
 }

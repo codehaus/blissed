@@ -386,7 +386,7 @@
       <state name="start"/>
     </process> 
     <activity var="theActivity">
-      ${blissed_context.setProcessData( 'cheese' )}
+      ${context.setProcessData( 'cheese' )}
     </activity>
     <spawn engine="${theEngine}" 
            process="${theProcess}" 

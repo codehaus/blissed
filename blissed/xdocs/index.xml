@@ -57,8 +57,8 @@
     the context of a process instance, as might a string of characters to
     be matched against a regular-expression.
     <code>blissed</code> provides a 
-    <a href="apidocs/com/werken/blissed/Context.html">Context</a> class for
-    maintaining the context of a given process instance.
+    <a href="apidocs/com/werken/blissed/ProcessContext.html">ProcessContext</a> 
+    class for maintaining the context of a given process instance.
     </p>
 
   </section>

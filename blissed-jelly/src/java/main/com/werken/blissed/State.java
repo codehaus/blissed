@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: State.java,v 1.22 2002-09-17 05:13:34 bob Exp $
+ $Id: State.java,v 1.23 2002-09-18 04:05:31 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -294,20 +294,4 @@ public class State implements Named, Described, Vertex
     {
         this.description = description;
     }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    //     java.lang.Object
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-    /** Produce a string form suitable for debugging.
-     *
-     *  @return A string form suitable for debugging.
-     */
-    public String toString()
-    {
-        return "[State: name=" + getName()
-            + "; outbound=" + getTransitions()
-            + "]";
-    }
-
 }
