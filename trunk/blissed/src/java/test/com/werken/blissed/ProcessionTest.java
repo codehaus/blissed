@@ -2,13 +2,13 @@ package com.werken.blissed;
 
 import junit.framework.TestCase;
 
-public class ContextTest extends TestCase
+public class ProcessionTest extends TestCase
 {
     private Process process;
-    private Context context;
+    private Procession procession;
     private State   state1;
 
-    public ContextTest(String name)
+    public ProcessionTest(String name)
     {
         super( name );
     }
@@ -28,12 +28,12 @@ public class ContextTest extends TestCase
 
         this.process.setStartState( this.state1 );
 
-        this.context = new Context( this.process );
+        this.procession = new Procession( this.process );
     }
 
     public void tearDown()
     {
-        this.context = null;
+        this.procession = null;
         this.process = null;
     }
 
@@ -42,39 +42,39 @@ public class ContextTest extends TestCase
         Object obj1 = new Object();
         Object obj2 = new Object();
 
-        assertNull( this.context.getVariable( "one" ) );
+        assertNull( this.procession.getVariable( "one" ) );
 
-        assertNull( this.context.getVariable( "two" ) );
+        assertNull( this.procession.getVariable( "two" ) );
 
-        this.context.setVariable( "one",
-                                  obj1 );
+        this.procession.setVariable( "one",
+                                     obj1 );
 
-        this.context.setVariable( "two",
-                                  obj2 );
+        this.procession.setVariable( "two",
+                                     obj2 );
 
         assertSame( obj1,
-                    this.context.getVariable( "one" ) );
+                    this.procession.getVariable( "one" ) );
 
         assertSame( obj2,
-                    this.context.getVariable( "two" ) );
+                    this.procession.getVariable( "two" ) );
 
-        this.context.clearVariable( "one" );
+        this.procession.clearVariable( "one" );
 
-        assertNull( this.context.getVariable( "one" ) );
+        assertNull( this.procession.getVariable( "one" ) );
 
         assertSame( obj2,
-                    this.context.getVariable( "two" ) );
+                    this.procession.getVariable( "two" ) );
 
-        this.context.clearVariable( "two" );
+        this.procession.clearVariable( "two" );
 
-        assertNull( this.context.getVariable( "two" ) );
+        assertNull( this.procession.getVariable( "two" ) );
     }
 
     public void testSpawn()
     {
         try
         {
-            Context spawned = this.context.spawn( this.process );
+            Procession spawned = this.procession.spawn( this.process );
 
             this.process.accept( spawned );
             
@@ -84,7 +84,7 @@ public class ContextTest extends TestCase
             assertSame( this.state1,
                         spawned.getCurrentState() );
 
-            assertSame( this.context,
+            assertSame( this.procession,
                         spawned.getParent() );
         }
         catch (InvalidMotionException e)

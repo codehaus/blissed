@@ -7,7 +7,7 @@ public class StateTest extends TestCase
     private Process process;
     private State   state1;
     private State   state2;
-    private Context context;
+    private Procession procession;
 
     public StateTest(String name)
     {
@@ -29,7 +29,7 @@ public class StateTest extends TestCase
                                    new BooleanGuard( false ),
                                    "2 to finish");
 
-        this.context = new Context( this.process );
+        this.procession = new Procession( this.process );
     }
 
     public void tearDown()
@@ -42,12 +42,12 @@ public class StateTest extends TestCase
     {
         try
         {
-            this.context.startProcess( this.process );
-            this.context.enterState( this.state1 );
+            this.procession.startProcess( this.process );
+            this.procession.enterState( this.state1 );
 
             try
             {
-                this.state1.attemptTransition( this.context );
+                this.state1.attemptTransition( this.procession );
                 fail( "Should have thrown NoTransitionException" );
             }
             catch (NoTransitionException e)
@@ -73,13 +73,13 @@ public class StateTest extends TestCase
         
         try
         {
-            this.context.startProcess( this.process );
-            this.context.enterState( this.state1 );
+            this.procession.startProcess( this.process );
+            this.procession.enterState( this.state1 );
 
-            this.state1.attemptTransition( this.context );
+            this.state1.attemptTransition( this.procession );
 
             assertSame( this.state1,
-                        this.context.getCurrentState() );
+                        this.procession.getCurrentState() );
         }
         catch (InvalidMotionException e)
         {
@@ -99,13 +99,13 @@ public class StateTest extends TestCase
         
         try
         {
-            this.context.startProcess( this.process );
-            this.context.enterState( this.state1 );
+            this.procession.startProcess( this.process );
+            this.procession.enterState( this.state1 );
 
-            this.state1.attemptTransition( this.context );
+            this.state1.attemptTransition( this.procession );
 
             assertSame( this.state2,
-                        this.context.getCurrentState() );
+                        this.procession.getCurrentState() );
         }
         catch (InvalidMotionException e)
         {
