@@ -26,6 +26,7 @@
 
   <repository>
     <connection>scm:cvs::pserver:anonymous@cvs.werken.com:/cvsroot/blissed:blissed</connection>
+
 <!--
     <url>http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/blissed/blissed/</url>
 -->
