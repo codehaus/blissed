@@ -1,7 +1,7 @@
 package org.codehaus.blissed.jelly;
 
 /*
- $Id: GuardTag.java,v 1.1 2003-06-04 15:15:04 proyal Exp $
+ $Id: GuardTag.java,v 1.2 2003-06-11 00:23:59 proyal Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -57,7 +57,7 @@ import org.apache.commons.jelly.JellyTagException;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: GuardTag.java,v 1.1 2003-06-04 15:15:04 proyal Exp $
+ *  @version $Id: GuardTag.java,v 1.2 2003-06-11 00:23:59 proyal Exp $
  */
 public class GuardTag extends DefinitionTagSupport
 {
@@ -101,7 +101,7 @@ public class GuardTag extends DefinitionTagSupport
         return this.var;
     }
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     //     org.apache.commons.jelly.Tag
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
