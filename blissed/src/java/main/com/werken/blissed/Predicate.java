@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Predicate.java,v 1.5 2002-07-04 19:40:07 werken Exp $
+ $Id: Predicate.java,v 1.6 2002-07-05 04:15:04 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -46,8 +46,7 @@ package com.werken.blissed;
  
  */
 
-import com.werken.blissed.event.PredicatePassedEvent;
-import com.werken.blissed.event.PredicateFailedEvent;
+import com.werken.blissed.event.PredicateTestedEvent;
 import com.werken.blissed.event.PredicateListener;
 
 import java.util.List;
@@ -134,14 +133,8 @@ public abstract class Predicate implements Described
     {
         boolean result = test( context );
 
-        if ( result )
-        {
-            firePredicatePassed( context );
-        }
-        else
-        {
-            firePredicateFailed( context );
-        }
+        firePredicateTested( context,
+                             result );
 
         return result;
     }
@@ -198,17 +191,12 @@ public abstract class Predicate implements Described
     //     Event firing 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-
-    /** Fire an event indicating this predicate passed
-     *  within a <code>Context</code> context.
-     *
-     *  @param context the context against which this predicate
-     *         was evaluated to pass.
-     */
-    void firePredicatePassed(Context context)
+    void firePredicateTested(Context context,
+                             boolean result)
     {
-        PredicatePassedEvent event = new PredicatePassedEvent( this,
-                                                                context );
+        PredicateTestedEvent event = new PredicateTestedEvent( this,
+                                                               context,
+                                                               result );
 
         Iterator listenerIter = getPredicateListeners().iterator();
         PredicateListener eachListener = null;
@@ -217,29 +205,7 @@ public abstract class Predicate implements Described
         {
             eachListener = (PredicateListener) listenerIter.next();
             
-            eachListener.predicatePassed( event );
-        }
-    }
-
-    /** Fire an event indicating this predicate failed
-     *  within a <code>Context</code> context.
-     *
-     *  @param context the context against which this predicate
-     *         was evaluated to fail.
-     */
-    void firePredicateFailed(Context context)
-    {
-        PredicateFailedEvent event = new PredicateFailedEvent( this,
-                                                               context );
-
-        Iterator listenerIter = getPredicateListeners().iterator();
-        PredicateListener eachListener = null;
-        
-        while ( listenerIter.hasNext() )
-        {
-            eachListener = (PredicateListener) listenerIter.next();
-            
-            eachListener.predicateFailed( event );
+            eachListener.predicateTested( event );
         }
     }
 }

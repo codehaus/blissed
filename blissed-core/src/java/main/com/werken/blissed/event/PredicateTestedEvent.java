@@ -1,7 +1,7 @@
 package com.werken.blissed.event;
 
 /*
- $Id: PredicateFailedEvent.java,v 1.4 2002-07-04 19:40:07 werken Exp $
+ $Id: PredicateTestedEvent.java,v 1.3 2002-07-05 04:15:04 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -49,15 +49,21 @@ package com.werken.blissed.event;
 import com.werken.blissed.Predicate;
 import com.werken.blissed.Context;
 
-/** Event indicating a predicate's test failed for a given
+/** Event indicating a predicate's test passed for a given
  *  workslip context.
  *
  *  @see Predicate#test
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class PredicateFailedEvent extends PredicateEvent
+public class PredicateTestedEvent extends PredicateEvent
 {
+    // ------------------------------------------------------------
+    //     Instance members
+    // ------------------------------------------------------------
+
+    private boolean result;
+
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
@@ -66,10 +72,18 @@ public class PredicateFailedEvent extends PredicateEvent
      *
      *  @param predicate The predicate event source.
      */
-    public PredicateFailedEvent(Predicate predicate,
-                                Context context)
+    public PredicateTestedEvent(Predicate predicate,
+                                Context context,
+                                boolean result)
     {
         super( predicate,
                context );
+
+        this.result = result;
+    }
+
+    public boolean getResult()
+    {
+        return this.result;
     }
 }
