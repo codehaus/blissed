@@ -6,7 +6,6 @@
 
   <body>
     <links>
-      <item name="blissed@SourceForge" href="http://www.sourceforge.net/projects/blissed"/>
       <item name="The Werken Company" href="http://www.werken.com/"/>
     </links>
     <menu name="blissed">
@@ -21,7 +20,6 @@
       <item name="Papers"              href="/papers.html"/>
       <item name="Status"              href="/status.html"/>
 -->
-      <item name="blissed@SourceForge" href="http://www.sourceforge.net/projects/blissed/"/>
     </menu>
   </body>
 
