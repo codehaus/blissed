@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: SpawnProcessTag.java,v 1.5 2002-08-15 04:01:29 bob Exp $
+ $Id: SpawnProcessTag.java,v 1.6 2002-09-16 04:17:26 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -47,12 +47,15 @@ package com.werken.blissed.jelly;
  */
 
 import com.werken.blissed.Process;
-import com.werken.blissed.Procession;
+import com.werken.blissed.State;
+import com.werken.blissed.ProcessContext;
+import com.werken.blissed.Activity;
+import com.werken.blissed.NoOpActivity;
 import com.werken.blissed.ActivityException;
-import com.werken.blissed.InvalidMotionException;
+import com.werken.blissed.activity.SpawnActivity;
 
+import org.apache.commons.jelly.Tag;
 import org.apache.commons.jelly.XMLOutput;
-import org.apache.commons.jelly.JellyContext;
 import org.apache.commons.jelly.JellyException;
 import org.apache.commons.jelly.MissingAttributeException;
 
@@ -104,37 +107,15 @@ public class SpawnProcessTag extends BlissedTagSupport
         this.name = name;
     }
 
-    /** Accept the procession into the process.
+    /** Retrieve the process.
      *
-     *  @param process The process.
-     *  @param procession The blissed procession.
+     *  @return The process.
      *
-     *  @throws InvalidMotionException If an invalid motion occurs.
-     *  @throws ActivityException If an error occurs while performing an activity.
+     *  @throws Exception If a process library cannot be found.
      */
-    void accept(Process process,
-                Procession procession) throws InvalidMotionException, ActivityException
+    protected Process getProcess() throws Exception
     {
-        JellyContext jellyContext = null;
-
-        if ( procession.getParent() == null)
-        {
-            jellyContext = getContext();
-        }
-        else
-        {
-            jellyContext = new JellyContext( getContext() );
-
-            jellyContext.setExport( false );
-            jellyContext.setInherit( true );
-        }
-
-        jellyContext.setVariable( "blissed.procession",
-                                  procession );
-
-        procession.setProcessData( jellyContext );
-
-        process.accept( procession );
+        return getProcess( this.name );
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -150,59 +131,38 @@ public class SpawnProcessTag extends BlissedTagSupport
      */
     public void doTag(XMLOutput output) throws Exception
     {
+        Tag parent = getParent();
+
+        if ( ( parent == null )
+             ||
+             ! ( parent instanceof StateTag ) )
+        {
+            throw new JellyException( "Parent is not a state" );
+        }
+
+        StateTag stateTag = (StateTag) parent;
+
+        State state = stateTag.getState();
+
+        if ( state.getActivity() != null
+             &&
+             ! ( state.getActivity() instanceof NoOpActivity ) )
+        {
+            throw new JellyException( "Activity already defined for state \""
+                                      + state.getName()
+                                      + "\"" );
+        }
+
         if ( this.name == null )
         {
             throw new MissingAttributeException( "name" );
         }
 
-        invokeBody( output );
+        final String processName = this.name;
 
-        final Process process = getProcess( this.name );
+        Activity activity = new SpawnActivity( getProcess() );
 
-        if ( process == null )
-        {
-            throw new JellyException( "No such process \"" + this.name + "\"" );
-        }
-
-        Procession parent = (Procession) getContext().getVariable( "blissed.procession" );
-
-        Procession tmpProcession = null;
-
-        if ( parent == null )
-        {
-            tmpProcession = process.spawn();
-        }
-        else
-        {
-            tmpProcession = process.spawn( parent );
-        }
-
-        final Procession procession = tmpProcession;
-
-        Thread thread = new Thread() {
-                public void run()
-                {
-                    try
-                    {
-                        accept( process,
-                                procession );
-                    }
-                    catch (InvalidMotionException e)
-                    {
-                        e.printStackTrace();
-                    }
-                    catch (ActivityException e)
-                    {
-                        e.printStackTrace();
-                    }
-                    catch (Exception e)
-                    {
-                        e.printStackTrace();
-                    }
-                }
-            };
-        
-        thread.start();
+        state.setActivity( activity );
     }
 
 }

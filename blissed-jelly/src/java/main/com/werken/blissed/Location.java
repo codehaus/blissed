@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Location.java,v 1.7 2002-08-14 20:22:29 bob Exp $
+ $Id: Location.java,v 1.8 2002-09-16 04:17:26 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -56,9 +56,6 @@ import java.util.Stack;
  */
 class Location 
 {
-    /** The procession. */
-    private Procession procession;
-
     /** The location state. */
     private Stack locationStack;
 
@@ -67,12 +64,9 @@ class Location
     // ------------------------------------------------------------
 
     /** Construct.
-     *
-     *  @param procession The procession.
      */
-    Location(Procession procession)
+    Location()
     {
-        this.procession = procession;
         this.locationStack = new Stack();
     }
 
@@ -80,19 +74,10 @@ class Location
     //     Instance methods
     // ------------------------------------------------------------
 
-    /** Retrieve the procession.
-     *
-     *  @return The procession.
-     */
-    Procession getProcession()
-    {
-        return this.procession;
-    }
-
     /** Retrieve the current process.
      *
      *  @return The current process, or <code>null</code> if the
-     *          procession is in no process.
+     *          process instance is in no process.
      */
     Process getCurrentProcess()
     {
@@ -119,32 +104,7 @@ class Location
         return ((ProcessEntry)this.locationStack.peek()).getCurrentState();
     }
 
-    /** Check the status of the procession within this
-     *  state, with a goal towards making progress.
-     *
-     *  @throws InvalidMotionException If an invalid motion occurs.
-     *  @throws ActivityException If an error occurs while performing an activity.
-     */
-    void check() throws InvalidMotionException, ActivityException
-    {
-        if ( this.locationStack.isEmpty() )
-        {
-            return;
-        }
-
-        ProcessEntry entry = (ProcessEntry) this.locationStack.peek();
-
-        State state = entry.getCurrentState();
-
-        if ( state == null )
-        {
-            return;
-        }
-
-        state.check( getProcession() );
-    }
-
-    /** Signal that this procession has started a process.
+    /** Signal that this process instance has started a process.
      *
      *  @param process The process.
      */
@@ -165,14 +125,14 @@ class Location
     {
         if ( this.locationStack.isEmpty() )
         {
-            throw new InvalidMotionException( "Procession not in process \"" + process.getName() + "\"" );
+            throw new InvalidMotionException( "Not in process \"" + process.getName() + "\"" );
         }
 
         ProcessEntry entry = (ProcessEntry) this.locationStack.peek();
 
         if ( ! entry.getProcess().equals( process ) )
         {
-            throw new InvalidMotionException( "Procession not in process \"" + process.getName() + "\"" );
+            throw new InvalidMotionException( "Not in process \"" + process.getName() + "\"" );
         }
 
         if ( entry.getCurrentState() != null )

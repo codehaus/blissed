@@ -41,13 +41,13 @@
     <p>
     <code>blissed</code> has direct representations of processes,
     states and transitions by the way of the 
-    <a href="apidocs/com/werken/blissed/Process.html" target="api">Process</a>,
-    <a href="apidocs/com/werken/blissed/State.html" target="api">State</a>
+    <a href="apidocs/com/werken/blissed/Process.html">Process</a>,
+    <a href="apidocs/com/werken/blissed/State.html">State</a>
     and
-    <a href="apidocs/com/werken/blissed/Transition.html" target="api">Transition</a>
+    <a href="apidocs/com/werken/blissed/Transition.html">Transition</a>
     classes.
     Each <code>Transition</code> may be guarded by an implementation of
-    the <a href="apidocs/com/werken/blissed/Guard.html" target="api">Guard</a>
+    the <a href="apidocs/com/werken/blissed/Guard.html">Guard</a>
     interface.
     </p>
 

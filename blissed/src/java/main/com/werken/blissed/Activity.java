@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Activity.java,v 1.4 2002-08-14 20:22:29 bob Exp $
+ $Id: Activity.java,v 1.5 2002-09-16 04:17:25 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -57,10 +57,10 @@ public interface Activity
 {
     /** Perform this activity within the specified procession.
      *
-     *  @param procession The procession.
+     *  @param context The process context
      *
      *  @throws ActivityException if an error occurs.
      */
-    void perform(Procession procession) throws ActivityException; 
+    void perform(ProcessContext context) throws ActivityException; 
 }
 
