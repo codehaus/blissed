@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Finish.java,v 1.7 2002-07-06 03:49:01 werken Exp $
+ $Id: Finish.java,v 1.8 2002-07-06 21:23:38 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -76,6 +76,9 @@ public class Finish extends Node
     /** Accept a context into this node.
      *
      *  @param context The context to accept.
+     *
+     *  @throws InvalidMotionException If an invalid motion occurs.
+     *  @throws ActivityException If an error occurs while performing an activity.
      */
     public void accept(Context context) throws InvalidMotionException, ActivityException
     {

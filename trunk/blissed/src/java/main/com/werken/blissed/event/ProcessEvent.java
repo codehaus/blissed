@@ -1,7 +1,7 @@
 package com.werken.blissed.event;
 
 /*
- $Id: ProcessEvent.java,v 1.3 2002-07-04 19:40:07 werken Exp $
+ $Id: ProcessEvent.java,v 1.4 2002-07-06 21:23:38 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -64,6 +64,7 @@ public abstract class ProcessEvent extends MotionEvent
     /** Construct.
      *
      *  @param process The process event source.
+     *  @param context The context.
      */
     public ProcessEvent(Process process,
                         Context context)

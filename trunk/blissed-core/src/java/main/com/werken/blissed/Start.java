@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Start.java,v 1.9 2002-07-06 03:49:01 werken Exp $
+ $Id: Start.java,v 1.10 2002-07-06 21:23:38 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -49,7 +49,6 @@ package com.werken.blissed;
 /** Entry-point start node of a <code>Process</code>.
  *
  *  @see Process#getStart
- *  @see Process#start
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
@@ -60,6 +59,7 @@ public class Start extends Node
     //     Instance members
     // ------------------------------------------------------------
 
+    /** Destination from this node. */
     private Node destination;
 
     // ------------------------------------------------------------
@@ -83,11 +83,19 @@ public class Start extends Node
     //     Instance methods
     // ------------------------------------------------------------
 
+    /** Set the destination from this node.
+     *
+     *  @param destination The destination.
+     */
     void setDestination(Node destination)
     {
         this.destination = destination;
     }
 
+    /** Get the destination from this node.
+     *
+     *  @return The destination.
+     */
     Node getDestination()
     {
         return this.destination;
@@ -100,6 +108,9 @@ public class Start extends Node
     /** Accept a context into this node.
      *
      *  @param context The context to accept.
+     *
+     *  @throws InvalidMotionException If an invalid motion occurs.
+     *  @throws ActivityException If an error occurs while performing an activity.
      */
     public void accept(Context context) throws InvalidMotionException, ActivityException
     {

@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: BooleanGuard.java,v 1.1 2002-07-06 03:49:01 werken Exp $
+ $Id: BooleanGuard.java,v 1.2 2002-07-06 21:23:38 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -46,25 +46,73 @@ package com.werken.blissed;
  
  */
 
+/** Simple flag-based boolean <code>Guard</code>.
+ *
+ *  @see Guard
+ *
+ *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ */
 public class BooleanGuard implements Guard
 {
+    // ------------------------------------------------------------
+    //     Instance members
+    // ------------------------------------------------------------
+
+    /** The boolean guard value. */
     private boolean guard;
 
+    // ------------------------------------------------------------
+    //     Constructors
+    // ------------------------------------------------------------
+
+    /** Construct.
+     *
+     *  @param guard Initial guard value.
+     */
     public BooleanGuard(boolean guard)
     {
         this.guard = guard;
     }
 
+    // ------------------------------------------------------------
+    //     Instance methods
+    // ------------------------------------------------------------
+
+    /** Set the guard value.
+     *
+     *  @param guard The guard value.
+     */
     public void setGuard(boolean guard)
     {
         this.guard = guard;
     }
 
+    /** Retrieve the guard value.
+     *
+     *  @return The guard value.
+     */
     public boolean getGuard()
     {
         return this.guard;
     }
 
+    /** Test this guard against a context.
+     *
+     *  <p>
+     *  <b>implementation note:</b> This method
+     *  ignores the context itself, and returns
+     *  the same value as returned from
+     *  {@link #getGuard}.
+     *  </p>
+     *
+     *  @see #setGuard
+     *  @see #getGuard
+     *
+     *  @param context The context.
+     *
+     *  @return <code>true</code> if the context passes
+     *          this guard, otherwise <code>false</code>.
+     */
     public boolean test(Context context)
     {
         return getGuard();

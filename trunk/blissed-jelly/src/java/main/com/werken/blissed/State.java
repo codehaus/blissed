@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: State.java,v 1.14 2002-07-06 03:49:01 werken Exp $
+ $Id: State.java,v 1.15 2002-07-06 21:23:38 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -131,10 +131,12 @@ public class State extends Node
         this.transitions.remove( transition );
     }
 
-    /** Create a non-predicated exit path transition.
+    /** Create a transition.
      *
      *  @param destination The destination of the transition.
      *  @param description Description of the transition.
+     *
+     *  @return The added transition.
      */
     public Transition addTransition(Node destination,
                                     String description)
@@ -144,6 +146,14 @@ public class State extends Node
                               description );
     }
 
+    /** Create a transition.
+     *
+     *  @param destination The destination of the transition.
+     *  @param guard Guard of the transition.
+     *  @param description Description of the transition.
+     *
+     *  @return The added transition.
+     */
     public Transition addTransition(Node destination,
                                     Guard guard,
                                     String description)
@@ -156,7 +166,6 @@ public class State extends Node
         addTransition( transition );
         
         return transition;   
-        
     }
 
     /** Retrieve the <b>live</b> list of transitions.
@@ -201,6 +210,9 @@ public class State extends Node
      *  @return <code>true</code> if a transition was followed
      *          moving the context to a new node, otherwise
      *          <code>false</code>.
+     *
+     *  @throws InvalidMotionException If an invalid motion occurs.
+     *  @throws ActivityException If an error occurs while performing an activity.
      */
     boolean attemptTransition(Context context) throws InvalidMotionException, ActivityException
     {
@@ -331,6 +343,9 @@ public class State extends Node
     /** Accept a context into this node.
      *
      *  @param context The context to accept.
+     *
+     *  @throws InvalidMotionException If an invalid motion occurs.
+     *  @throws ActivityException If an error occurs while performing an activity.
      */
     public void accept(Context context) throws InvalidMotionException, ActivityException
     {
@@ -346,6 +361,8 @@ public class State extends Node
     /** Release a context from this node.
      *
      *  @param context The context to release.
+     *
+     *  @throws InvalidMotionException If an invalid motion occurs.
      */
     public void release(Context context) throws InvalidMotionException
     {
@@ -357,6 +374,9 @@ public class State extends Node
      *  node, with a goal towards making progress.
      *
      *  @param context The context to check.
+     *
+     *  @throws InvalidMotionException If an invalid motion occurs.
+     *  @throws ActivityException If an error occurs while performing an activity.
      */
     public void check(Context context) throws InvalidMotionException, ActivityException
     {

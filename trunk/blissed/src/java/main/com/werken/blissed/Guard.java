@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Guard.java,v 1.1 2002-07-06 03:49:01 werken Exp $
+ $Id: Guard.java,v 1.2 2002-07-06 21:23:38 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -46,8 +46,21 @@ package com.werken.blissed;
  
  */
 
+/** Interface for guards protecting transitions.
+ *
+ *  @see Transition
+ *
+ *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ */
 public interface Guard
 {
+    /** Test this guard against a context.
+     *
+     *  @param context The context.
+     *
+     *  @return <code>true</code> if the context passes
+     *          this guard, otherwise <code>false</code>.
+     */
     boolean test(Context context);
 }
 

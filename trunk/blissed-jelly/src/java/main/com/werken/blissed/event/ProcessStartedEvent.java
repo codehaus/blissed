@@ -1,7 +1,7 @@
 package com.werken.blissed.event;
 
 /*
- $Id: ProcessStartedEvent.java,v 1.4 2002-07-04 19:40:07 werken Exp $
+ $Id: ProcessStartedEvent.java,v 1.5 2002-07-06 21:23:38 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -51,8 +51,7 @@ import com.werken.blissed.Context;
 
 /** Event indicating a process instance was started.
  *
- *  @see Process#start
- *  @see WorkSlip#start
+ *  @see Process
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
@@ -65,6 +64,7 @@ public class ProcessStartedEvent extends ProcessEvent
     /** Construct.
      *
      *  @param process The process event source.
+     *  @param context The context.
      */
     public ProcessStartedEvent(Process process,
                                Context context)

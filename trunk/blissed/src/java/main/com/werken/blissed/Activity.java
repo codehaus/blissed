@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Activity.java,v 1.1 2002-07-05 03:57:12 werken Exp $
+ $Id: Activity.java,v 1.2 2002-07-06 21:23:38 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -55,6 +55,12 @@ package com.werken.blissed;
  */
 public interface Activity extends Named, Described
 {
+    /** Perform this activity within the specified context.
+     *
+     *  @param context The context.
+     *
+     *  @throws ActivityException if an error occurs.
+     */
     void perform(Context context) throws ActivityException; 
 }
 
