@@ -23,11 +23,10 @@ public class ProcessTest extends TestCase
             this.state1 = this.process.addState( "state.1",
                                                  "state one" );
             
-            this.transition_1_finish = this.state1.addTransition( this.process.getFinish(),
+            this.transition_1_finish = this.state1.addTransition( null,
                                                                   new BooleanGuard( false ),
                                                                   "1 to finish" );
-            
-            this.process.getStart().setDestination( this.state1 );
+            this.process.setStartState( this.state1 );
         }
         catch (DuplicateStateException e)
         {
@@ -38,16 +37,6 @@ public class ProcessTest extends TestCase
     public void tearDown()
     {
         this.process = null;
-    }
-
-    public void testGetStart()
-    {
-        assertNotNull( this.process.getStart() );
-    }
-
-    public void testGetFinish()
-    {
-        assertNotNull( this.process.getFinish() );
     }
 
     public void testAddState()
@@ -66,7 +55,7 @@ public class ProcessTest extends TestCase
         }
     }
     
-    public void testRemoveNode()
+    public void testRemoveState()
     {
         try
         {
@@ -97,8 +86,9 @@ public class ProcessTest extends TestCase
             assertSame( this.process,
                         context.getCurrentProcess() );
             
+            System.err.println( "current state: " + context.getCurrentState().getName() );
             assertSame( this.state1,
-                        context.getCurrentNode() );
+                        context.getCurrentState() );
         }
         catch (InvalidMotionException e)
         {
@@ -122,7 +112,7 @@ public class ProcessTest extends TestCase
                         context.getCurrentProcess() );
             
             assertSame( this.state1,
-                        context.getCurrentNode() );
+                        context.getCurrentState() );
 
             Context child = this.process.spawn( context );
 
@@ -132,7 +122,7 @@ public class ProcessTest extends TestCase
                         child.getCurrentProcess() );
 
             assertSame( this.state1,
-                        child.getCurrentNode() );
+                        child.getCurrentState() );
 
             assertSame( context,
                         child.getParent() );

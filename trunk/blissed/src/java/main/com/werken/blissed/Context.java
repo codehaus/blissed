@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Context.java,v 1.10 2002-07-07 22:59:41 bob Exp $
+ $Id: Context.java,v 1.11 2002-07-26 05:41:26 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -230,26 +230,26 @@ public class Context implements Named
         this.location.finishProcess( process );
     }
 
-    /** Signal that this context has entered a node.
+    /** Signal that this context has entered a state.
      *
-     *  @param node The node.
+     *  @param state The state.
      *
      *  @throws InvalidMotionException If an invalid motion occurs.
      */
-    void enterNode(Node node) throws InvalidMotionException
+    void enterState(State state) throws InvalidMotionException
     {
-        this.location.enterNode( node );
+        this.location.enterState( state );
     }
 
-    /** Signal that this context has exited a node.
+    /** Signal that this context has exited a state.
      *
-     *  @param node The node.
+     *  @param state The state.
      *
      *  @throws InvalidMotionException If an invalid motion occurs.
      */
-    void exitNode(Node node) throws InvalidMotionException
+    void exitState(State state) throws InvalidMotionException
     {
-        this.location.exitNode( node );
+        this.location.exitState( state );
     }
 
     /** Spawn a nested process.
@@ -314,13 +314,13 @@ public class Context implements Named
         return this.location;
     }
 
-    /** Retrieve the context's current node location.
+    /** Retrieve the context's current state location.
      *
-     *  @return The context's current node location.
+     *  @return The context's current state location.
      */
-    Node getCurrentNode()
+    State getCurrentState()
     {
-        return getLocation().getCurrentNode();
+        return getLocation().getCurrentState();
     }
 
     /** Retrieve the context's current process location.

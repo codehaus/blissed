@@ -32,7 +32,7 @@ public class TransitionTest extends TestCase
         this.transition_1_2 = this.state1.addTransition( this.state2,
                                                          "transition from 1 to 2" );
 
-        this.transition_2_finish = this.state2.addTransition( this.process.getFinish(),
+        this.transition_2_finish = this.state2.addTransition( null,
                                                               "transition from 2 to finish" );
 
         this.transition_2_finish.setGuard( new BooleanGuard( false ) );
@@ -59,11 +59,11 @@ public class TransitionTest extends TestCase
     {
         try
         {
-            this.context.enterNode( this.state1 );
+            this.context.enterState( this.state1 );
             this.transition_1_2.accept( this.context );
 
             assertSame( this.state2,
-                        this.context.getCurrentNode() );
+                        this.context.getCurrentState() );
         }
         catch (InvalidMotionException e)
         {
@@ -81,7 +81,7 @@ public class TransitionTest extends TestCase
         {
             try
             {
-                this.context.enterNode( this.state2 );
+                this.context.enterState( this.state2 );
             }
             catch (InvalidMotionException e)
             {
@@ -106,17 +106,17 @@ public class TransitionTest extends TestCase
     {
         try
         {
-            this.context.enterNode( this.state2 );
+            this.context.enterState( this.state2 );
 
             this.transition_2_finish.accept( this.context );
 
             assertSame( this.state2,
-                        this.context.getCurrentNode() );
+                        this.context.getCurrentState() );
 
             this.transition_2_finish.accept( this.context );
 
             assertSame( this.state2,
-                        this.context.getCurrentNode() );
+                        this.context.getCurrentState() );
         }
         catch (InvalidMotionException e)
         {
@@ -132,18 +132,18 @@ public class TransitionTest extends TestCase
     {
         try
         {
-            this.context.enterNode( this.state2 );
+            this.context.enterState( this.state2 );
 
             this.transition_2_finish.accept( this.context );
 
             assertSame( this.state2,
-                        this.context.getCurrentNode() );
+                        this.context.getCurrentState() );
 
             ((Transition)this.state2.getTransitions().get( 0 )).setGuard( new BooleanGuard( true ) );
 
             this.transition_2_finish.accept( this.context );
 
-            assertNull( this.context.getCurrentNode() );
+            assertNull( this.context.getCurrentState() );
 
             assertNull( this.context.getCurrentProcess() );
         }

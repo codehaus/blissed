@@ -1,7 +1,7 @@
 package com.werken.blissed.event;
 
 /*
- $Id: StateEvent.java,v 1.4 2002-07-04 19:40:07 werken Exp $
+ $Id: StateEvent.java,v 1.5 2002-07-26 05:41:26 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -49,14 +49,23 @@ package com.werken.blissed.event;
 import com.werken.blissed.State;
 import com.werken.blissed.Context;
 
+import java.util.EventObject;
+
 /** Abstract class for any event occuring on a <code>State</code>.
  *
  *  @see State
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public abstract class StateEvent extends NodeEvent
+public abstract class StateEvent extends EventObject
 {
+    // ------------------------------------------------------------
+    //     Instance members
+    // ------------------------------------------------------------
+
+    /** The context. */
+    private Context context;
+
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
@@ -69,8 +78,8 @@ public abstract class StateEvent extends NodeEvent
     public StateEvent(State state,
                       Context context)
     {
-        super( state,
-               context );
+        super( state );
+        this.context = context;
     }
 
     // ------------------------------------------------------------
@@ -84,5 +93,14 @@ public abstract class StateEvent extends NodeEvent
     public State getState()
     {
         return (State) getSource();
+    }
+
+    /** Retrieve the event context.
+     *
+     *  @return The context.
+     */
+    public Context getContext()
+    {
+        return this.context;
     }
 }
