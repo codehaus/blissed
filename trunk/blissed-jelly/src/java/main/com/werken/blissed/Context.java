@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
-  $Id: Context.java,v 1.1 2002-07-04 19:40:07 werken Exp $
+  $Id: Context.java,v 1.2 2002-07-04 22:56:53 werken Exp $
 
   Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -269,7 +269,7 @@ public class Context implements Named
 
     /** Perform a liveness check on this context.
      */
-    void check() throws InvalidMotionException
+    void check() throws InvalidMotionException, ActivityException
     {
         this.location.check();
     }

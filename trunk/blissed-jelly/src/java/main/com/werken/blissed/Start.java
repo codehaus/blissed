@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Start.java,v 1.6 2002-07-04 19:40:07 werken Exp $
+ $Id: Start.java,v 1.7 2002-07-04 22:56:53 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -105,7 +105,7 @@ public class Start extends Node
      *
      *  @param context The context to attempt transitioning.
      */
-    void attemptTransition(Context context) throws InvalidMotionException
+    void attemptTransition(Context context) throws InvalidMotionException, ActivityException
     {
         getTransition().accept( context );
     }
@@ -118,14 +118,9 @@ public class Start extends Node
      *
      *  @param context The context to accept.
      */
-    public void accept(Context context) throws InvalidMotionException
+    public void accept(Context context) throws InvalidMotionException, ActivityException
     {
-        context.startProcess( getProcess() );
-
         super.accept( context );
-
-        getProcess().fireProcessStarted( context );
-
         attemptTransition( context );
     }
 }

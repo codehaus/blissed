@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Transition.java,v 1.7 2002-07-04 19:40:07 werken Exp $
+ $Id: Transition.java,v 1.8 2002-07-04 22:56:53 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -128,7 +128,7 @@ public class Transition implements Described
      *  @return <code>true</code> if this transition was successful
      *          within the context.
      */
-    boolean accept(Context context) throws InvalidMotionException
+    boolean accept(Context context) throws InvalidMotionException, ActivityException
     {
         getOrigin().release( context );
 

@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Node.java,v 1.7 2002-07-04 19:40:07 werken Exp $
+ $Id: Node.java,v 1.8 2002-07-04 22:56:53 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -101,7 +101,7 @@ public class Node implements Named, Described
      *
      *  @param context The context to accept.
      */
-    void accept(Context context) throws InvalidMotionException
+    void accept(Context context) throws InvalidMotionException, ActivityException
     {
         context.enterNode( this );
     }
@@ -120,7 +120,7 @@ public class Node implements Named, Described
      *
      *  @param context The context to check.
      */
-    void check(Context context) throws InvalidMotionException
+    void check(Context context) throws InvalidMotionException, ActivityException
     {
         // no-op
     }

@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Task.java,v 1.4 2002-07-04 22:56:53 werken Exp $
+ $Id: ActivityException.java,v 1.1 2002-07-04 22:56:53 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -46,15 +46,21 @@ package com.werken.blissed;
  
  */
 
-/** A unit of work to be performed within a state.
- *
- *  @see State#setTask
- *  @see State#getTask
- *
- *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
- */
-public interface Task extends Named, Described
+public class ActivityException extends BlissedException
 {
-    void perform(Context context) throws ActivityException; 
-}
+    // ------------------------------------------------------------
+    //     Constructors
+    // ------------------------------------------------------------
 
+    /** Construct.
+     */
+    public ActivityException(String msg)
+    {
+        super( msg );
+    }
+
+    public ActivityException(Throwable rootCause)
+    {
+        super( rootCause );
+    }
+}

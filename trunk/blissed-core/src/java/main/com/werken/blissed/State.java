@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: State.java,v 1.9 2002-07-04 19:40:07 werken Exp $
+ $Id: State.java,v 1.10 2002-07-04 22:56:53 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -211,7 +211,7 @@ public class State extends Node
      *          moving the context to a new node, otherwise
      *          <code>false</code>.
      */
-    boolean attemptTransition(Context context) throws InvalidMotionException
+    boolean attemptTransition(Context context) throws InvalidMotionException, ActivityException
     {
         Iterator   transIter = getTransitions().iterator();
         Transition eachTrans = null;
@@ -330,7 +330,7 @@ public class State extends Node
      *
      *  @param context The context to accept.
      */
-    public void accept(Context context) throws InvalidMotionException
+    public void accept(Context context) throws InvalidMotionException, ActivityException
     {
         super.accept( context );
 
@@ -356,7 +356,7 @@ public class State extends Node
      *
      *  @param context The context to check.
      */
-    public void check(Context context) throws InvalidMotionException
+    public void check(Context context) throws InvalidMotionException, ActivityException
     {
         attemptTransition( context );
     }

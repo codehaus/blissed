@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Task.java,v 1.4 2002-07-04 22:56:53 werken Exp $
+ $Id: ProcessTask.java,v 1.1 2002-07-04 22:56:53 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -46,15 +46,40 @@ package com.werken.blissed;
  
  */
 
-/** A unit of work to be performed within a state.
- *
- *  @see State#setTask
- *  @see State#getTask
- *
- *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
- */
-public interface Task extends Named, Described
+public class ProcessTask implements Task
 {
-    void perform(Context context) throws ActivityException; 
+    private Process process;
+
+    public ProcessTask(Process process)
+    {
+        this.process = process;
+    }
+
+    public String getName()
+    {
+        return "sub." + getProcess().getName();
+    }
+
+    public String getDescription()
+    {
+        return "sub process " + getProcess().getName();
+    }
+
+    public Process getProcess()
+    {
+        return this.process;
+    }
+
+    public void perform(Context context) throws ActivityException
+    {
+        try
+        {
+            getProcess().start( context );
+        }
+        catch (InvalidMotionException e)
+        {
+            throw new TaskException( e );
+        }
+    }
 }
 
