@@ -10,6 +10,7 @@
     </links>
     <menu name="blissed">
       <item name="Overview"            href="/index.html"/> 
+      <item name="Jelly Integration"   href="/jelly.html"/> 
 <!--
       <item name="Usage"               href="/usage.html"/>
       <item name="FAQ"                 href="/faq.html"/>

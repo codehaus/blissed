@@ -1,0 +1,221 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+    <author email="bob@eng.werken.com">bob mcwhirter</author>
+    <title>Jelly Integration</title>
+  </properties>
+
+  <body>
+    <section name="Jelly Integration">
+
+      <p>
+      <code>blissed</code> easiest to use by way of the 
+      <a href="http://jakarta.apache.org/commons/sandbox/jelly/">jelly</a>
+      tag library.
+      </p>
+
+      <p>
+      The tag library provides a set of tags for defining processes,
+      and a small handful of tags for controlilng processes.  Of course,
+      being jelly-based, you can use any other jelly tag library you
+      wish.
+      </p>
+
+    </section>
+
+    <section name="General">
+
+      <p>
+      blissed tags can only be used somewhere inside of a &lt;blissed&gt;
+      container element.  The container element handles initialization of
+      the system, and acts as a way to group a collection processes together.
+      </p>
+
+      <source>
+<![CDATA[
+
+<!--
+  ||  Open a block so that we can use blissed
+  -->
+
+<blissed xmlns="jelly:com.werken.blissed.jelly.BlissedTagLibrary">
+  ...
+</blissed>
+      ]]>
+      </source>
+
+    </section>
+
+    <section name="Process Definition">
+    
+      <p>
+      A new process is defined using the &lt;process&gt; tag which requires
+      a unique <code>name</code> attribute.  Additional, it must specify
+      the initial <code>start</code> state.
+      </p>
+ 
+      <source>
+<![CDATA[
+<blissed xmlns="jelly:com.werken.blissed.jelly.BlissedTagLibrary">
+
+  <!--
+    ||  Define a new process named 'process.application'
+    -->
+  <process name="process.application"
+           start="application.complete.check">
+    ...
+  </process>
+
+</blissed>
+      ]]>
+      </source>
+
+      <p>
+      A &lt;process&gt; contains &lt;state&gt; definitions followed by
+      &lt;transition&gt; definitions.  Both &lt;state&gt; and &lt;transition&gt; 
+      require a <code>name</code> attribute that is unique to the states or
+      transitions for the current &lt;process&gt;.  Both may contain a 
+      &lt;description&gt; element for providing documentation.
+      </p>
+
+      <p>
+      A &lt;state&gt; tag may also contain either a &lt;do-activity&gt; block
+      or &lt;do-process&gt; tag.
+      </p>
+
+      <source>
+      <![CDATA[
+
+<process name="process.application"
+         start="application.complete.check">
+
+  <!--
+    || Define a state to check the application for completeness
+    -->
+  <state name="application.complete.check">
+
+    <description>
+      Determine if the application contains all required information.
+    </description>
+
+    <!--
+      || Perform this activity block.
+      -->
+    <do-activity>
+      <check-field name="name.first" .../>
+      <check-field name="name.last" .../>
+      <check-field name="address.street" .../>
+    </do-activity>
+
+  </state> 
+
+  <!--
+    || Define a state to reject an applicant.
+    -->
+  <state name="reject"
+         terminal="true">
+
+    <description>
+      Notify applicant of rejection, and give an explanation.
+    </description>
+
+    <do-activity>
+      <smtp:send to="${applicant.email}">
+
+      Dear ${applicant.name.first},
+
+         ... 
+         ... 
+
+      </smtp:send>
+    </do-activity>
+
+  </state>
+
+  <!--
+    || Define a state start the underwriting process.
+    -->
+  <state name="underwrite">
+
+    <description>
+      Send the application through the underwriting process.
+    </description>
+
+    <do-process name="process.underwrite"/>
+
+  </state>
+
+</process>
+      ]]>
+      </source>
+
+    </section>
+
+    <section name="Process Runtime">
+
+    <p>
+    Process run-time involves either spawning new processes, or
+    simply using one process as the activity of another.  We've
+    already seen how &lt;do-process&gt; can be used for organizational
+    purposes, where when flattened, there is still a single large
+    process.
+    </p>
+
+    <p>
+    The &lt;spawn-process&gt; tag can be used to either spawn a new
+    top-level process or to create a nested, child processes from
+    an already existing process.
+    </p>
+
+    <p>
+    Like &lt;do-process&gt;, the &lt;spawn-process&gt; takes a single
+    <code>name</code> attribute specifying the process name.  It will
+    always create a new <code>Thread</code> for the execution of the
+    process.  If the &lt;spawn-process&gt; occurs outside of an
+    &lt;do-activity&gt; tag, then a top-level process is created,
+    otherwise, a child of the current process is created.
+    </p>
+
+      <source>
+<![CDATA[
+
+<!--
+  ||  Open a block so that we can use blissed
+  -->
+
+<blissed xmlns="jelly:com.werken.blissed.jelly.BlissedTagLibrary">
+  ...
+  <process name="process.application">
+    <state name="notify.others">
+      <do-activity>
+        <!--
+          || Spawn two concurrent process to perform
+          || notifications.  This process continues 
+          || even before these terminate.
+          -->
+        <spawn process="notify.internal-orgs"/>
+        <spawn process="notify.external-orgs"/>
+      </do-activity>
+    </state>
+
+  </process>
+
+  <process.. />
+  <process.. />
+
+  <!--
+    || Spawn the top-level process for an application.
+    -->
+  <spawn-process name="process.application"/>
+
+</blissed>
+      ]]>
+      </source>
+
+    </section>
+
+  </body>
+
+</document>
+

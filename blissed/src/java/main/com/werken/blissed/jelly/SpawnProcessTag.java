@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: SpawnProcessTag.java,v 1.2 2002-07-18 18:32:58 bob Exp $
+ $Id: SpawnProcessTag.java,v 1.3 2002-07-18 20:56:20 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -107,7 +107,7 @@ public class SpawnProcessTag extends BlissedTagSupport
     /** Accept the context into the process.
      *
      *  @param process The process.
-     *  @param context The context.
+     *  @param blissedContext The blissed context.
      *
      *  @throws InvalidMotionException If an invalid motion occurs.
      *  @throws ActivityException If an error occurs while performing an activity.
@@ -145,8 +145,6 @@ public class SpawnProcessTag extends BlissedTagSupport
 
     /** Evaluates this tag after all the tags properties
      *  have been initialized.
-     *
-     *  @task This should handle spawning children flows.
      *
      *  @param output The output sink.
      *

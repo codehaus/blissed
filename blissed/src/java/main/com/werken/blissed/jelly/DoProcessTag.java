@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: DoProcessTag.java,v 1.2 2002-07-18 18:32:58 bob Exp $
+ $Id: DoProcessTag.java,v 1.3 2002-07-18 20:56:20 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -116,8 +116,6 @@ public class DoProcessTag extends BlissedTagSupport
 
     /** Evaluates this tag after all the tags properties
      *  have been initialized.
-     *
-     *  @task This should handle spawning children flows.
      *
      *  @param output The output sink.
      *
