@@ -17,6 +17,12 @@ public class NoOpActivityTest extends TestCase
     {
     }
 
+    public void testName_Get()
+    {
+        assertEquals( "no-op",
+                      NoOpActivity.INSTANCE.getName() );
+    }
+
     public void testDescription_GetSet() throws Exception
     {
         assertEquals( "no-op",

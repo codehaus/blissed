@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: PassTag.java,v 1.3 2002-09-17 21:36:43 bob Exp $
+ $Id: PassTag.java,v 1.4 2002-09-17 22:38:27 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -86,7 +86,6 @@ public class PassTag extends TagSupport
      */
     public void doTag(XMLOutput output) throws Exception
     {
-        System.err.println( "PassTag#####doTag()" );
         throw new PassException();
     }
 }
