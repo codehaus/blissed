@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: ProcessContext.java,v 1.5 2002-09-18 16:17:29 bob Exp $
+ $Id: ProcessContext.java,v 1.6 2002-10-01 23:04:15 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -54,10 +54,18 @@ import java.util.Collections;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ProcessContext.java,v 1.5 2002-09-18 16:17:29 bob Exp $
+ *  @version $Id: ProcessContext.java,v 1.6 2002-10-01 23:04:15 bob Exp $
  */
 public class ProcessContext 
 {
+    // ------------------------------------------------------------
+    //     Constants
+    // ------------------------------------------------------------
+
+    static final short PROCESS_NOT_STARTED = 0;
+    static final short PROCESS_RUNNING     = 1;
+    static final short PROCESS_FINISHED    = 2;
+
     // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------
@@ -74,23 +82,30 @@ public class ProcessContext
     /** Children ProcessContext, if any. */
     private Set children;
 
-    /** Location tracking. */
-    private Location location;
+    private State currentState;
 
-    /** Process data. */
-    private Object processData;
+    private short status;
 
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
+
+    /** Construct.
+     */
+    protected ProcessContext()
+    {
+        this( null,
+              null,
+              null );
+    }
 
     /** Construct a root <code>ProcessContext</code>.
      *
      *  @param engine The process engine that instantiated this context.
      *  @param process The process of which this ProcessContext is an instance. 
      */
-    ProcessContext(ProcessEngine engine,
-                   Process process)
+    protected ProcessContext(ProcessEngine engine,
+                             Process process)
     {
         this( engine,
               process,
@@ -103,17 +118,15 @@ public class ProcessContext
      *  @param process The process of which this ProcessContext is an instance. 
      *  @param parent The parent of this ProcessContext.
      */
-    ProcessContext(ProcessEngine engine,
-                   Process process,
-                   ProcessContext parent)
+    protected ProcessContext(ProcessEngine engine,
+                             Process process,
+                             ProcessContext parent)
     {
         this.engine   = engine;
         this.process  = process;
         this.parent   = parent;
 
         this.children = Collections.EMPTY_SET;
-
-        this.location = new Location();
     }
 
     // ------------------------------------------------------------
@@ -129,6 +142,11 @@ public class ProcessContext
         return this.engine;
     }
 
+    void setProcessEngine(ProcessEngine engine)
+    {
+        this.engine = engine;
+    }
+
     /** Retrieve the Process of this ProcessContext.
      *
      *  @return The process of this ProcessContext.
@@ -136,6 +154,11 @@ public class ProcessContext
     public Process getProcess()
     {
         return this.process;
+    }
+
+    void setProcess(Process process)
+    {
+        this.process = process;
     }
 
     /** Retrieve the parent of this ProcessContext.
@@ -148,22 +171,9 @@ public class ProcessContext
         return this.parent;
     }
 
-    /** Retrieve the process-specific data.
-     *
-     *  @return The process data.
-     */
-    public Object getProcessData()
+    void setParent(ProcessContext parent)
     {
-        return this.processData;
-    }
-
-    /** Set the process-specific data.
-     *
-     *  @param processData The process data.
-     */
-    public void setProcessData(Object processData)
-    {
-        this.processData = processData;
+        this.parent = parent;
     }
 
     /** Add a child ProcessContext to this ProcessContext.
@@ -191,31 +201,79 @@ public class ProcessContext
         return Collections.unmodifiableSet( this.children );
     }
 
-    /** Retrieve the location-management object.
-     *
-     *  @return The location-management object.
-     */
-    Location getLocation()
-    {
-        return this.location;
-    }
-
     /** Retrieve the ProcessContext's current state location.
      *
      *  @return The ProcessContext's current state location.
      */
     public State getCurrentState()
     {
-        return getLocation().getCurrentState();
+        return this.currentState;
     }
 
-    /** Retrieve the ProcessContext's current process location.
-     *
-     *  @return The ProcessContext's current process location.
-     */
-    public Process getCurrentProcess()
+    void setCurrentState(State state)
     {
-        return getLocation().getCurrentProcess();
+        this.currentState = state;
+    }
+
+    boolean isStatus(short status)
+    {
+        return this.status == status;
+    }
+
+    void setStatus(short status)
+    {
+        this.status = status;
+    }
+
+    void startProcess() throws InvalidMotionException
+    {
+        if ( ! isStatus( PROCESS_NOT_STARTED ) )
+        {
+            throw new InvalidMotionException( "Process already started" );
+        }
+
+        setStatus( PROCESS_RUNNING );
+    }
+
+    void enterState(State state) throws InvalidMotionException
+    {
+        if ( ! isStatus( PROCESS_RUNNING ) )
+        {
+            throw new InvalidMotionException( "Process not running" );
+        }
+
+        if ( getCurrentState() != null )
+        {
+            throw new InvalidMotionException( "Still in state: " + getCurrentState() );
+        }
+
+        setCurrentState( state );
+    }
+
+    void exitState(State state) throws InvalidMotionException
+    {
+        if ( ! isStatus( PROCESS_RUNNING ) )
+        {
+            throw new InvalidMotionException( "Process not running" );
+        }
+
+        if ( getCurrentState().equals( state ) )
+        {
+            setCurrentState( null );
+            return;
+        }
+
+        throw new InvalidMotionException( "Not in state: " + state );
+    }
+
+    void finishProcess() throws InvalidMotionException
+    {
+        if ( ! isStatus( PROCESS_RUNNING ) )
+        {
+            throw new InvalidMotionException( "Process not running" );
+        }
+
+        setStatus( PROCESS_FINISHED );
     }
 }
 

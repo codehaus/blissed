@@ -66,18 +66,4 @@ public class ProcessContextTest extends TestCase
         assertSame( context,
                     child.getParent() );
     }
-
-    public void testProcessData_GetSet() throws Exception
-    {
-        ProcessContext context = this.engine.spawn( this.process );
-
-        assertNull( context.getProcessData() );
-
-        Object data = new Object();
-
-        context.setProcessData( data );
-
-        assertSame( data,
-                    context.getProcessData() );
-    }
 }

@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: ProcessEngine.java,v 1.12 2002-09-19 21:45:19 bob Exp $
+ $Id: ProcessEngine.java,v 1.13 2002-10-01 23:04:16 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -54,7 +54,7 @@ import java.util.Iterator;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ProcessEngine.java,v 1.12 2002-09-19 21:45:19 bob Exp $
+ *  @version $Id: ProcessEngine.java,v 1.13 2002-10-01 23:04:16 bob Exp $
  */
 public class ProcessEngine implements Runnable
 {
@@ -312,8 +312,6 @@ public class ProcessEngine implements Runnable
         ProcessContext context = spawn( process,
                                         false );
 
-        context.setProcessData( newProcessData( process ) );
-
         return context;
     }
 
@@ -337,26 +335,22 @@ public class ProcessEngine implements Runnable
                                 boolean async)
         throws ActivityException, InvalidMotionException, ProcessDataInstantiationException
     {
-
-        ProcessContext context = new ProcessContext( this,
-                                                     process );
-
-        context.setProcessData( newProcessData( process ) );
+        ProcessContext processContext = newInitializedProcessContext( process );
 
         if ( async )
         {
             addToStartProcessQueue( process,
-                                    context );
+                                    processContext );
         }
         else
         {
             startProcess( process,
-                          context );
+                          processContext );
 
-            checkTransitions( context );
+            checkTransitions( processContext );
         }
 
-        return context;
+        return processContext;
     }
 
     /** Spawn an instance of a <code>Process</code> as a child
@@ -378,33 +372,46 @@ public class ProcessEngine implements Runnable
                                 ProcessContext parent)
         throws ActivityException, InvalidMotionException, ProcessDataInstantiationException
     {
-        ProcessContext context = new ProcessContext( this,
-                                                     process,
-                                                     parent );
+        ProcessContext processContext = newInitializedProcessContext( process );
 
-        context.setProcessData( newProcessData( process ) );
+        processContext.setParent( parent );
 
-        parent.addChild( context );
+        parent.addChild( processContext );
 
         addToStartProcessQueue( process,
-                                context );
+                                processContext );
 
-        return context;
+        return processContext;
     }
 
-    /** Create a new process-data instance for the specified <code>Process</code>.
+    /** Create a new process-data instance for the specified <code>ProcessContext</code>.
      *
-     *  @param process The process.
+     *  @param processContext The process context.
      *
      *  @return The new process-data instance.
      *
      *  @throws ProcessDataInstantiationException If an error occurs
      *          while attempting to instantiate the process data.
      */
-    public Object newProcessData(Process process)
+    public Object newProcessData(ProcessContext processContext)
         throws ProcessDataInstantiationException
     {
         return null;
+    }
+
+    public ProcessContext newProcessContext(Process process)
+    {
+        return new ProcessContext();
+    }
+
+    ProcessContext newInitializedProcessContext(Process process)
+    {
+        ProcessContext processContext = newProcessContext( process );
+
+        processContext.setProcessEngine( this );
+        processContext.setProcess( process );
+
+        return processContext;
     }
 
     /** Call another <code>Process</code> from another instance.
@@ -438,9 +445,7 @@ public class ProcessEngine implements Runnable
     {
         State startState = process.getStartState();
 
-        Location location = context.getLocation();
-
-        location.startProcess( process );
+        context.startProcess();
 
         enterState( startState,
                     context );
@@ -461,9 +466,7 @@ public class ProcessEngine implements Runnable
     protected void enterState(State state,
                               ProcessContext context) throws ActivityException, InvalidMotionException
     {
-        Location location = context.getLocation();
-
-        location.enterState( state );
+        context.enterState( state );
 
         Activity activity = state.getActivity();
 
@@ -487,9 +490,7 @@ public class ProcessEngine implements Runnable
     protected void exitState(State state,
                              ProcessContext context) throws InvalidMotionException
     {
-        Location location = context.getLocation();
-
-        location.exitState( state );
+        context.exitState( state );
     }
 
     /** Finish a <code>Process</code> for a particular
@@ -504,9 +505,7 @@ public class ProcessEngine implements Runnable
     protected void finishProcess(Process process,
                                  ProcessContext context) throws InvalidMotionException
     {
-        Location location = context.getLocation();
-
-        location.finishProcess( process );
+        context.finishProcess();
     }
 
     /** Check a <code>ProcessContext</code> for progress possibilities.
@@ -575,9 +574,7 @@ public class ProcessEngine implements Runnable
         State destination = transition.getDestination();
         State origin = transition.getOrigin();
 
-        Location location = context.getLocation();
-
-        if ( location.getCurrentState() != origin )
+        if ( context.getCurrentState() != origin )
         {
             throw new InvalidMotionException( "Not in state " + origin.getName() );
         }
@@ -585,7 +582,7 @@ public class ProcessEngine implements Runnable
         exitState( origin,
                    context );
 
-        Process process = context.getCurrentProcess();
+        Process process = context.getProcess();
 
         if ( destination == process.getTerminalState() )
         {

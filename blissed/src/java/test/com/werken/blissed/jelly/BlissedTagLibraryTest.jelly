@@ -345,6 +345,7 @@
     ||     <call>
     -->
 
+
   <test:case name="testCallTag_NoProcess">
     <j:catch var="e">
       <call/>
@@ -363,6 +364,8 @@
     <test:assert 
           test="${(e != null) and (e.reason.equals( 'No process context' ))}">no process context</test:assert>
   </test:case>
+
+<!--
 
   <test:case name="testCallTag_Valid">
     <process name="processOne" start="p1.stateOne" var="processOne">
@@ -401,6 +404,9 @@
     <test:assert test="${theContext.currentState == processTwo.getState('p2.stateOne')}">process two, state one</test:assert>
 
   </test:case>
+
+-->
+
   <!--
     ||     <pass>
     -->
@@ -521,21 +527,6 @@
               test="${(e != null) and (e.reason.startsWith( 'Activity already defined' ))}">duplicate activity</test:assert>
       </state>
     </process>
-  </test:case>
-
-  <test:case name="testActivityPerform">
-    <engine var="theEngine"/>
-    <process name="foo" start="start" var="theProcess">
-      <state name="start"/>
-    </process> 
-    <activity var="theActivity">
-      ${context.setProcessData( 'cheese' )}
-    </activity>
-    <spawn engine="${theEngine}" 
-           process="${theProcess}" 
-           var="theContext"/>
-    ${theActivity.perform( theContext )}
-    <test:assert test="${theContext.getProcessData() == 'cheese'}">activity perform</test:assert>
   </test:case>
 
 </test:suite>
