@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Process.java,v 1.21 2002-08-14 20:22:29 bob Exp $
+ $Id: Process.java,v 1.22 2002-08-15 17:37:23 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -199,6 +199,20 @@ public class Process implements Named, Described, Activity, DirectedGraph
         addState( state );
 
         return state;
+    }
+
+    /** Create the data container for this process.
+     *
+     *  <p>
+     *  The default implementation always returns
+     *  <code>null</code>.
+     *  </p>
+     *
+     *  @return The process data object.
+     */
+    public Object createProcessData()
+    {
+        return null;
     }
 
     /** Spawn a new instance of this process.
