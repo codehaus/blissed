@@ -4,6 +4,8 @@ import junit.framework.TestCase;
 
 public class WorkSlipTest extends TestCase
 {
+    private Process process;
+
     public WorkSlipTest(String name)
     {
         super( name );
@@ -11,20 +13,18 @@ public class WorkSlipTest extends TestCase
 
     public void setUp()
     {
-
+        this.process = new Process( "process",
+                                    "a test process" );
     }
 
     public void tearDown()
     {
-
+        this.process = null;
     }
 
     public void testStartProcess_DefaultTransition()
     {
-        Process process = new Process( "process",
-                                       "a test process" );
-
-        WorkSlip ws = process.start();
+        WorkSlip ws = this.process.start();
 
         assertNotNull( ws.getCurrentNode() );
 
@@ -38,12 +38,9 @@ public class WorkSlipTest extends TestCase
 
     public void testStartProcess_Blocked()
     {
-        Process process = new Process( "process",
-                                       "a test proces" );
+        this.process.getStart().getTransition().setPredicate( FalsePredicate.INSTANCE );
 
-        process.getStart().getTransition().setPredicate( FalsePredicate.INSTANCE );
-
-        WorkSlip ws = process.start();
+        WorkSlip ws = this.process.start();
 
         assertNotNull( ws.getCurrentNode() );
 
@@ -52,7 +49,51 @@ public class WorkSlipTest extends TestCase
         // still be in the start node, waiting for something
         // to happen.
 
-        assertSame( process.getStart(),
+        assertSame( this.process.getStart(),
                     ws.getCurrentNode() );
+    }
+
+    public void testStartSubProcess()
+    {
+        WorkSlip parent = this.process.start();
+
+        Process subProcess = new Process( "sub-process",
+                                          "a test sub-process" );
+
+        WorkSlip child = parent.start( subProcess );
+
+        assertSame( parent,
+                    child.getParent() );
+    }
+
+    public void testAttributes()
+    {
+        WorkSlip ws = this.process.start();
+
+        Object objA = new Object();
+        Object objB = new Object();
+
+        ws.setAttribute( "a",
+                         objA );
+
+        ws.setAttribute( "b",
+                         objB );
+
+        assertSame( objA,
+                    ws.getAttribute( "a" ) );
+
+        assertSame( objB,
+                    ws.getAttribute( "b" ) );
+
+        ws.clearAttribute( "a" );
+
+        assertNull( ws.getAttribute( "a" ) );
+
+        assertSame( objB,
+                    ws.getAttribute( "b" ) );
+
+        ws.clearAttribute( "b" );
+
+        assertNull( ws.getAttribute( "b" ) );
     }
 }
