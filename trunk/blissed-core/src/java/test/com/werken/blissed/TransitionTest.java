@@ -102,16 +102,18 @@ public class TransitionTest extends TestCase
         }
     }
 
-    public void testCheck_NotUnblocked()
+    public void testAccept_NotUnblocked()
     {
         try
         {
             this.context.enterNode( this.state2 );
 
+            this.transition_2_finish.accept( this.context );
+
             assertSame( this.state2,
                         this.context.getCurrentNode() );
 
-            this.context.check();
+            this.transition_2_finish.accept( this.context );
 
             assertSame( this.state2,
                         this.context.getCurrentNode() );
@@ -126,18 +128,20 @@ public class TransitionTest extends TestCase
         }
     }
 
-    public void testCheck_Unblocked()
+    public void testAccept_Unblocked()
     {
         try
         {
             this.context.enterNode( this.state2 );
+
+            this.transition_2_finish.accept( this.context );
 
             assertSame( this.state2,
                         this.context.getCurrentNode() );
 
             ((Transition)this.state2.getTransitions().get( 0 )).setGuard( new BooleanGuard( true ) );
 
-            this.context.check();
+            this.transition_2_finish.accept( this.context );
 
             assertNull( this.context.getCurrentNode() );
 
