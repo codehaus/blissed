@@ -35,7 +35,7 @@
 
   <repository>
     <connection>scm:cvs::pserver:anonymous@cvs.werken.com:/cvsroot/blissed:blissed</connection>
-    <url></url>
+    <url>http://cvs.werken.com/viewcvs.cgi/blissed/blissed/</url>
   </repository>
 
   <developers>
