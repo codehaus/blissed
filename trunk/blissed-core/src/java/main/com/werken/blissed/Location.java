@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Location.java,v 1.8 2002-09-16 04:17:26 bob Exp $
+ $Id: Location.java,v 1.9 2002-09-17 05:13:34 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -177,6 +177,11 @@ class Location
         ProcessEntry entry = (ProcessEntry) this.locationStack.peek();
 
         entry.exitState( state );
+    }
+
+    public String toString()
+    {
+        return "[Location: stack=" + this.locationStack + "]";
     }
 }
 

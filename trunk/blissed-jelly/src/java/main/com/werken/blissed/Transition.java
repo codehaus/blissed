@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Transition.java,v 1.19 2002-09-16 16:40:24 bob Exp $
+ $Id: Transition.java,v 1.20 2002-09-17 05:13:34 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -46,13 +46,15 @@ package com.werken.blissed;
  
  */
 
+import org.apache.commons.graph.Edge;
+
 /** An arc between two <code>State</code>s.
  *
  *  @see State
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class Transition implements Described
+public class Transition implements Described, Edge
 {    
     // ------------------------------------------------------------
     //     Instance members
@@ -203,7 +205,7 @@ public class Transition implements Described
      */
     public String toString()
     {
-        return "[Transition: origin=" + getOrigin()
+        return "[Transition: origin=" + getOrigin().getName()
             + "; destination=" + getDestination().getName()
             + "; guard=" + getGuard() 
             + "; description=" + getDescription()

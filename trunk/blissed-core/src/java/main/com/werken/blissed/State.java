@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: State.java,v 1.21 2002-09-16 14:59:51 bob Exp $
+ $Id: State.java,v 1.22 2002-09-17 05:13:34 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -54,6 +54,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.Iterator;
 
 /** A <code>Activity</code>-bearing state in the process graph.
  *
@@ -145,7 +146,13 @@ public class State implements Named, Described, Vertex
     public void removeTransition(Transition transition)
     {
         this.outbound.remove( transition );
-        transition.getDestination().removeInboundTransition( transition );
+
+        State destination = transition.getDestination();
+
+        if ( destination != null )
+        {
+            destination.removeInboundTransition( transition );
+        }
     }
 
     /** Remove an inbound path transition.
@@ -155,6 +162,22 @@ public class State implements Named, Described, Vertex
     void removeInboundTransition(Transition transition)
     {
         this.inbound.remove( transition );
+    }
+
+    /** Remove all transitions and clean up both endpoints.
+     */
+    void clearTransitions()
+    {
+        List       trans     = new ArrayList( getTransitions() );
+        Iterator   transIter = trans.iterator();
+        Transition eachTrans = null;
+
+        while ( transIter.hasNext() )
+        {
+            eachTrans = (Transition) transIter.next();
+
+            removeTransition( eachTrans );
+        }
     }
 
     /** Create a transition.

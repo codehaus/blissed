@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: ProcessContext.java,v 1.3 2002-09-16 14:59:51 bob Exp $
+ $Id: ProcessContext.java,v 1.4 2002-09-17 05:13:34 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -54,7 +54,7 @@ import java.util.Collections;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ProcessContext.java,v 1.3 2002-09-16 14:59:51 bob Exp $
+ *  @version $Id: ProcessContext.java,v 1.4 2002-09-17 05:13:34 bob Exp $
  */
 public class ProcessContext 
 {
@@ -157,46 +157,13 @@ public class ProcessContext
         return this.processData;
     }
 
-    /** Signal that this ProcessContext has started a process.
+    /** Set the process-specific data.
      *
-     *  @param process The process.
+     *  @param processData The process data.
      */
-    void startProcess(Process process)
+    public void setProcessData(Object processData)
     {
-        this.location.startProcess( process );
-    }
-
-    /** Signal that this ProcessContext has finished a process.
-     *
-     *  @param process The process.
-     *
-     *  @throws InvalidMotionException If an invalid motion occurs.
-     */
-    void finishProcess(Process process) throws InvalidMotionException
-    {
-        this.location.finishProcess( process );
-    }
-
-    /** Signal that this ProcessContext has entered a state.
-     *
-     *  @param state The state.
-     *
-     *  @throws InvalidMotionException If an invalid motion occurs.
-     */
-    void enterState(State state) throws InvalidMotionException
-    {
-        this.location.enterState( state );
-    }
-
-    /** Signal that this ProcessContext has exited a state.
-     *
-     *  @param state The state.
-     *
-     *  @throws InvalidMotionException If an invalid motion occurs.
-     */
-    void exitState(State state) throws InvalidMotionException
-    {
-        this.location.exitState( state );
+        this.processData = processData;
     }
 
     /** Add a child ProcessContext to this ProcessContext.
@@ -237,7 +204,7 @@ public class ProcessContext
      *
      *  @return The ProcessContext's current state location.
      */
-    State getCurrentState()
+    public State getCurrentState()
     {
         return getLocation().getCurrentState();
     }
@@ -246,7 +213,7 @@ public class ProcessContext
      *
      *  @return The ProcessContext's current process location.
      */
-    Process getCurrentProcess()
+    public Process getCurrentProcess()
     {
         return getLocation().getCurrentProcess();
     }

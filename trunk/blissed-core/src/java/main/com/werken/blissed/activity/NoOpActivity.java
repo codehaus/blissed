@@ -1,7 +1,7 @@
 package com.werken.blissed.activity;
 
 /*
- $Id: NoOpActivity.java,v 1.1 2002-09-16 14:59:51 bob Exp $
+ $Id: NoOpActivity.java,v 1.2 2002-09-17 05:13:34 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -111,7 +111,7 @@ public class NoOpActivity implements Activity
      */
     public String getName()
     {
-        return "blissed.no-op";
+        return "no-op";
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

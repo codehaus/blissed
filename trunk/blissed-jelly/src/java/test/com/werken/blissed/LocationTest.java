@@ -42,6 +42,11 @@ public class LocationTest extends TestCase
         this.state2 = null;
     }
 
+    public void testGetCurrentState_EmptyStack()
+    {
+        assertNull( this.location.getCurrentState() );
+    }
+
     public void testStartProcess()
     {
         this.location.startProcess( this.process );
@@ -277,6 +282,7 @@ public class LocationTest extends TestCase
     {
         try
         {
+            System.err.println( "LOCATION: " + this.location );
             this.location.exitState( this.state1 );
             fail( "Should have thrown InvalidMotionException" );
         }

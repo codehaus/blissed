@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: BlissedTagSupport.java,v 1.3 2002-07-18 18:32:58 bob Exp $
+ $Id: BlissedTagSupport.java,v 1.4 2002-09-17 05:13:34 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -46,17 +46,26 @@ package com.werken.blissed.jelly;
  
  */
 
-import com.werken.blissed.Process;
+import com.werken.blissed.ProcessContext;
+import com.werken.blissed.ProcessEngine;
 
 import org.apache.commons.jelly.TagSupport;
-import org.apache.commons.jelly.JellyException;
 
 /** Base of all blissed jelly tags.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-abstract class BlissedTagSupport extends TagSupport
+public abstract class BlissedTagSupport extends TagSupport
 {
+    // ------------------------------------------------------------
+    //   Constants
+    // ------------------------------------------------------------
+
+    /** Key under which the <code>ProcessContext</code> is stored
+     *  within the <code>JellyContext</code>.
+     */
+    public static final String PROCESS_CONTEXT_KEY = "processContext";
+
     // ------------------------------------------------------------
     //   Constructors
     // ------------------------------------------------------------
@@ -65,31 +74,30 @@ abstract class BlissedTagSupport extends TagSupport
      */
     protected BlissedTagSupport()
     {
+        // intentionally left blank
     }
 
     // ------------------------------------------------------------
     //   Instance methods
     // ------------------------------------------------------------
 
-    /** Retrieve a process by name from this library.
+    /** Retrieve the <code>ProcessEngine</code> of the current
+     *  <code>ProcessContext</code>.
      *
-     *  @param name The name of the process.
-     *
-     *  @return The named process, or <code>null</code> if
-     *          this library contains no process with the
-     *          given name.
-     *
-     *  @throws JellyException If an error occurs locating a process library.
+     *  @return The process engine.
      */
-    protected Process getProcess(String name) throws JellyException
+    protected ProcessEngine getProcessEngine()
     {
-        ProcessLibrary library = (ProcessLibrary) findAncestorWithClass( ProcessLibrary.class );
+        return getProcessContext().getProcessEngine();
+    }
 
-        if ( library == null )
-        {
-            throw new JellyException( "No process library" );
-        }
-
-        return library.getProcess( name );
+    /** Retrieve the current <code>ProcessContext</code>.
+     *
+     *  @return The current process context, or <code>null</code>
+     *          if no process context is currently in-scope.
+     */
+    protected ProcessContext getProcessContext()
+    {
+        return (ProcessContext) getContext().getVariable( PROCESS_CONTEXT_KEY );
     }
 }
