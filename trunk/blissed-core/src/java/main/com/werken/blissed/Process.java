@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Process.java,v 1.13 2002-07-06 03:49:01 werken Exp $
+ $Id: Process.java,v 1.14 2002-07-06 15:05:38 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -158,7 +158,7 @@ public class Process implements Named, Described, Activity
      *  @return The named node, or <code>null</code> of no node
      *          with the given name is known to this process.
      */
-    Node getNode(String name)
+    protected Node getNode(String name)
     {
         return (Node) this.nodes.get( name );
     }
@@ -167,7 +167,7 @@ public class Process implements Named, Described, Activity
      *
      *  @param node The node to remove.
      */
-    void removeNode(Node node)
+    protected void removeNode(Node node)
     {
         this.nodes.remove( node.getName() );
     }
