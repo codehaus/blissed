@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: SpawnProcessTag.java,v 1.1 2002-07-18 05:22:50 bob Exp $
+ $Id: SpawnProcessTag.java,v 1.2 2002-07-18 18:32:58 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -56,15 +56,29 @@ import org.apache.commons.jelly.JellyContext;
 import org.apache.commons.jelly.JellyException;
 import org.apache.commons.jelly.MissingAttributeException;
 
+/** Spawn a new process.
+ *
+ *  <p>
+ *  This may be used to spawn both top-level and child processes.
+ *  In both cases, a new <code>Thread</code> is created for execution
+ *  of the process.
+ *  </p>
+ *
+ *  <p>
+ *  The <code>Thread</code> for the process may terminate before the
+ *  <code>Process</code> itself, if execution stalls.  
+ *  </p>
+ *
+ *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ */
 public class SpawnProcessTag extends BlissedTagSupport 
 {
     // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------
 
+    /** Name of the process to spawn. */
     private String name;
-
-    private boolean threaded;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -74,21 +88,55 @@ public class SpawnProcessTag extends BlissedTagSupport
      */
     public SpawnProcessTag()
     {
-        this.threaded = true;
+        // intentionally left blank
     }
 
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
 
+    /** Set the name of the process to spawn.
+     *
+     *  @param name The name of the process.
+     */
     public void setName(String name)
     {
         this.name = name;
     }
 
-    public void setThreaded(boolean threaded)
+    /** Accept the context into the process.
+     *
+     *  @param process The process.
+     *  @param context The context.
+     *
+     *  @throws InvalidMotionException If an invalid motion occurs.
+     *  @throws ActivityException If an error occurs while performing an activity.
+     */
+    void accept(Process process,
+                Context blissedContext) throws InvalidMotionException, ActivityException
     {
-        this.threaded = threaded;
+        JellyContext jellyContext = null;
+
+        if (blissedContext.getParent() == null)
+        {
+            jellyContext = getContext();
+        }
+        else
+        {
+            jellyContext = new JellyContext( getContext() );
+
+            jellyContext.setExport( false );
+            jellyContext.setInherit( true );
+        }
+
+        jellyContext.setVariable( "blissed.context",
+                                  blissedContext );
+
+        blissedContext.setVariable( "jelly.context",
+                                    jellyContext);
+
+        process.accept( blissedContext );
+          
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -135,64 +183,30 @@ public class SpawnProcessTag extends BlissedTagSupport
 
         final Context context = tmpContext;
 
-        if ( threaded )
-        {
-            Thread thread = new Thread() {
-                    public void run()
+        Thread thread = new Thread() {
+                public void run()
+                {
+                    try
                     {
-                        try
-                        {
-                            accept( process,
-                                    context );
-                        }
-                        catch (InvalidMotionException e)
-                        {
-                            e.printStackTrace();
-                        }
-                        catch (ActivityException e)
-                        {
-                            e.printStackTrace();
-                        }
-                        catch (Exception e)
-                        {
-
-                        }
+                        accept( process,
+                                context );
                     }
-                };
-
-            thread.start();
-        }
-        else
-        {
-            accept( process,
-                    context );
-        }
+                    catch (InvalidMotionException e)
+                    {
+                        e.printStackTrace();
+                    }
+                    catch (ActivityException e)
+                    {
+                        e.printStackTrace();
+                    }
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
+            };
+        
+        thread.start();
     }
 
-    void accept(Process process,
-                Context blissedContext) throws InvalidMotionException, ActivityException
-    {
-        JellyContext jellyContext = null;
-
-        if (blissedContext.getParent() == null)
-        {
-            jellyContext = getContext();
-        }
-        else
-        {
-            jellyContext = new JellyContext( getContext() );
-
-            jellyContext.setExport( false );
-            jellyContext.setInherit( true );
-        }
-
-        jellyContext.setVariable( "blissed.context",
-                                  blissedContext );
-
-        blissedContext.setVariable( "jelly.context",
-                                    jellyContext);
-
-        process.accept( blissedContext );
-          
-    }
 }

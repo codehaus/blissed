@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: StateTag.java,v 1.4 2002-07-17 22:14:53 bob Exp $
+ $Id: StateTag.java,v 1.5 2002-07-18 18:32:58 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -73,6 +73,7 @@ public class StateTag extends BlissedTagSupport implements DescribedTag
     /** The state. */
     private State state;
 
+    /** Is this a terminal state? */
     private boolean terminal;
 
     // ------------------------------------------------------------
@@ -118,6 +119,13 @@ public class StateTag extends BlissedTagSupport implements DescribedTag
         return this.state;
     }
 
+    /** Set the flag that indicates if this state is
+     *  a terminal state.
+     *
+     *  @param terminal <code>true</code> to indicate that
+     *         this state is a terminal state, otherwise
+     *         <code>false</code>.
+     */
     public void setTerminal(boolean terminal)
     {
         this.terminal = terminal;

@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: Jelly.java,v 1.1 2002-07-17 22:14:53 bob Exp $
+ $Id: Jelly.java,v 1.2 2002-07-18 18:32:58 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -18,18 +18,18 @@ package com.werken.blissed.jelly;
     following disclaimer in the documentation and/or other
     materials provided with the distribution.
  
- 3. The name "werkflow" must not be used to endorse or promote
+ 3. The name "blissed" must not be used to endorse or promote
     products derived from this Software without prior written
     permission of The Werken Company.  For written permission,
     please contact bob@werken.com.
  
- 4. Products derived from this Software may not be called "werkflow"
-    nor may "werkflow" appear in their names without prior written
-    permission of The Werken Company. "werkflow" is a registered
+ 4. Products derived from this Software may not be called "blissed"
+    nor may "blissed" appear in their names without prior written
+    permission of The Werken Company. blissed is a registered
     trademark of The Werken Company.
  
- 5. Due credit should be given to the werkflow project
-    (http://werkflow.werken.com/).
+ 5. Due credit should be given to the blissed Project
+    (http://blissed.werken.com/).
  
  THIS SOFTWARE IS PROVIDED BY THE WERKEN COMPANY AND CONTRIBUTORS
  ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT

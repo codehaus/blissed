@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: ProcessTag.java,v 1.6 2002-07-18 05:22:50 bob Exp $
+ $Id: ProcessTag.java,v 1.7 2002-07-18 18:32:58 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -161,7 +161,7 @@ public class ProcessTag extends BlissedTagSupport implements DescribedTag
 
         if ( library == null )
         {
-            throw new JellyException( "Not within a blissed element" );
+            throw new JellyException( "Not within a process library" );
         }
 
         if ( this.name == null )
