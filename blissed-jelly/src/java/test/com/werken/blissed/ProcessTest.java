@@ -79,16 +79,16 @@ public class ProcessTest extends TestCase
     {
         try
         {
-            Context context = this.process.spawn();
+            Procession procession = this.process.spawn();
 
-            this.process.accept( context );
+            this.process.accept( procession );
             
             assertSame( this.process,
-                        context.getCurrentProcess() );
+                        procession.getCurrentProcess() );
             
-            System.err.println( "current state: " + context.getCurrentState().getName() );
+            System.err.println( "current state: " + procession.getCurrentState().getName() );
             assertSame( this.state1,
-                        context.getCurrentState() );
+                        procession.getCurrentState() );
         }
         catch (InvalidMotionException e)
         {
@@ -104,17 +104,17 @@ public class ProcessTest extends TestCase
     {
         try
         {
-            Context context = this.process.spawn();
+            Procession procession = this.process.spawn();
 
-            this.process.accept( context );
+            this.process.accept( procession );
             
             assertSame( this.process,
-                        context.getCurrentProcess() );
+                        procession.getCurrentProcess() );
             
             assertSame( this.state1,
-                        context.getCurrentState() );
+                        procession.getCurrentState() );
 
-            Context child = this.process.spawn( context );
+            Procession child = this.process.spawn( procession );
 
             this.process.accept( child );
 
@@ -124,7 +124,7 @@ public class ProcessTest extends TestCase
             assertSame( this.state1,
                         child.getCurrentState() );
 
-            assertSame( context,
+            assertSame( procession,
                         child.getParent() );
         }
         catch (InvalidMotionException e)

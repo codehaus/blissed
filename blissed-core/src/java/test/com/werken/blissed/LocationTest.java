@@ -5,7 +5,7 @@ import junit.framework.TestCase;
 public class LocationTest extends TestCase
 {
     private Process  process;
-    private Context  context;
+    private Procession  procession;
     private Location location;
 
     private State state1;
@@ -21,9 +21,9 @@ public class LocationTest extends TestCase
         this.process  = new Process( "test.process",
                                      "test process" );
                                     
-        this.context  = new Context( this.process );
+        this.procession  = new Procession( this.process );
 
-        this.location = this.context.getLocation();
+        this.location = this.procession.getLocation();
         
         this.state1 = this.process.addState( "state.1",
                                              "state one" );
@@ -35,7 +35,7 @@ public class LocationTest extends TestCase
     public void tearDown()
     {
         this.location = null;
-        this.context  = null;
+        this.procession  = null;
     }
 
     public void testStartProcess()

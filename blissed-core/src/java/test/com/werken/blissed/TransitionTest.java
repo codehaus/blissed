@@ -5,7 +5,7 @@ import junit.framework.TestCase;
 public class TransitionTest extends TestCase
 {
     private Process process;
-    private Context context;
+    private Procession procession;
 
     private State state1;
     private State state2;
@@ -37,9 +37,9 @@ public class TransitionTest extends TestCase
 
         this.transition_2_finish.setGuard( new BooleanGuard( false ) );
 
-        this.context = new Context( this.process );
+        this.procession = new Procession( this.process );
 
-        this.context.startProcess( this.process );
+        this.procession.startProcess( this.process );
     }
 
     public void tearDown()
@@ -59,11 +59,11 @@ public class TransitionTest extends TestCase
     {
         try
         {
-            this.context.enterState( this.state1 );
-            this.transition_1_2.accept( this.context );
+            this.procession.enterState( this.state1 );
+            this.transition_1_2.accept( this.procession );
 
             assertSame( this.state2,
-                        this.context.getCurrentState() );
+                        this.procession.getCurrentState() );
         }
         catch (InvalidMotionException e)
         {
@@ -81,14 +81,14 @@ public class TransitionTest extends TestCase
         {
             try
             {
-                this.context.enterState( this.state2 );
+                this.procession.enterState( this.state2 );
             }
             catch (InvalidMotionException e)
             {
                 fail( e.getLocalizedMessage() );
             }
             
-            this.transition_1_2.accept( this.context );
+            this.transition_1_2.accept( this.procession );
 
             fail( "Should have thrown InvalidMotionException" );
         }
@@ -106,17 +106,17 @@ public class TransitionTest extends TestCase
     {
         try
         {
-            this.context.enterState( this.state2 );
+            this.procession.enterState( this.state2 );
 
-            this.transition_2_finish.accept( this.context );
-
-            assertSame( this.state2,
-                        this.context.getCurrentState() );
-
-            this.transition_2_finish.accept( this.context );
+            this.transition_2_finish.accept( this.procession );
 
             assertSame( this.state2,
-                        this.context.getCurrentState() );
+                        this.procession.getCurrentState() );
+
+            this.transition_2_finish.accept( this.procession );
+
+            assertSame( this.state2,
+                        this.procession.getCurrentState() );
         }
         catch (InvalidMotionException e)
         {
@@ -132,20 +132,20 @@ public class TransitionTest extends TestCase
     {
         try
         {
-            this.context.enterState( this.state2 );
+            this.procession.enterState( this.state2 );
 
-            this.transition_2_finish.accept( this.context );
+            this.transition_2_finish.accept( this.procession );
 
             assertSame( this.state2,
-                        this.context.getCurrentState() );
+                        this.procession.getCurrentState() );
 
             ((Transition)this.state2.getTransitions().get( 0 )).setGuard( new BooleanGuard( true ) );
 
-            this.transition_2_finish.accept( this.context );
+            this.transition_2_finish.accept( this.procession );
 
-            assertNull( this.context.getCurrentState() );
+            assertNull( this.procession.getCurrentState() );
 
-            assertNull( this.context.getCurrentProcess() );
+            assertNull( this.procession.getCurrentProcess() );
         }
         catch (InvalidMotionException e)
         {
