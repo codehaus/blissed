@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: ActivityTag.java,v 1.1 2002-07-17 22:14:53 bob Exp $
+ $Id: ActivityTag.java,v 1.2 2002-07-18 05:22:50 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -54,6 +54,7 @@ import com.werken.blissed.ActivityException;
 
 import org.apache.commons.jelly.Script;
 import org.apache.commons.jelly.XMLOutput;
+import org.apache.commons.jelly.JellyContext;
 import org.apache.commons.jelly.JellyException;
 
 /** Create an activity.
@@ -117,13 +118,16 @@ public class ActivityTag extends BlissedTagSupport
         Activity activity = new Activity() {
                 public void perform(Context context) throws ActivityException
                 {
+                    JellyContext jellyContext = (JellyContext) context.getVariable( "jelly.context" );
+
                     try
                     {
-                        script.run( getContext(),
+                        script.run( jellyContext,
                                     output );
                     }
                     catch (Exception e)
                     {
+                        e.printStackTrace();
                         throw new ActivityException( e );
                     }
                 }

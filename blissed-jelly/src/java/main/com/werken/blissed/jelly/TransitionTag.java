@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: TransitionTag.java,v 1.4 2002-07-17 22:14:53 bob Exp $
+ $Id: TransitionTag.java,v 1.5 2002-07-18 05:22:50 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -180,8 +180,6 @@ public class TransitionTag extends BlissedTagSupport implements DescribedTag
 
         this.transition = fromState.addTransition( toState,
                                                    this.description );
-
-        System.err.println( "new transition: " + this.transition.getOrigin().getName() + " to " + this.transition.getDestination().getName() );
 
         invokeBody( output );
     }

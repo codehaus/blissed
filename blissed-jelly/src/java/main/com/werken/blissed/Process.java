@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Process.java,v 1.18 2002-07-17 22:14:53 bob Exp $
+ $Id: Process.java,v 1.19 2002-07-18 05:22:50 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -221,15 +221,12 @@ public class Process implements Named, Described, Activity
      *
      *  @return A new <code>Context</code> representing the state
      *          for the new instance of this process.
-     *
-     *  @throws InvalidMotionException If an invalid motion occurs.
-     *  @throws ActivityException If an error occurs while performing an activity.
      */
-    public Context spawn() throws InvalidMotionException, ActivityException
+    public Context spawn() 
     {
         Context context = new Context( this );
 
-        accept( context );
+        // accept( context );
 
         return context;
     }
@@ -240,16 +237,13 @@ public class Process implements Named, Described, Activity
      *
      *  @return A new <code>Context</code> representing the state
      *          for the new instance of this process.
-     *
-     *  @throws InvalidMotionException If an invalid motion occurs.
-     *  @throws ActivityException If an error occurs while performing an activity.
      */
-    Context spawn(Context parent) throws InvalidMotionException, ActivityException
+    public Context spawn(Context parent) 
     {
         Context context = new Context( this,
                                        parent );
 
-        accept( context );
+        // accept( context );
 
         return context;
     }
@@ -261,7 +255,7 @@ public class Process implements Named, Described, Activity
      *  @throws InvalidMotionException If an invalid motion occurs.
      *  @throws ActivityException If an error occurs while performing an activity.
      */
-    void accept(Context context) throws InvalidMotionException, ActivityException
+    public void accept(Context context) throws InvalidMotionException, ActivityException
     {
         this.activeContexts.add( context );
 

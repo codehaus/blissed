@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: GuardTag.java,v 1.2 2002-07-18 05:22:50 bob Exp $
+ $Id: DoProcessTag.java,v 1.1 2002-07-18 05:22:50 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -46,23 +46,22 @@ package com.werken.blissed.jelly;
  
  */
 
-import com.werken.blissed.Transition;
+import com.werken.blissed.Process;
 import com.werken.blissed.Context;
-import com.werken.blissed.Guard;
+import com.werken.blissed.ActivityException;
+import com.werken.blissed.InvalidMotionException;
 
-import org.apache.commons.jelly.Script;
 import org.apache.commons.jelly.XMLOutput;
 import org.apache.commons.jelly.JellyException;
+import org.apache.commons.jelly.MissingAttributeException;
 
-/** Create a Guard
- *
- *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
- */
-public class GuardTag extends BlissedTagSupport
+public class DoProcessTag extends BlissedTagSupport 
 {
     // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------
+
+    private String name;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -70,13 +69,18 @@ public class GuardTag extends BlissedTagSupport
 
     /** Construct.
      */
-    public GuardTag()
+    public DoProcessTag()
     {
     }
 
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
+
+    public void setName(String name)
+    {
+        this.name = name;
+    }
 
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -86,57 +90,36 @@ public class GuardTag extends BlissedTagSupport
     /** Evaluates this tag after all the tags properties
      *  have been initialized.
      *
+     *  @task This should handle spawning children flows.
+     *
      *  @param output The output sink.
      *
      *  @throws Exception if an error occurs.
      */
-    public void doTag(final XMLOutput output) throws Exception
+    public void doTag(XMLOutput output) throws Exception
     {
-        TransitionTag transitionTag = (TransitionTag) findAncestorWithClass( TransitionTag.class );
-
-        if ( transitionTag == null )
+        if ( this.name == null )
         {
-            throw new JellyException( "Unable to locate a transition." );
+            throw new MissingAttributeException( "name" );
         }
 
-        Transition transition = transitionTag.getTransition();
+        invokeBody( output );
 
-        if ( transition.getGuard() != null )
+        final Process process = getProcess( this.name );
+
+        if ( process == null )
         {
-            throw new JellyException( "Guard already defined for transition" );
+            throw new JellyException( "No such process \"" + this.name + "\"" );
         }
 
-        final Script script = getBody();
-        
-        Guard guard = new Guard() {
-                public boolean test(Context context) 
-                {
-                    try
-                    {
-                        script.run( getContext(),
-                                    output );
-                    }
-                    catch (PassException e)
-                    {
-                        return true;
-                    }
-                    catch (FailException e)
-                    {
-                        return false;
-                    }
-                    catch (JellyException e)
-                    {
-                        return false;
-                    }
-                    catch (Exception e)
-                    {
-                        return false;
-                    }
+        Context blissedContext = (Context) getContext().getVariable( "blissed.context" );
 
-                    return true;
-                }
-            };
+        if ( blissedContext == null )
+        {
+            throw new JellyException( "No blissed Context" );
+        }
         
-        transition.setGuard( guard );
+        process.accept( blissedContext );
     }
 }
+

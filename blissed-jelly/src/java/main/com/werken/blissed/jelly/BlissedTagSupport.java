@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: BlissedTagSupport.java,v 1.1 2002-07-17 22:14:53 bob Exp $
+ $Id: BlissedTagSupport.java,v 1.2 2002-07-18 05:22:50 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -66,13 +66,13 @@ abstract class BlissedTagSupport extends TagSupport
 
     protected Process getProcess(String name) throws JellyException
     {
-        BlissedTag blissedTag = (BlissedTag) findAncestorWithClass( BlissedTag.class );
+        ProcessLibrary library = (ProcessLibrary) findAncestorWithClass( ProcessLibrary.class );
 
-        if ( blissedTag == null )
+        if ( library == null )
         {
-            throw new JellyException( "Not within a blissed element" );
+            throw new JellyException( "No process library" );
         }
 
-        return blissedTag.getProcess( name );
+        return library.getProcess( name );
     }
 }

@@ -74,6 +74,8 @@ public class ContextTest extends TestCase
         try
         {
             Context spawned = this.context.spawn( this.process );
+
+            this.process.accept( spawned );
             
             assertSame( this.process,
                         spawned.getCurrentProcess() );

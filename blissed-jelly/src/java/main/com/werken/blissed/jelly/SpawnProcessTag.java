@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: GuardTag.java,v 1.2 2002-07-18 05:22:50 bob Exp $
+ $Id: SpawnProcessTag.java,v 1.1 2002-07-18 05:22:50 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -46,23 +46,25 @@ package com.werken.blissed.jelly;
  
  */
 
-import com.werken.blissed.Transition;
+import com.werken.blissed.Process;
 import com.werken.blissed.Context;
-import com.werken.blissed.Guard;
+import com.werken.blissed.ActivityException;
+import com.werken.blissed.InvalidMotionException;
 
-import org.apache.commons.jelly.Script;
 import org.apache.commons.jelly.XMLOutput;
+import org.apache.commons.jelly.JellyContext;
 import org.apache.commons.jelly.JellyException;
+import org.apache.commons.jelly.MissingAttributeException;
 
-/** Create a Guard
- *
- *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
- */
-public class GuardTag extends BlissedTagSupport
+public class SpawnProcessTag extends BlissedTagSupport 
 {
     // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------
+
+    private String name;
+
+    private boolean threaded;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -70,14 +72,24 @@ public class GuardTag extends BlissedTagSupport
 
     /** Construct.
      */
-    public GuardTag()
+    public SpawnProcessTag()
     {
+        this.threaded = true;
     }
 
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
 
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+    public void setThreaded(boolean threaded)
+    {
+        this.threaded = threaded;
+    }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     //     org.apache.commons.jelly.Tag
@@ -86,57 +98,101 @@ public class GuardTag extends BlissedTagSupport
     /** Evaluates this tag after all the tags properties
      *  have been initialized.
      *
+     *  @task This should handle spawning children flows.
+     *
      *  @param output The output sink.
      *
      *  @throws Exception if an error occurs.
      */
-    public void doTag(final XMLOutput output) throws Exception
+    public void doTag(XMLOutput output) throws Exception
     {
-        TransitionTag transitionTag = (TransitionTag) findAncestorWithClass( TransitionTag.class );
-
-        if ( transitionTag == null )
+        if ( this.name == null )
         {
-            throw new JellyException( "Unable to locate a transition." );
+            throw new MissingAttributeException( "name" );
         }
 
-        Transition transition = transitionTag.getTransition();
+        invokeBody( output );
 
-        if ( transition.getGuard() != null )
+        final Process process = getProcess( this.name );
+
+        if ( process == null )
         {
-            throw new JellyException( "Guard already defined for transition" );
+            throw new JellyException( "No such process \"" + this.name + "\"" );
         }
 
-        final Script script = getBody();
-        
-        Guard guard = new Guard() {
-                public boolean test(Context context) 
-                {
-                    try
-                    {
-                        script.run( getContext(),
-                                    output );
-                    }
-                    catch (PassException e)
-                    {
-                        return true;
-                    }
-                    catch (FailException e)
-                    {
-                        return false;
-                    }
-                    catch (JellyException e)
-                    {
-                        return false;
-                    }
-                    catch (Exception e)
-                    {
-                        return false;
-                    }
+        Context parent = (Context) getContext().getVariable( "blissed.context" );
 
-                    return true;
-                }
-            };
-        
-        transition.setGuard( guard );
+        Context tmpContext = null;
+
+        if ( parent == null )
+        {
+            tmpContext = process.spawn();
+        }
+        else
+        {
+            tmpContext = process.spawn( parent );
+        }
+
+        final Context context = tmpContext;
+
+        if ( threaded )
+        {
+            Thread thread = new Thread() {
+                    public void run()
+                    {
+                        try
+                        {
+                            accept( process,
+                                    context );
+                        }
+                        catch (InvalidMotionException e)
+                        {
+                            e.printStackTrace();
+                        }
+                        catch (ActivityException e)
+                        {
+                            e.printStackTrace();
+                        }
+                        catch (Exception e)
+                        {
+
+                        }
+                    }
+                };
+
+            thread.start();
+        }
+        else
+        {
+            accept( process,
+                    context );
+        }
+    }
+
+    void accept(Process process,
+                Context blissedContext) throws InvalidMotionException, ActivityException
+    {
+        JellyContext jellyContext = null;
+
+        if (blissedContext.getParent() == null)
+        {
+            jellyContext = getContext();
+        }
+        else
+        {
+            jellyContext = new JellyContext( getContext() );
+
+            jellyContext.setExport( false );
+            jellyContext.setInherit( true );
+        }
+
+        jellyContext.setVariable( "blissed.context",
+                                  blissedContext );
+
+        blissedContext.setVariable( "jelly.context",
+                                    jellyContext);
+
+        process.accept( blissedContext );
+          
     }
 }
