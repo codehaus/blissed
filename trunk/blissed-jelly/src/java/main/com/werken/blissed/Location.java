@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Location.java,v 1.9 2002-09-17 05:13:34 bob Exp $
+ $Id: Location.java,v 1.10 2002-09-17 05:19:34 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -179,6 +179,10 @@ class Location
         entry.exitState( state );
     }
 
+    /** Produce a debug string.
+     *
+     *  @return The debug string.
+     */
     public String toString()
     {
         return "[Location: stack=" + this.locationStack + "]";
