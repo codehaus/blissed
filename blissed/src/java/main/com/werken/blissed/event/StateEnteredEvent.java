@@ -1,7 +1,7 @@
 package com.werken.blissed.event;
 
 /*
- $Id: StateEnteredEvent.java,v 1.5 2002-07-07 05:09:16 werken Exp $
+ $Id: StateEnteredEvent.java,v 1.6 2002-08-14 20:22:29 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -47,11 +47,13 @@ package com.werken.blissed.event;
  */
 
 import com.werken.blissed.State;
-import com.werken.blissed.Context;
+import com.werken.blissed.Procession;
 
-/** Event indicating a state was entered by a given context.
+/** Event indicating a state was entered by a given procession.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ *
+ *  @version $Id: StateEnteredEvent.java,v 1.6 2002-08-14 20:22:29 bob Exp $
  */
 public class StateEnteredEvent extends StateEvent
 {
@@ -62,12 +64,12 @@ public class StateEnteredEvent extends StateEvent
     /** Construct.
      *
      *  @param state The state event source.
-     *  @param context The context context.
+     *  @param procession The procession procession.
      */
     public StateEnteredEvent(State state,
-                             Context context)
+                             Procession procession)
     {
         super( state,
-               context );
+               procession );
     }
 }

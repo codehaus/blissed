@@ -1,7 +1,7 @@
 package com.werken.blissed.event;
 
 /*
- $Id: StateEvent.java,v 1.5 2002-07-26 05:41:26 bob Exp $
+ $Id: StateEvent.java,v 1.6 2002-08-14 20:22:29 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -47,7 +47,7 @@ package com.werken.blissed.event;
  */
 
 import com.werken.blissed.State;
-import com.werken.blissed.Context;
+import com.werken.blissed.Procession;
 
 import java.util.EventObject;
 
@@ -56,6 +56,8 @@ import java.util.EventObject;
  *  @see State
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ *
+ *  @version $Id: StateEvent.java,v 1.6 2002-08-14 20:22:29 bob Exp $
  */
 public abstract class StateEvent extends EventObject
 {
@@ -63,8 +65,8 @@ public abstract class StateEvent extends EventObject
     //     Instance members
     // ------------------------------------------------------------
 
-    /** The context. */
-    private Context context;
+    /** The procession. */
+    private Procession procession;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -73,13 +75,13 @@ public abstract class StateEvent extends EventObject
     /** Construct.
      *
      *  @param state The state event source.
-     *  @param context The context context.
+     *  @param procession The procession procession.
      */
     public StateEvent(State state,
-                      Context context)
+                      Procession procession)
     {
         super( state );
-        this.context = context;
+        this.procession = procession;
     }
 
     // ------------------------------------------------------------
@@ -95,12 +97,12 @@ public abstract class StateEvent extends EventObject
         return (State) getSource();
     }
 
-    /** Retrieve the event context.
+    /** Retrieve the event procession.
      *
-     *  @return The context.
+     *  @return The procession.
      */
-    public Context getContext()
+    public Procession getProcession()
     {
-        return this.context;
+        return this.procession;
     }
 }

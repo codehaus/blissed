@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Process.java,v 1.20 2002-07-26 05:41:26 bob Exp $
+ $Id: Process.java,v 1.21 2002-08-14 20:22:29 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -90,8 +90,8 @@ public class Process implements Named, Described, Activity, DirectedGraph
     /** Start state. */
     private State startState;
 
-    /** All active contexts in this process. */
-    private Set activeContexts;
+    /** All active processions in this process. */
+    private Set activeProcessions;
 
     /** Process listeners. */
     private List listeners;
@@ -115,7 +115,7 @@ public class Process implements Named, Described, Activity, DirectedGraph
 
         this.startState = null;
 
-        this.activeContexts = new HashSet();
+        this.activeProcessions = new HashSet();
         this.listeners = Collections.EMPTY_LIST;
     }
 
@@ -203,79 +203,79 @@ public class Process implements Named, Described, Activity, DirectedGraph
 
     /** Spawn a new instance of this process.
      *
-     *  @return A new <code>Context</code> representing the state
+     *  @return A new <code>Procession</code> representing the state
      *          for the new instance of this process.
      */
-    public Context spawn() 
+    public Procession spawn() 
     {
-        Context context = new Context( this );
+        Procession procession = new Procession( this );
 
-        // accept( context );
+        // accept( procession );
 
-        return context;
+        return procession;
     }
 
     /** Spawn a new instance of this process.
      *
-     *  @param parent The parent Context.
+     *  @param parent The parent Procession.
      *
-     *  @return A new <code>Context</code> representing the state
+     *  @return A new <code>Procession</code> representing the state
      *          for the new instance of this process.
      */
-    public Context spawn(Context parent) 
+    public Procession spawn(Procession parent) 
     {
-        Context context = new Context( this,
+        Procession procession = new Procession( this,
                                        parent );
 
-        // accept( context );
+        // accept( procession );
 
-        return context;
+        return procession;
     }
 
-    /** Accept a context into this process.
+    /** Accept a procession into this process.
      *
-     *  @param context The context to accept.
+     *  @param procession The procession to accept.
      *
      *  @throws InvalidMotionException If an invalid motion occurs.
      *  @throws ActivityException If an error occurs while performing an activity.
      */
-    public void accept(Context context) throws InvalidMotionException, ActivityException
+    public void accept(Procession procession) throws InvalidMotionException, ActivityException
     {
-        this.activeContexts.add( context );
+        this.activeProcessions.add( procession );
 
-        context.startProcess( this );
+        procession.startProcess( this );
 
-        fireProcessStarted( context );
+        fireProcessStarted( procession );
 
-        getStartState().accept( context );
+        getStartState().accept( procession );
     }
 
-    /** Release a context from this node.
+    /** Release a procession from this node.
      *
-     *  @param context The context to release.
+     *  @param procession The procession to release.
      *
      *  @throws InvalidMotionException If an invalid motion occurs.
      */
-    void release(Context context) throws InvalidMotionException
+    void release(Procession procession) throws InvalidMotionException
     {
-        // getFinish().release( context );
+        // getFinish().release( procession );
 
-        context.finishProcess( this );
+        procession.finishProcess( this );
 
-        fireProcessFinished( context );
+        fireProcessFinished( procession );
 
-        this.activeContexts.remove( context );
+        this.activeProcessions.remove( procession );
     }
 
-    /** Retrieve an unmodifiable set of all contexts currently
+    /** Retrieve an unmodifiable set of all processions currently
      *  active within this process.
      *
-     *  @return An unmodifiable <code>Set</code> of all <code>Context</code>s
+     *  @return An unmodifiable <code>Set</code> of all <code>Procession</code>s
      *          that are currently active within this process.
      */
-    public Set getActiveContexts()
+    public Set getActiveProcessions()
     {
-        return Collections.unmodifiableSet( this.activeContexts );
+        return Collections.unmodifiableSet( this.activeProcessions );
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -328,12 +328,12 @@ public class Process implements Named, Described, Activity, DirectedGraph
     /** Fire an event indicating that an instance of this
      *  process has started.
      *
-     *  @param context The started process instance context.
+     *  @param procession The started process instance procession.
      */
-    void fireProcessStarted(Context context)
+    void fireProcessStarted(Procession procession)
     {
         ProcessStartedEvent event = new ProcessStartedEvent( this,
-                                                             context );
+                                                             procession );
         
         Iterator listenerIter = getProcessListeners().iterator();
         ProcessListener eachListener = null;
@@ -345,18 +345,18 @@ public class Process implements Named, Described, Activity, DirectedGraph
             eachListener.processStarted( event );
         }
 
-        context.fireProcessStarted( event );
+        procession.fireProcessStarted( event );
     }
 
     /** Fire an event indicating that an instance of this
      *  process has finished.
      *
-     *  @param context The finished process instance context.
+     *  @param procession The finished process instance procession.
      */
-    void fireProcessFinished(Context context)
+    void fireProcessFinished(Procession procession)
     {
         ProcessFinishedEvent event = new ProcessFinishedEvent( this,
-                                                               context );
+                                                               procession );
 
         Iterator listenerIter = getProcessListeners().iterator();
         ProcessListener eachListener = null;
@@ -368,7 +368,7 @@ public class Process implements Named, Described, Activity, DirectedGraph
             eachListener.processFinished( event );
         }
 
-        context.fireProcessFinished( event );
+        procession.fireProcessFinished( event );
     }
  
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -410,17 +410,17 @@ public class Process implements Named, Described, Activity, DirectedGraph
     //     com.werken.blissed.Activity
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-    /** Perform this activity within the specified context.
+    /** Perform this activity within the specified procession.
      *
-     *  @param context The context.
+     *  @param procession The procession.
      *
      *  @throws ActivityException if an error occurs.
      */
-    public void perform(Context context) throws ActivityException
+    public void perform(Procession procession) throws ActivityException
     {
         try
         {
-            accept( context );
+            accept( procession );
         }
         catch (InvalidMotionException e)
         {

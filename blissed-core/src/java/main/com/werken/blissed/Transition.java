@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Transition.java,v 1.14 2002-07-26 05:41:26 bob Exp $
+ $Id: Transition.java,v 1.15 2002-08-14 20:22:29 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -167,54 +167,54 @@ public class Transition implements Described
      *  the test always evaluates to <code>true</code>.
      *  </p>
      *
-     *  @param context The context.
+     *  @param procession The procession.
      *
-     *  @return <code>true</code> if the context passes the guard,
+     *  @return <code>true</code> if the procession passes the guard,
      *          otherwise <code>false</code>.
      */
-    boolean testGuard(Context context)
+    boolean testGuard(Procession procession)
     {
         if ( getGuard() == null )
         {
             return true;
         }
 
-        return getGuard().test( context );
+        return getGuard().test( procession );
     }
 
-    /** Test and optionally accept this transition against a context.
+    /** Test and optionally accept this transition against a procession.
      *
-     *  @param context The context against which to
+     *  @param procession The procession against which to
      *         evaluate this transition.
      *
      *  @return <code>true</code> if this transition was successful
-     *          within the context.
+     *          within the procession.
      *
      *  @throws InvalidMotionException If an invalid motion occurs.
      *  @throws ActivityException If an error occurs while performing an activity.
      */
-    boolean accept(Context context) throws InvalidMotionException, ActivityException
+    boolean accept(Procession procession) throws InvalidMotionException, ActivityException
     {
-        if ( ! testGuard( context ) )
+        if ( ! testGuard( procession ) )
         {
             return false;
         }
 
         State origin = getOrigin();
 
-        origin.release( context );
+        origin.release( procession );
 
-        fireTransitionFollowed( context );
+        fireTransitionFollowed( procession );
 
         State destination = getDestination();
 
         if ( destination != null )
         {
-            getDestination().accept( context );
+            getDestination().accept( procession );
         }
         else
         {
-            origin.getProcess().release( context );
+            origin.getProcess().release( procession );
         }
 
         return true;
@@ -267,15 +267,15 @@ public class Transition implements Described
     //     Event firing
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-    /** Fire an event indicating that a context has followed
+    /** Fire an event indicating that a procession has followed
      *  this transition.
      *
-     *  @param context The context following this transition.
+     *  @param procession The procession following this transition.
      */
-    void fireTransitionFollowed(Context context)
+    void fireTransitionFollowed(Procession procession)
     {
         TransitionFollowedEvent event = new TransitionFollowedEvent( this,
-                                                                     context );
+                                                                     procession );
 
         Iterator listenIter = getTransitionListeners().iterator();
         TransitionListener eachListen = null;
@@ -287,7 +287,7 @@ public class Transition implements Described
             eachListen.transitionFollowed( event );
         }
 
-        context.fireTransitionFollowed( event );
+        procession.fireTransitionFollowed( event );
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

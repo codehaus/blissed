@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Location.java,v 1.6 2002-07-26 05:41:26 bob Exp $
+ $Id: Location.java,v 1.7 2002-08-14 20:22:29 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -48,16 +48,16 @@ package com.werken.blissed;
 
 import java.util.Stack;
 
-/** Maintains location coherency for each context.
+/** Maintains location coherency for each procession.
  *
- *  @see Context
+ *  @see Procession
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
 class Location 
 {
-    /** The context. */
-    private Context context;
+    /** The procession. */
+    private Procession procession;
 
     /** The location state. */
     private Stack locationStack;
@@ -68,11 +68,11 @@ class Location
 
     /** Construct.
      *
-     *  @param context The context.
+     *  @param procession The procession.
      */
-    Location(Context context)
+    Location(Procession procession)
     {
-        this.context = context;
+        this.procession = procession;
         this.locationStack = new Stack();
     }
 
@@ -80,19 +80,19 @@ class Location
     //     Instance methods
     // ------------------------------------------------------------
 
-    /** Retrieve the context.
+    /** Retrieve the procession.
      *
-     *  @return The context.
+     *  @return The procession.
      */
-    Context getContext()
+    Procession getProcession()
     {
-        return this.context;
+        return this.procession;
     }
 
     /** Retrieve the current process.
      *
      *  @return The current process, or <code>null</code> if the
-     *          context is in no process.
+     *          procession is in no process.
      */
     Process getCurrentProcess()
     {
@@ -107,7 +107,7 @@ class Location
     /** Retrieve the current state.
      *
      *  @return The current state, or <code>null</code> if the
-     *          context is in no state.
+     *          procession is in no state.
      */
     State getCurrentState()
     {
@@ -119,7 +119,7 @@ class Location
         return ((ProcessEntry)this.locationStack.peek()).getCurrentState();
     }
 
-    /** Check the status of the context within this
+    /** Check the status of the procession within this
      *  state, with a goal towards making progress.
      *
      *  @throws InvalidMotionException If an invalid motion occurs.
@@ -141,10 +141,10 @@ class Location
             return;
         }
 
-        state.check( getContext() );
+        state.check( getProcession() );
     }
 
-    /** Signal that this context has started a process.
+    /** Signal that this procession has started a process.
      *
      *  @param process The process.
      */
@@ -155,7 +155,7 @@ class Location
         this.locationStack.push( entry );
     }
 
-    /** Signal that this context has finished a process.
+    /** Signal that this procession has finished a process.
      *
      *  @param process The process.
      *
@@ -165,14 +165,14 @@ class Location
     {
         if ( this.locationStack.isEmpty() )
         {
-            throw new InvalidMotionException( "Context not in process \"" + process.getName() + "\"" );
+            throw new InvalidMotionException( "Procession not in process \"" + process.getName() + "\"" );
         }
 
         ProcessEntry entry = (ProcessEntry) this.locationStack.peek();
 
         if ( ! entry.getProcess().equals( process ) )
         {
-            throw new InvalidMotionException( "Context not in process \"" + process.getName() + "\"" );
+            throw new InvalidMotionException( "Procession not in process \"" + process.getName() + "\"" );
         }
 
         if ( entry.getCurrentState() != null )
@@ -183,7 +183,7 @@ class Location
         this.locationStack.pop();
     }
 
-    /** Signal that this context has entered a state.
+    /** Signal that this procession has entered a state.
      *
      *  @param state The state.
      *
@@ -193,7 +193,7 @@ class Location
     {
         if ( this.locationStack.isEmpty() )
         {
-            throw new InvalidMotionException( "Context not in any process" );
+            throw new InvalidMotionException( "Procession not in any process" );
         }
 
         ProcessEntry entry = (ProcessEntry) this.locationStack.peek();
@@ -201,7 +201,7 @@ class Location
         entry.enterState( state );
     }
 
-    /** Signal that this context has exited a state.
+    /** Signal that this procession has exited a state.
      *
      *  @param state The state.
      *
@@ -211,7 +211,7 @@ class Location
     {
         if ( this.locationStack.isEmpty() )
         {
-            throw new InvalidMotionException( "Context not in any process" );
+            throw new InvalidMotionException( "Procession not in any process" );
         }
 
         ProcessEntry entry = (ProcessEntry) this.locationStack.peek();
@@ -263,7 +263,7 @@ class ProcessEntry
         return this.process;
     }
 
-    /** Signal that this context has entered a state.
+    /** Signal that this procession has entered a state.
      *
      *  @param state The state.
      *
@@ -273,14 +273,14 @@ class ProcessEntry
     {
         if ( this.state != null )
         {
-            throw new InvalidMotionException( "Context cannot enter state \"" + state.getName() 
+            throw new InvalidMotionException( "Procession cannot enter state \"" + state.getName() 
                                               + "\" while still in state \"" + this.state.getName() + "\"" );
         }
 
         this.state = state;
     }
 
-    /** Signal that this context has exited a state.
+    /** Signal that this procession has exited a state.
      *
      *  @param state The state.
      *
@@ -292,7 +292,7 @@ class ProcessEntry
              ||
              ! this.state.equals( state ) )
         {
-            throw new InvalidMotionException( "Context not in state \""
+            throw new InvalidMotionException( "Procession not in state \""
                                               + state.getName() + "\" - cannot exit" );
         }
 
@@ -302,7 +302,7 @@ class ProcessEntry
     /** Retrieve the current state.
      *
      *  @return The current state, or <code>null</code> if the
-     *          context is in no state.
+     *          procession is in no state.
      */
     State getCurrentState()
     {

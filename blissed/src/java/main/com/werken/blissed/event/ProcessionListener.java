@@ -1,7 +1,7 @@
 package com.werken.blissed.event;
 
 /*
- $Id: ContextListener.java,v 1.2 2002-07-06 21:23:38 werken Exp $
+ $Id: ProcessionListener.java,v 1.1 2002-08-14 20:22:29 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -46,10 +46,10 @@ package com.werken.blissed.event;
  
  */
 
-/** Interface for receiving events upon a <code>Context</code>.
+/** Interface for receiving events upon a <code>Procession</code>.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public interface ContextListener extends MotionListener
+public interface ProcessionListener extends MotionListener
 {
 }

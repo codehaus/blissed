@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: SpawnProcessTag.java,v 1.3 2002-07-18 20:56:20 bob Exp $
+ $Id: SpawnProcessTag.java,v 1.4 2002-08-14 20:22:29 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -47,7 +47,7 @@ package com.werken.blissed.jelly;
  */
 
 import com.werken.blissed.Process;
-import com.werken.blissed.Context;
+import com.werken.blissed.Procession;
 import com.werken.blissed.ActivityException;
 import com.werken.blissed.InvalidMotionException;
 
@@ -104,20 +104,20 @@ public class SpawnProcessTag extends BlissedTagSupport
         this.name = name;
     }
 
-    /** Accept the context into the process.
+    /** Accept the procession into the process.
      *
      *  @param process The process.
-     *  @param blissedContext The blissed context.
+     *  @param procession The blissed procession.
      *
      *  @throws InvalidMotionException If an invalid motion occurs.
      *  @throws ActivityException If an error occurs while performing an activity.
      */
     void accept(Process process,
-                Context blissedContext) throws InvalidMotionException, ActivityException
+                Procession procession) throws InvalidMotionException, ActivityException
     {
         JellyContext jellyContext = null;
 
-        if (blissedContext.getParent() == null)
+        if ( procession.getParent() == null)
         {
             jellyContext = getContext();
         }
@@ -129,14 +129,13 @@ public class SpawnProcessTag extends BlissedTagSupport
             jellyContext.setInherit( true );
         }
 
-        jellyContext.setVariable( "blissed.context",
-                                  blissedContext );
+        jellyContext.setVariable( "blissed.procession",
+                                  procession );
 
-        blissedContext.setVariable( "jelly.context",
+        procession.setVariable( "jelly.context",
                                     jellyContext);
 
-        process.accept( blissedContext );
-          
+        process.accept( procession );
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -166,20 +165,20 @@ public class SpawnProcessTag extends BlissedTagSupport
             throw new JellyException( "No such process \"" + this.name + "\"" );
         }
 
-        Context parent = (Context) getContext().getVariable( "blissed.context" );
+        Procession parent = (Procession) getContext().getVariable( "blissed.procession" );
 
-        Context tmpContext = null;
+        Procession tmpProcession = null;
 
         if ( parent == null )
         {
-            tmpContext = process.spawn();
+            tmpProcession = process.spawn();
         }
         else
         {
-            tmpContext = process.spawn( parent );
+            tmpProcession = process.spawn( parent );
         }
 
-        final Context context = tmpContext;
+        final Procession procession = tmpProcession;
 
         Thread thread = new Thread() {
                 public void run()
@@ -187,7 +186,7 @@ public class SpawnProcessTag extends BlissedTagSupport
                     try
                     {
                         accept( process,
-                                context );
+                                procession );
                     }
                     catch (InvalidMotionException e)
                     {

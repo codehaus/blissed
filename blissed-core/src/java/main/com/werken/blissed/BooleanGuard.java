@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: BooleanGuard.java,v 1.2 2002-07-06 21:23:38 werken Exp $
+ $Id: BooleanGuard.java,v 1.3 2002-08-14 20:22:29 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -96,11 +96,11 @@ public class BooleanGuard implements Guard
         return this.guard;
     }
 
-    /** Test this guard against a context.
+    /** Test this guard against a procession.
      *
      *  <p>
      *  <b>implementation note:</b> This method
-     *  ignores the context itself, and returns
+     *  ignores the procession itself, and returns
      *  the same value as returned from
      *  {@link #getGuard}.
      *  </p>
@@ -108,12 +108,12 @@ public class BooleanGuard implements Guard
      *  @see #setGuard
      *  @see #getGuard
      *
-     *  @param context The context.
+     *  @param procession The procession.
      *
-     *  @return <code>true</code> if the context passes
+     *  @return <code>true</code> if the procession passes
      *          this guard, otherwise <code>false</code>.
      */
-    public boolean test(Context context)
+    public boolean test(Procession procession)
     {
         return getGuard();
     }

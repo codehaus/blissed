@@ -1,7 +1,7 @@
 package com.werken.blissed.event;
 
 /*
- $Id: ProcessFinishedEvent.java,v 1.4 2002-07-06 21:23:38 werken Exp $
+ $Id: ProcessFinishedEvent.java,v 1.5 2002-08-14 20:22:29 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -47,13 +47,15 @@ package com.werken.blissed.event;
  */
 
 import com.werken.blissed.Process;
-import com.werken.blissed.Context;
+import com.werken.blissed.Procession;
 
 /** Event indicating a process instance was finished.
  *
  *  @see com.werken.blissed.Finish
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ *
+ *  @version $Id: ProcessFinishedEvent.java,v 1.5 2002-08-14 20:22:29 bob Exp $
  */
 public class ProcessFinishedEvent extends ProcessEvent 
 {
@@ -64,13 +66,13 @@ public class ProcessFinishedEvent extends ProcessEvent
     /** Construct.
      *
      *  @param process The process event-source.
-     *  @param context The context.
+     *  @param procession The procession.
      */
     public ProcessFinishedEvent(Process process,
-                                Context context)
+                                Procession procession)
     {
         super( process,
-               context );
+               procession );
     }
 }
 

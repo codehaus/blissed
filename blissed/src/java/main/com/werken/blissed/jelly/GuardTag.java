@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: GuardTag.java,v 1.2 2002-07-18 05:22:50 bob Exp $
+ $Id: GuardTag.java,v 1.3 2002-08-14 20:22:29 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -47,7 +47,7 @@ package com.werken.blissed.jelly;
  */
 
 import com.werken.blissed.Transition;
-import com.werken.blissed.Context;
+import com.werken.blissed.Procession;
 import com.werken.blissed.Guard;
 
 import org.apache.commons.jelly.Script;
@@ -109,7 +109,7 @@ public class GuardTag extends BlissedTagSupport
         final Script script = getBody();
         
         Guard guard = new Guard() {
-                public boolean test(Context context) 
+                public boolean test(Procession procession) 
                 {
                     try
                     {

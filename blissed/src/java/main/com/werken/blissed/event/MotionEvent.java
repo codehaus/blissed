@@ -1,7 +1,7 @@
 package com.werken.blissed.event;
 
 /*
- $Id: MotionEvent.java,v 1.2 2002-07-06 21:23:38 werken Exp $
+ $Id: MotionEvent.java,v 1.3 2002-08-14 20:22:29 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -46,13 +46,15 @@ package com.werken.blissed.event;
  
  */
 
-import com.werken.blissed.Context;
+import com.werken.blissed.Procession;
 
 import java.util.EventObject;
 
 /** Abstract class for any motion-based event.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ *
+ *  @version $Id: MotionEvent.java,v 1.3 2002-08-14 20:22:29 bob Exp $
  */
 public abstract class MotionEvent extends EventObject implements BlissedEvent
 {
@@ -60,8 +62,8 @@ public abstract class MotionEvent extends EventObject implements BlissedEvent
     //     Instance members
     // ------------------------------------------------------------
 
-    /** The context of the event. */
-    private Context context;
+    /** The procession of the event. */
+    private Procession procession;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -70,28 +72,27 @@ public abstract class MotionEvent extends EventObject implements BlissedEvent
     /** Construct.
      *
      *  @param source The source of the event.
-     *  @param context The context.
+     *  @param procession The procession.
      */
     public MotionEvent(Object source,
-                       Context context)
+                       Procession procession)
     {
         super( source );
-        this.context = context;
+        this.procession = procession;
     }
 
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
 
-    /** Retrieve the <code>Context</code> of this event.
+    /** Retrieve the <code>Procession</code> of this event.
      *
-     *  @see Context
+     *  @see Procession
      *
-     *  @return The context of this event.
+     *  @return The procession of this event.
      */
-    public Context getContext()
+    public Procession getProcession()
     {
-        return this.context;
+        return this.procession;
     }
-
 }
