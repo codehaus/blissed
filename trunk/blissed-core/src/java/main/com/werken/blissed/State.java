@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: State.java,v 1.3 2002-07-02 16:16:40 werken Exp $
+ $Id: State.java,v 1.4 2002-07-02 16:26:13 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -165,8 +165,37 @@ public class State extends Node
         return this.task;
     }
 
-    void testTransitions(WorkSlip workSlip)
+    /** Attempt to perform some transition within the
+     *  context of this state and a workslip.
+     *
+     *  @param workSlip The WorkSlip to attempt transitioning.
+     *
+     *  @return <code>true</code> if a transition was followed
+     *          moving the workslip to a new node, otherwise
+     *          <code>false</code>.
+     */
+    boolean attemptTransition(WorkSlip workSlip)
     {
+        Iterator   transIter = getTransitions().iterator();
+        Transition eachTrans = null;
+
+        boolean result = false;
+
+        while ( transIter.hasNext() )
+        {
+            eachTrans = (Transition) transIter.next();
+
+            result = eachTrans.test( workSlip );
+
+            if ( result )
+            {
+                fireStateExited( workSlip );
+                eachTrans.getDestination().accept( workSlip );
+                break;
+            }
+        }
+
+        return result;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -242,11 +271,11 @@ public class State extends Node
      *
      *  @param workSlip The finished process instance context.
      */
-    void fireProcessFinished(WorkSlip workSlip)
+    void fireStateExited(WorkSlip workSlip)
     {
         StateExitedEvent event = new StateExitedEvent( this,
                                                        workSlip );
-
+        
         Iterator listenerIter = getProcessListeners().iterator();
         StateListener eachListener = null;
 
@@ -264,7 +293,7 @@ public class State extends Node
 
     public void accept(WorkSlip workSlip)
     {
-
+        fireStateEntered( workSlip );
     }
 
 }
