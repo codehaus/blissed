@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Process.java,v 1.12 2002-07-05 21:06:33 uid40906 Exp $
+ $Id: Process.java,v 1.13 2002-07-06 03:49:01 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -224,6 +224,8 @@ public class Process implements Named, Described, Activity
     {
         this.activeContexts.add( context );
 
+        context.startProcess( this );
+
         fireProcessStarted( context );
 
         getStart().accept( context );
@@ -232,7 +234,9 @@ public class Process implements Named, Described, Activity
 
     void release(Context context) throws InvalidMotionException
     {
-        getFinish().release( context );
+        // getFinish().release( context );
+
+        context.finishProcess( this );
 
         fireProcessFinished( context );
 

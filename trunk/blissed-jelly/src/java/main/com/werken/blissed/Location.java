@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
-  $Id: Location.java,v 1.3 2002-07-05 21:06:33 uid40906 Exp $
+  $Id: Location.java,v 1.4 2002-07-06 03:49:01 werken Exp $
 
   Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -106,7 +106,9 @@ class Location
 
     void startProcess(Process process)
     {
-        this.locationStack.push( new ProcessEntry( process ) );
+        ProcessEntry entry = new ProcessEntry( process );
+
+        this.locationStack.push( entry );
     }
 
     void finishProcess(Process process) throws InvalidMotionException
@@ -121,6 +123,11 @@ class Location
         if ( ! entry.getProcess().equals( process ) )
         {
             throw new InvalidMotionException( "Context not in process \"" + process.getName() + "\"" );
+        }
+
+        if ( entry.getCurrentNode() != null )
+        {
+            throw new InvalidMotionException( "Process not finished" );
         }
 
         this.locationStack.pop();

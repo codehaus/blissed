@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Transition.java,v 1.10 2002-07-05 21:06:34 uid40906 Exp $
+ $Id: Transition.java,v 1.11 2002-07-06 03:49:01 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -85,6 +85,16 @@ public class Transition implements Described
     //     Constructors
     // ------------------------------------------------------------
 
+    Transition(Node origin,
+               Node destination,
+               String description)
+    {
+        this( origin,
+              destination,
+              null,
+              description );
+    }
+
     /** Construct.
      *
      *  @param origin The origin of this transitional arc.
@@ -93,10 +103,12 @@ public class Transition implements Described
      */
     Transition(Node origin,
                Node destination,
+               Guard guard,
                String description)
     {
         this.origin      = origin;
         this.destination = destination;
+        this.guard       = guard;
         this.description = description;
         this.listeners   = Collections.EMPTY_LIST;
     }

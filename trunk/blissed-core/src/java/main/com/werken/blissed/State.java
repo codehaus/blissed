@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: State.java,v 1.13 2002-07-05 21:06:34 uid40906 Exp $
+ $Id: State.java,v 1.14 2002-07-06 03:49:01 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -139,13 +139,24 @@ public class State extends Node
     public Transition addTransition(Node destination,
                                     String description)
     {
+        return addTransition( destination,
+                              null,
+                              description );
+    }
+
+    public Transition addTransition(Node destination,
+                                    Guard guard,
+                                    String description)
+    {
         Transition transition = new Transition( this,
                                                 destination,
+                                                guard,
                                                 description );
         
         addTransition( transition );
         
-        return transition;
+        return transition;   
+        
     }
 
     /** Retrieve the <b>live</b> list of transitions.
@@ -193,7 +204,14 @@ public class State extends Node
      */
     boolean attemptTransition(Context context) throws InvalidMotionException, ActivityException
     {
-        Iterator   transIter = getTransitions().iterator();
+        List transitions = getTransitions();
+
+        if ( transitions.isEmpty() )
+        {
+            throw new NoTransitionException( this );
+        }
+
+        Iterator   transIter = transitions.iterator();
         Transition eachTrans = null;
 
         boolean result = false;
