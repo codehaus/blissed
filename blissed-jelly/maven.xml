@@ -1,4 +1,4 @@
 
-<project default="maven:jar">
+<project default="java:jar">
 
 </project>
