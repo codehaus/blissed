@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Process.java,v 1.9 2002-07-04 22:56:53 werken Exp $
+ $Id: Process.java,v 1.10 2002-07-05 03:57:12 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -68,7 +68,7 @@ import java.util.Collections;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class Process implements Named, Described
+public class Process implements Named, Described, Activity
 {
     // ------------------------------------------------------------
     //     Instance members
@@ -194,35 +194,31 @@ public class Process implements Named, Described
         return state;
     }
 
-    /** Start a new instance of this process.
+    /** Spawn a new instance of this process.
      *
      *  @return A new <code>Context</code> representing the state
      *          for the new instance of this process.
      */
-    public Context start() throws InvalidMotionException, ActivityException
+    public Context spawn() throws InvalidMotionException, ActivityException
     {
         Context context = new Context( this );
-
-        this.activeContexts.add( context );
 
         accept( context );
 
         return context;
     }
 
-    /** Start a new instance of this process.
+    /** Spawn a new instance of this process.
      *
      *  @param parent The parent Context.
      *
      *  @return A new <code>Context</code> representing the state
      *          for the new instance of this process.
      */
-    Context start(Context parent) throws InvalidMotionException, ActivityException
+    Context spawn(Context parent) throws InvalidMotionException, ActivityException
     {
         Context context = new Context( this,
-                                          parent );
-
-        this.activeContexts.add( context );
+                                       parent );
 
         accept( context );
 
@@ -231,12 +227,26 @@ public class Process implements Named, Described
 
     void accept(Context context) throws InvalidMotionException, ActivityException
     {
+        this.activeContexts.add( context );
+
+        fireProcessStarted( context );
+
         getStart().accept( context );
+        
     }
 
     void release(Context context) throws InvalidMotionException
     {
         getFinish().release( context );
+
+        fireProcessFinished( context );
+
+        this.activeContexts.remove( context );
+    }
+
+    public Set getActiveContexts()
+    {
+        return Collections.unmodifiableSet( this.activeContexts );
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -352,6 +362,22 @@ public class Process implements Named, Described
     public String getDescription()
     {
         return this.description;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    //     com.werken.blissed.Activity
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+    public void perform(Context context) throws ActivityException
+    {
+        try
+        {
+            accept( context );
+        }
+        catch (InvalidMotionException e)
+        {
+            throw new ActivityException( e );
+        }
     }
 
 }

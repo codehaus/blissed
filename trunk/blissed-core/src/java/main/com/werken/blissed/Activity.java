@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Task.java,v 1.4 2002-07-04 22:56:53 werken Exp $
+ $Id: Activity.java,v 1.1 2002-07-05 03:57:12 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -48,12 +48,12 @@ package com.werken.blissed;
 
 /** A unit of work to be performed within a state.
  *
- *  @see State#setTask
- *  @see State#getTask
+ *  @see State#setActivity
+ *  @see State#getActivity
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public interface Task extends Named, Described
+public interface Activity extends Named, Described
 {
     void perform(Context context) throws ActivityException; 
 }

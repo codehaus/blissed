@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: State.java,v 1.10 2002-07-04 22:56:53 werken Exp $
+ $Id: State.java,v 1.11 2002-07-05 03:57:12 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -55,15 +55,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 
-/** A <code>Task</code>-bearing node in the process graph.
+/** A <code>Activity</code>-bearing node in the process graph.
  *
  *  <p>
- *  A <code>State</code> contains a <code>Task</code> and
+ *  A <code>State</code> contains a <code>Activity</code> and
  *  a sequence of one-or-more <code>Transition</code>s
  *  denoting guarded exit paths.
  *  </p>
  *
- *  @see Task
+ *  @see Activity
  *  @see Transition
  *  @see StateEnteredEvent
  *  @see StateExitedEvent
@@ -77,8 +77,8 @@ public class State extends Node
     //     Instance members
     // ------------------------------------------------------------
 
-    /** The task. */
-    private Task task;
+    /** The activity. */
+    private Activity activity;
 
     /** The exit-path transitions. */
     private List transitions;
@@ -104,7 +104,7 @@ public class State extends Node
                name,
                description );
 
-        this.task = NoOpTask.INSTANCE;
+        this.activity = NoOpActivity.INSTANCE;
         this.transitions = new ArrayList();
         this.listeners = Collections.EMPTY_LIST;
     }
@@ -184,22 +184,22 @@ public class State extends Node
         return this.transitions;
     }
 
-    /** Set the <code>Task</code> for this state.
+    /** Set the <code>Activity</code> for this state.
      *
-     *  @param task The task.
+     *  @param activity The activity.
      */
-    public void setTask(Task task)
+    public void setActivity(Activity activity)
     {
-        this.task = task;
+        this.activity = activity;
     }
 
-    /** Retrieve the <code>Task</code> for this state.
+    /** Retrieve the <code>Activity</code> for this state.
      *
-     *  @return The task.
+     *  @return The activity.
      */
-    public Task getTask()
+    public Activity getActivity()
     {
-        return this.task;
+        return this.activity;
     }
 
     /** Attempt to perform some transition within the
@@ -336,7 +336,7 @@ public class State extends Node
 
         fireStateEntered( context );
 
-        getTask().perform( context );
+        getActivity().perform( context );
 
         check( context );
     }
