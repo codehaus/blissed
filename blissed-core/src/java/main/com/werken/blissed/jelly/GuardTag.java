@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: GuardTag.java,v 1.4 2002-09-16 04:17:26 bob Exp $
+ $Id: GuardTag.java,v 1.5 2002-09-16 14:59:51 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -108,8 +108,10 @@ public class GuardTag extends BlissedTagSupport
 
         final Script script = getBody();
         
-        Guard guard = new Guard() {
-                public boolean test(ProcessContext procession) 
+        Guard guard = new Guard()
+            {
+                public boolean test(Transition transition,
+                                    ProcessContext procession) 
                 {
                     try
                     {

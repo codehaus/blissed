@@ -1,7 +1,7 @@
 package com.werken.blissed.activity;
 
 /*
- $Id: SpawnActivity.java,v 1.1 2002-09-16 04:17:26 bob Exp $
+ $Id: SpawnActivity.java,v 1.2 2002-09-16 14:59:51 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -49,13 +49,15 @@ package com.werken.blissed.activity;
 import com.werken.blissed.Activity;
 import com.werken.blissed.Process;
 import com.werken.blissed.ProcessContext;
+import com.werken.blissed.ProcessEngine;
 import com.werken.blissed.ActivityException;
+import com.werken.blissed.InvalidMotionException;
 
 /** An <code>Activity</code> that spawns another <code>Process</code>.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: SpawnActivity.java,v 1.1 2002-09-16 04:17:26 bob Exp $
+ *  @version $Id: SpawnActivity.java,v 1.2 2002-09-16 14:59:51 bob Exp $
  */
 public class SpawnActivity implements Activity
 {
@@ -104,6 +106,16 @@ public class SpawnActivity implements Activity
      */
     public void perform(ProcessContext context) throws ActivityException
     {
+        ProcessEngine engine = context.getProcessEngine();
 
+        try
+        {
+            engine.spawn( getProcess(),
+                          context );
+        }
+        catch (InvalidMotionException e)
+        {
+            throw new ActivityException( e );
+        }
     }
 }

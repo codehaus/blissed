@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: ProcessContext.java,v 1.2 2002-09-16 05:27:15 bob Exp $
+ $Id: ProcessContext.java,v 1.3 2002-09-16 14:59:51 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -54,13 +54,16 @@ import java.util.Collections;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ProcessContext.java,v 1.2 2002-09-16 05:27:15 bob Exp $
+ *  @version $Id: ProcessContext.java,v 1.3 2002-09-16 14:59:51 bob Exp $
  */
 public class ProcessContext 
 {
     // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------
+
+    /** Process engine. */
+    private ProcessEngine engine;
 
     /** Process of which this ProcessContext is an instance. */
     private Process process;
@@ -83,22 +86,28 @@ public class ProcessContext
 
     /** Construct a root <code>ProcessContext</code>.
      *
+     *  @param engine The process engine that instantiated this context.
      *  @param process The process of which this ProcessContext is an instance. 
      */
-    ProcessContext(Process process)
+    ProcessContext(ProcessEngine engine,
+                   Process process)
     {
-        this( process,
+        this( engine,
+              process,
               null );
     }
 
     /** Construct a nested <code>ProcessContext</code>.
      *
+     *  @param engine The process engine that instantiated this context.
      *  @param process The process of which this ProcessContext is an instance. 
      *  @param parent The parent of this ProcessContext.
      */
-    ProcessContext(Process process,
+    ProcessContext(ProcessEngine engine,
+                   Process process,
                    ProcessContext parent)
     {
+        this.engine   = engine;
         this.process  = process;
         this.parent   = parent;
 
@@ -110,6 +119,15 @@ public class ProcessContext
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
+    
+    /** Retrieve the <code>ProcessEngine</code>.
+     *
+     *  @return The process engine.
+     */
+    public ProcessEngine getProcessEngine()
+    {
+        return this.engine;
+    }
 
     /** Retrieve the Process of this ProcessContext.
      *

@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Transition.java,v 1.17 2002-09-16 05:27:15 bob Exp $
+ $Id: Transition.java,v 1.18 2002-09-16 14:59:51 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -167,7 +167,8 @@ public class Transition implements Described
             return true;
         }
 
-        return getGuard().test( context );
+        return getGuard().test( this,
+                                context );
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

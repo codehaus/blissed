@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: ProcessEngine.java,v 1.2 2002-09-16 05:27:15 bob Exp $
+ $Id: ProcessEngine.java,v 1.3 2002-09-16 14:59:51 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -54,7 +54,7 @@ import java.util.Iterator;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ProcessEngine.java,v 1.2 2002-09-16 05:27:15 bob Exp $
+ *  @version $Id: ProcessEngine.java,v 1.3 2002-09-16 14:59:51 bob Exp $
  */
 public class ProcessEngine 
 {
@@ -142,10 +142,19 @@ public class ProcessEngine
      *
      *  @return The <code>ProcessContext</code> representing the
      *          instance of the newly spawned process.
+     *
+     *  @throws InvalidMotionException If a motion error occurs while
+     *          attempting to spawn the process.
      */
-    public ProcessContext spawn(Process process)
+    public ProcessContext spawn(Process process) throws InvalidMotionException
     {
-        ProcessContext context = new ProcessContext( process );
+        ProcessContext context = new ProcessContext( this,
+                                                     process );
+
+        startProcess( process,
+                      context );
+
+        check( context );
 
         return context;
     }
@@ -158,15 +167,56 @@ public class ProcessEngine
      *
      *  @return The <code>ProcessContext</code> representing the
      *          instance of the newly spawned process.
+     *
+     *  @throws InvalidMotionException If a motion error occurs while
+     *          attempting to spawn the process.
      */
     public ProcessContext spawn(Process process,
-                                ProcessContext parent)
+                                ProcessContext parent) throws InvalidMotionException
     {
-        ProcessContext context = new ProcessContext( process,
+        ProcessContext context = new ProcessContext( this,
+                                                     process,
                                                      parent );
+
+        startProcess( process,
+                      context );
+
         addToCheckQueue( context );
 
         return context;
+    }
+
+    /** Call another <code>Process</code> from another instance.
+     *
+     *  @param process The process to call.
+     *  @param context The process context.
+     *
+     *  @throws InvalidMotionException If a motion error occurs while
+     *          attempting to spawn the process.
+     */
+    public void call(Process process,
+                     ProcessContext context) throws InvalidMotionException
+    {
+        startProcess( process,
+                      context );
+    }
+
+    /** Begin a <code>Process</code> for a particular
+     *  <code>ProcessContext</code>.
+     *
+     *  @param process The process to start.
+     *  @param context The process context.
+     *
+     *  @throws InvalidMotionException If a motion error occurs while
+     *          attempting to begin a process.
+     */
+    protected void startProcess(Process process,
+                                ProcessContext context) throws InvalidMotionException
+    {
+        State startState = process.getStartState();
+
+        context.startProcess( process );
+        context.enterState( startState );
     }
 
     /** Check a <code>ProcessContext</code> for progress possibilities.

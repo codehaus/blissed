@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Guard.java,v 1.4 2002-09-16 04:17:26 bob Exp $
+ $Id: Guard.java,v 1.5 2002-09-16 14:59:51 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -56,11 +56,13 @@ public interface Guard
 {
     /** Test this guard against a procession.
      *
+     *  @param transition The transition this guard guards.
      *  @param context The process context.
      *
      *  @return <code>true</code> if the procession passes
      *          this guard, otherwise <code>false</code>.
      */
-    boolean test(ProcessContext context);
+    boolean test(Transition transition,
+                 ProcessContext context);
 }
 

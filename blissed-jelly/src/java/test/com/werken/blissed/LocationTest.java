@@ -21,7 +21,8 @@ public class LocationTest extends TestCase
         this.process  = new Process( "test.process",
                                      "test process" );
                                     
-        this.processContext  = new ProcessContext( this.process );
+        this.processContext  = new ProcessContext( null,
+                                                   this.process );
 
         this.location = this.processContext.getLocation();
         
@@ -34,8 +35,11 @@ public class LocationTest extends TestCase
 
     public void tearDown()
     {
-        this.location = null;
+        this.process = null;
         this.processContext  = null;
+        this.location = null;
+        this.state1 = null;
+        this.state2 = null;
     }
 
     public void testStartProcess()
