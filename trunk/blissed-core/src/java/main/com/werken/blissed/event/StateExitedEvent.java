@@ -1,7 +1,7 @@
 package com.werken.blissed.event;
 
 /*
- $Id: StateExitedEvent.java,v 1.4 2002-07-04 19:40:07 werken Exp $
+ $Id: StateExitedEvent.java,v 1.5 2002-08-14 20:22:29 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -47,11 +47,13 @@ package com.werken.blissed.event;
  */
 
 import com.werken.blissed.State;
-import com.werken.blissed.Context;
+import com.werken.blissed.Procession;
 
-/** Event indicating a state was exited by a given context context.
+/** Event indicating a state was exited by a given procession procession.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ *
+ *  @version $Id: StateExitedEvent.java,v 1.5 2002-08-14 20:22:29 bob Exp $
  */
 public class StateExitedEvent extends StateEvent
 {
@@ -62,12 +64,12 @@ public class StateExitedEvent extends StateEvent
     /** Construct.
      *
      *  @param state The state event source.
-     *  @param context The context context.
+     *  @param procession The procession procession.
      */
     public StateExitedEvent(State state,
-                            Context context)
+                            Procession procession)
     {
         super( state,
-               context );
+               procession );
     }
 }

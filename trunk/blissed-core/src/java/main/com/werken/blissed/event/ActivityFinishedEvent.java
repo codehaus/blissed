@@ -1,7 +1,7 @@
 package com.werken.blissed.event;
 
 /*
- $Id: ActivityFinishedEvent.java,v 1.2 2002-07-07 05:18:34 werken Exp $
+ $Id: ActivityFinishedEvent.java,v 1.3 2002-08-14 20:22:29 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -48,9 +48,9 @@ package com.werken.blissed.event;
 
 import com.werken.blissed.State;
 import com.werken.blissed.Activity;
-import com.werken.blissed.Context;
+import com.werken.blissed.Procession;
 
-/** Event indicating an activity was finished for a given context.
+/** Event indicating an activity was finished for a given procession.
  *
  *  @see Activity
  *
@@ -66,14 +66,14 @@ public class ActivityFinishedEvent extends ActivityEvent
      *
      *  @param state The state event source.
      *  @param activity The node activity source.
-     *  @param context The context.
+     *  @param procession The procession.
      */
     public ActivityFinishedEvent(State state,
                                  Activity activity,
-                                 Context context)
+                                 Procession procession)
     {
         super( state,
                activity,
-               context );
+               procession );
     }
 }

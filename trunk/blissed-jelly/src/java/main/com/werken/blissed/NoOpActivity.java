@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: NoOpActivity.java,v 1.2 2002-07-17 17:11:07 bob Exp $
+ $Id: NoOpActivity.java,v 1.3 2002-08-14 20:22:29 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -91,9 +91,9 @@ public class NoOpActivity implements Activity
      *  returns.  Hence, it's a no-op.
      *  </p>
      *
-     *  @param context The <code>Context</code> context.
+     *  @param procession The <code>Procession</code> procession.
      */
-    public void perform(Context context)
+    public void perform(Procession procession)
     {
         // no-op
     }

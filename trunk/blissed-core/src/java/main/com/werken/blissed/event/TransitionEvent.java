@@ -1,7 +1,7 @@
 package com.werken.blissed.event;
 
 /*
- $Id: TransitionEvent.java,v 1.5 2002-07-06 21:23:38 werken Exp $
+ $Id: TransitionEvent.java,v 1.6 2002-08-14 20:22:29 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -47,13 +47,15 @@ package com.werken.blissed.event;
  */
 
 import com.werken.blissed.Transition;
-import com.werken.blissed.Context;
+import com.werken.blissed.Procession;
 
 /** Abstract class for any event occuring on a <code>Transition</code>.
  *
  *  @see Transition
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ *
+ *  @version $Id: TransitionEvent.java,v 1.6 2002-08-14 20:22:29 bob Exp $
  */
 public abstract class TransitionEvent extends MotionEvent
 {
@@ -64,13 +66,13 @@ public abstract class TransitionEvent extends MotionEvent
     /** Construct.
      *
      *  @param transition The transition event source.
-     *  @param context The context.
+     *  @param procession The procession.
      */
     public TransitionEvent(Transition transition,
-                           Context context)
+                           Procession procession)
     {
         super( transition,
-               context );
+               procession );
     }
 
     // ------------------------------------------------------------

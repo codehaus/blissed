@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: DoActivityTag.java,v 1.1 2002-07-18 20:56:20 bob Exp $
+ $Id: DoActivityTag.java,v 1.2 2002-08-14 20:22:29 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -47,7 +47,7 @@ package com.werken.blissed.jelly;
  */
 
 import com.werken.blissed.State;
-import com.werken.blissed.Context;
+import com.werken.blissed.Procession;
 import com.werken.blissed.Activity;
 import com.werken.blissed.NoOpActivity;
 import com.werken.blissed.ActivityException;
@@ -116,9 +116,9 @@ public class DoActivityTag extends BlissedTagSupport
         final Script script = getBody();
         
         Activity activity = new Activity() {
-                public void perform(Context context) throws ActivityException
+                public void perform(Procession procession) throws ActivityException
                 {
-                    JellyContext jellyContext = (JellyContext) context.getVariable( "jelly.context" );
+                    JellyContext jellyContext = (JellyContext) procession.getVariable( "jelly.context" );
 
                     try
                     {

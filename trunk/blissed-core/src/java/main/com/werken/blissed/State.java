@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: State.java,v 1.17 2002-07-26 05:41:26 bob Exp $
+ $Id: State.java,v 1.18 2002-08-14 20:22:29 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -265,63 +265,63 @@ public class State implements Named, Described, Vertex
         return this.activity;
     }
 
-    /** Accept a context into this state.
+    /** Accept a procession into this state.
      *
-     *  @param context The context to accept.
+     *  @param procession The procession to accept.
      *
      *  @throws InvalidMotionException If an invalid motion occurs.
      *  @throws ActivityException If an error occurs while performing an activity.
      */
-    public void accept(Context context) throws InvalidMotionException, ActivityException
+    public void accept(Procession procession) throws InvalidMotionException, ActivityException
     {
-        context.enterState( this );
+        procession.enterState( this );
 
-        fireStateEntered( context );
+        fireStateEntered( procession );
 
-        getActivity().perform( context );
+        getActivity().perform( procession );
 
-        check( context );
+        check( procession );
     }
 
-    /** Release a context from this state.
+    /** Release a procession from this state.
      *
-     *  @param context The context to release.
+     *  @param procession The procession to release.
      *
      *  @throws InvalidMotionException If an invalid motion occurs.
      */
-    public void release(Context context) throws InvalidMotionException
+    public void release(Procession procession) throws InvalidMotionException
     {
-        context.exitState( this );
+        procession.exitState( this );
 
-        fireStateExited( context );
+        fireStateExited( procession );
     }
 
-    /** Check the status of the context within this
+    /** Check the status of the procession within this
      *  state, with a goal towards making progress.
      *
-     *  @param context The context to check.
+     *  @param procession The procession to check.
      *
      *  @throws InvalidMotionException If an invalid motion occurs.
      *  @throws ActivityException If an error occurs while performing an activity.
      */
-    public void check(Context context) throws InvalidMotionException, ActivityException
+    public void check(Procession procession) throws InvalidMotionException, ActivityException
     {
-        attemptTransition( context );
+        attemptTransition( procession );
     }
 
     /** Attempt to perform some transition within the
-     *  context of this state and a context.
+     *  procession of this state and a procession.
      *
-     *  @param context The Context to attempt transitioning.
+     *  @param procession The Procession to attempt transitioning.
      *
      *  @return <code>true</code> if a transition was followed
-     *          moving the context to a new state, otherwise
+     *          moving the procession to a new state, otherwise
      *          <code>false</code>.
      *
      *  @throws InvalidMotionException If an invalid motion occurs.
      *  @throws ActivityException If an error occurs while performing an activity.
      */
-    boolean attemptTransition(Context context) throws InvalidMotionException, ActivityException
+    boolean attemptTransition(Procession procession) throws InvalidMotionException, ActivityException
     {
         List outbound = getTransitions();
 
@@ -339,7 +339,7 @@ public class State implements Named, Described, Vertex
         {
             eachTrans = (Transition) transIter.next();
 
-            result = eachTrans.accept( context );
+            result = eachTrans.accept( procession );
 
             if ( result )
             {
@@ -397,15 +397,15 @@ public class State implements Named, Described, Vertex
     //     Event firing
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-    /** Fire an event indicating that a context has entered 
+    /** Fire an event indicating that a procession has entered 
      *  this state.
      *
-     *  @param context The context entering this state.
+     *  @param procession The procession entering this state.
      */
-    void fireStateEntered(Context context)
+    void fireStateEntered(Procession procession)
     {
         StateEnteredEvent event = new StateEnteredEvent( this,
-                                                         context );
+                                                         procession );
         
         Iterator listenerIter = getStateListeners().iterator();
         StateListener eachListener = null;
@@ -417,18 +417,18 @@ public class State implements Named, Described, Vertex
             eachListener.stateEntered( event );
         }
 
-        context.fireStateEntered( event );
+        procession.fireStateEntered( event );
     }
 
-    /** Fire an event indicating that a context has exited 
+    /** Fire an event indicating that a procession has exited 
      *  this state.
      *
-     *  @param context The finished process instance context.
+     *  @param procession The finished process instance procession.
      */
-    void fireStateExited(Context context)
+    void fireStateExited(Procession procession)
     {
         StateExitedEvent event = new StateExitedEvent( this,
-                                                       context );
+                                                       procession );
         
         Iterator listenerIter = getStateListeners().iterator();
         StateListener eachListener = null;
@@ -440,21 +440,21 @@ public class State implements Named, Described, Vertex
             eachListener.stateExited( event );
         }
 
-        context.fireStateExited( event );
+        procession.fireStateExited( event );
     }
 
-    /** Fire an event indicating that a context has started 
+    /** Fire an event indicating that a procession has started 
      *  this state's activity.
      *
      *  @param activity The activity.
-     *  @param context The context.
+     *  @param procession The procession.
      */
     void fireActivityStarted(Activity activity,
-                             Context context)
+                             Procession procession)
     {
         ActivityStartedEvent event = new ActivityStartedEvent( this,
                                                                activity,
-                                                               context );
+                                                               procession );
         
         Iterator listenerIter = getStateListeners().iterator();
         StateListener eachListener = null;
@@ -466,21 +466,21 @@ public class State implements Named, Described, Vertex
             eachListener.activityStarted( event );
         }
 
-        context.fireActivityStarted( event );
+        procession.fireActivityStarted( event );
     }
 
-    /** Fire an event indicating that a context has finished
+    /** Fire an event indicating that a procession has finished
      *  this state's activity.
      *
      *  @param activity The activity.
-     *  @param context The context.
+     *  @param procession The procession.
      */
     void fireActivityFinished(Activity activity,
-                              Context context)
+                              Procession procession)
     {
         ActivityFinishedEvent event = new ActivityFinishedEvent( this,
                                                                  activity,
-                                                                 context );
+                                                                 procession );
         
         Iterator listenerIter = getStateListeners().iterator();
         StateListener eachListener = null;
@@ -492,7 +492,7 @@ public class State implements Named, Described, Vertex
             eachListener.activityFinished( event );
         }
 
-        context.fireActivityFinished( event );
+        procession.fireActivityFinished( event );
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
