@@ -1,7 +1,7 @@
-package com.werken.blissed.activity;
+package com.werken.blissed;
 
 /*
- $Id: SpawnActivity.java,v 1.3 2002-09-19 21:45:19 bob Exp $
+ $Id: ProcessDataInstantiationException.java,v 1.1 2002-09-19 21:45:19 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -46,27 +46,22 @@ package com.werken.blissed.activity;
  
  */
 
-import com.werken.blissed.Activity;
-import com.werken.blissed.Process;
-import com.werken.blissed.ProcessContext;
-import com.werken.blissed.ProcessEngine;
-import com.werken.blissed.ActivityException;
-import com.werken.blissed.InvalidMotionException;
-import com.werken.blissed.ProcessDataInstantiationException;
-
-/** An <code>Activity</code> that spawns another <code>Process</code>.
+/** Indicates an error while attempting to instantiate
+ *  a process-data object.
+ *
+ *  @see ProcessEngine#newProcessData
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: SpawnActivity.java,v 1.3 2002-09-19 21:45:19 bob Exp $
+ *  @version $Id: ProcessDataInstantiationException.java,v 1.1 2002-09-19 21:45:19 bob Exp $
  */
-public class SpawnActivity implements Activity
+public class ProcessDataInstantiationException extends BlissedException
 {
     // ------------------------------------------------------------
     //     Instance members
     // ------------------------------------------------------------
 
-    /** The process to spawn. */
+    /** The process. */
     private Process process;
 
     // ------------------------------------------------------------
@@ -75,10 +70,25 @@ public class SpawnActivity implements Activity
 
     /** Construct.
      *
-     *  @param process The process to spawn.
+     *  @param process The process.
+     *  @param message The message.
      */
-    public SpawnActivity(Process process)
+    public ProcessDataInstantiationException(Process process,
+                                             String message)
     {
+        super( message );
+        this.process = process;
+    }
+
+    /** Construct.
+     *
+     *  @param process The process.
+     *  @param rootCause The root cause.
+     */
+    public ProcessDataInstantiationException(Process process,
+                                             Throwable rootCause)
+    {
+        super( rootCause );
         this.process = process;
     }
 
@@ -86,9 +96,9 @@ public class SpawnActivity implements Activity
     //     Instance methods
     // ------------------------------------------------------------
 
-    /** Retrieve the <code>Process</code> to call.
+    /** Retrieve the process.
      *
-     *  @return The process to call.
+     *  @return The process.
      */
     public Process getProcess()
     {
@@ -96,31 +106,24 @@ public class SpawnActivity implements Activity
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    //     com.werken.blissed.Activity
+    //     java.lang.Throwable
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-    /** Perform this activity within the specified procession.
+    /** Retrieve the error message.
      *
-     *  @param context The process context
-     *
-     *  @throws ActivityException if an error occurs.
+     *  @return The error message.
      */
-    public void perform(ProcessContext context) throws ActivityException
+    public String getMessage()
     {
-        ProcessEngine engine = context.getProcessEngine();
+        return "Unable to instantiate process data for " + getProcess().getName() + ": " + super.getMessage();
+    }
 
-        try
-        {
-            engine.spawn( getProcess(),
-                          context );
-        }
-        catch (InvalidMotionException e)
-        {
-            throw new ActivityException( e );
-        }
-        catch (ProcessDataInstantiationException e)
-        {
-            throw new ActivityException( e );
-        }
+    /** Retrieve the localized error message.
+     *
+     *  @return The localized error message.
+     */
+    public String getLocalizedMessage()
+    {
+        return "Unable to instantiate process data for " + getProcess().getName() + ": " + super.getLocalizedMessage();
     }
 }
