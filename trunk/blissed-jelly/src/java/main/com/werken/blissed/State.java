@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: State.java,v 1.15 2002-07-06 21:23:38 werken Exp $
+ $Id: State.java,v 1.16 2002-07-07 22:59:41 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -49,6 +49,8 @@ package com.werken.blissed;
 import com.werken.blissed.event.StateListener;
 import com.werken.blissed.event.StateEnteredEvent;
 import com.werken.blissed.event.StateExitedEvent;
+import com.werken.blissed.event.ActivityStartedEvent;
+import com.werken.blissed.event.ActivityFinishedEvent;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -336,6 +338,57 @@ public class State extends Node
         context.fireStateExited( event );
     }
 
+    /** Fire an event indicating that a context has started 
+     *  this state's activity.
+     *
+     *  @param activity The activity.
+     *  @param context The context.
+     */
+    void fireActivityStarted(Activity activity,
+                             Context context)
+    {
+        ActivityStartedEvent event = new ActivityStartedEvent( this,
+                                                               activity,
+                                                               context );
+        
+        Iterator listenerIter = getStateListeners().iterator();
+        StateListener eachListener = null;
+        
+        while ( listenerIter.hasNext() )
+        {
+            eachListener = (StateListener) listenerIter.next();
+            
+            eachListener.activityStarted( event );
+        }
+
+        context.fireActivityStarted( event );
+    }
+
+    /** Fire an event indicating that a context has finished
+     *  this state's activity.
+     *
+     *  @param activity The activity.
+     *  @param context The context.
+     */
+    void fireActivityFinished(Activity activity,
+                              Context context)
+    {
+        ActivityFinishedEvent event = new ActivityFinishedEvent( this,
+                                                                 activity,
+                                                                 context );
+        
+        Iterator listenerIter = getStateListeners().iterator();
+        StateListener eachListener = null;
+
+        while ( listenerIter.hasNext() )
+        {
+            eachListener = (StateListener) listenerIter.next();
+            
+            eachListener.activityFinished( event );
+        }
+
+        context.fireActivityFinished( event );
+    }
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     //     com.werken.blissed.Node
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

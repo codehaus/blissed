@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Context.java,v 1.9 2002-07-07 05:18:34 werken Exp $
+ $Id: Context.java,v 1.10 2002-07-07 22:59:41 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -455,31 +455,6 @@ public class Context implements Named
         }
     }
 
-    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
-    //         Transition
-    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
-
-    /** Fire an event indicating that this context has followed a transition.
-     *
-     *  @param event The event.
-     */
-    void fireTransitionFollowed(TransitionFollowedEvent event)
-    {
-        Iterator listenIter = getContextListeners().iterator();
-        ContextListener eachListen = null;
-
-        while ( listenIter.hasNext() )
-        {
-            eachListen = (ContextListener) listenIter.next();
-
-            eachListen.transitionFollowed( event );
-        }
-    }
-
-    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
-    //         Transition
-    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
-
     /** Fire an event indicating that this context has started an activity.
      *
      *  @param event The event.
@@ -514,4 +489,24 @@ public class Context implements Named
         }
     }
 
+    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
+    //         Transition
+    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
+
+    /** Fire an event indicating that this context has followed a transition.
+     *
+     *  @param event The event.
+     */
+    void fireTransitionFollowed(TransitionFollowedEvent event)
+    {
+        Iterator listenIter = getContextListeners().iterator();
+        ContextListener eachListen = null;
+
+        while ( listenIter.hasNext() )
+        {
+            eachListen = (ContextListener) listenIter.next();
+
+            eachListen.transitionFollowed( event );
+        }
+    }
 }
