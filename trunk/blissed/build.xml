@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project default="jar" name="blissed" basedir=".">
+
+<target name="jar" depends="get-deps">
+
+  <mkdir dir="target/classes"></mkdir>
+
+  <javac destdir="target/classes" deprecation="false" debug="false" optimize="false" excludes="**/package.html">
+    <src>
+      <pathelement location="src/java/main"></pathelement>
+    </src>
+    <classpath>
+      <fileset dir="lib">
+        <include name="*.jar"></include>
+      </fileset>
+    </classpath>
+  </javac>
+
+  <jar jarfile="target/blissed-1.0-beta-1.jar" excludes="**/package.html" basedir="target/classes"></jar>
+
+</target>
+
+<target name="get-deps">
+  
+  <mkdir dir="lib"></mkdir>
+  
+  <get dest="lib/commons-jelly-1.0-dev-4.jar" usetimestamp="true" src="http://jakarta.apache.org/turbine/jars/commons-jelly-1.0-dev-4.jar"></get>
+  <get dest="lib/junit-3.7.jar" usetimestamp="true" src="http://jakarta.apache.org/turbine/jars/junit-3.7.jar"></get>
+  
+</target>
+
+</project>
+    
