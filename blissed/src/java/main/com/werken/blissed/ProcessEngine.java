@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: ProcessEngine.java,v 1.8 2002-09-18 15:49:17 bob Exp $
+ $Id: ProcessEngine.java,v 1.9 2002-09-18 15:59:14 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -54,7 +54,7 @@ import java.util.Iterator;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ProcessEngine.java,v 1.8 2002-09-18 15:49:17 bob Exp $
+ *  @version $Id: ProcessEngine.java,v 1.9 2002-09-18 15:59:14 bob Exp $
  */
 public class ProcessEngine implements Runnable
 {
@@ -199,6 +199,11 @@ public class ProcessEngine implements Runnable
         }
     }
 
+    /** Add a <code>ProcessContext</code> to the process-starting queue.
+     *
+     *  @param process The process to start.
+     *  @param context The process context to start in the process.
+     */
     void addToStartProcessQueue(Process process,
                                 ProcessContext context)
     {
