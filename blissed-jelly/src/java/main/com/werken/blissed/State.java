@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: State.java,v 1.5 2002-07-03 02:50:51 werken Exp $
+ $Id: State.java,v 1.6 2002-07-03 03:10:37 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -297,7 +297,7 @@ public class State extends Node
 
         getTask().perform( workSlip );
 
-        attemptTransition( workSlip );
+        check( workSlip );
     }
 
     public void release(WorkSlip workSlip)
@@ -306,4 +306,8 @@ public class State extends Node
         fireStateExited( workSlip );
     }
 
+    public void check(WorkSlip workSlip)
+    {
+        attemptTransition( workSlip );
+    }
 }

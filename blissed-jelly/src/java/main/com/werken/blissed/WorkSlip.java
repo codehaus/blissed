@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: WorkSlip.java,v 1.3 2002-07-03 02:50:51 werken Exp $
+ $Id: WorkSlip.java,v 1.4 2002-07-03 03:10:37 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -239,5 +239,10 @@ public class WorkSlip implements Named
         dupe.attributes.putAll( this.attributes );
 
         return dupe;
+    }
+
+    public void check()
+    {
+        getCurrentNode().check( this );
     }
 }

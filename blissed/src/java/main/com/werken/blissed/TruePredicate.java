@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: TruePredicate.java,v 1.1.1.1 2002-07-02 14:28:07 werken Exp $
+ $Id: TruePredicate.java,v 1.2 2002-07-03 03:10:37 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -55,12 +55,19 @@ import java.util.Collections;
 /** A <code>Predicate</code> that always tests to <code>true</code>.
  *
  *  @see Predicate
- *  @see Predicate#test
+ *  @see Predicate#accept
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
 public class TruePredicate extends Predicate
 {
+    // ------------------------------------------------------------
+    //     Constants
+    // ------------------------------------------------------------
+
+    /** Singleton instance. */
+    public static final TruePredicate INSTANCE = new TruePredicate();
+
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
