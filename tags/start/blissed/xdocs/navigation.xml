@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project name="blissed" repository="blissed" href="http://blissed.sf.net">
+
+  <title>blissed: process+state framework</title>
+
+  <body>
+    <links>
+      <item name="blissed@SourceForge" href="http://www.sourceforge.net/projects/blissed"/>
+      <item name="The Werken Company" href="http://www.werken.com/"/>
+    </links>
+    <menu name="blissed">
+      <item name="Overview"            href="/index.html"/> 
+<!--
+      <item name="Usage"               href="/usage.html"/>
+      <item name="FAQ"                 href="/faq.html"/>
+-->
+      <item name="Releases"            href="/releases.html"/> 
+      <item name="CVS Access"          href="/cvs.html"/>
+<!--
+      <item name="Papers"              href="/papers.html"/>
+      <item name="Status"              href="/status.html"/>
+-->
+      <item name="blissed@SourceForge" href="http://www.sourceforge.net/projects/blissed/"/>
+    </menu>
+  </body>
+
+</project>
