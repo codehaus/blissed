@@ -1,6 +1,7 @@
 package com.werken.blissed;
 
 import com.werken.blissed.activity.NoOpActivity;
+import com.werken.blissed.guard.BooleanGuard;
 
 import junit.framework.TestCase;
 
@@ -197,5 +198,82 @@ public class StateTest extends TestCase
 
         assertEquals( "new description",
                       state1.getDescription() );
+    }
+
+    public void testTerminalState_Constructor()
+    {
+        State state = new State.TerminalState();
+
+        assertEquals( "state.terminal",
+                      state.getName() );
+
+        assertEquals( "terminal state",
+                      state.getDescription() );
+
+        assertSame( NoOpActivity.INSTANCE,
+                    state.getActivity() );
+    }
+
+    public void testTerminalState_SetDescription()
+    {
+        State state = new State.TerminalState();
+
+        assertEquals( "terminal state",
+                      state.getDescription() );
+
+        state.setDescription( "new description" );
+
+        assertEquals( "terminal state",
+                      state.getDescription() );
+    }
+
+    public void testTerminalState_SetActivity()
+    {
+        State state = new State.TerminalState();
+
+        assertSame( NoOpActivity.INSTANCE,
+                    state.getActivity() );
+
+        state.setActivity( new NoOpActivity() );
+
+        assertSame( NoOpActivity.INSTANCE,
+                    state.getActivity() );
+    }
+
+    public void testTerminalState_AddTransition()
+    {
+        State state = new State.TerminalState();
+
+        State destination = new State( "dest.state",
+                                       "destination state" );
+        
+        assertNull( state.addTransition( destination,
+                                         "destination transition" ) );
+
+        assertEquals( 0,
+                      state.getTransitions().size() );
+
+        assertEquals( 0,
+                      destination.getInboundTransitions().size() );
+                               
+    }
+
+    public void testTerminalState_AddTransitionWithGuard()
+    {
+        State state = new State.TerminalState();
+
+        State destination = new State( "dest.state",
+                                       "destination state" );
+        
+        assertNull( state.addTransition( destination,
+                                         new BooleanGuard( false ),
+                                         "destination transition" ) );
+        
+        assertEquals( 0,
+                      state.getTransitions().size() );
+
+        assertEquals( 0,
+                      destination.getInboundTransitions().size() );
+                               
     }
 }
