@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: ProcessContext.java,v 1.4 2002-09-17 05:13:34 bob Exp $
+ $Id: ProcessContext.java,v 1.5 2002-09-18 16:17:29 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -54,7 +54,7 @@ import java.util.Collections;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ProcessContext.java,v 1.4 2002-09-17 05:13:34 bob Exp $
+ *  @version $Id: ProcessContext.java,v 1.5 2002-09-18 16:17:29 bob Exp $
  */
 public class ProcessContext 
 {
@@ -218,4 +218,5 @@ public class ProcessContext
         return getLocation().getCurrentProcess();
     }
 }
+
 

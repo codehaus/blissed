@@ -265,7 +265,7 @@
       <state name="start" terminal="true"/>
     </process>
     <engine var="engine"/>
-    <spawn process="${theProcess}" engine="${engine}" var="theContext"/>
+    <spawn process="${theProcess}" engine="${engine}" var="theContext" async="false"/>
     <test:assert test="${theContext != null}"/>
   </test:case>
 
@@ -304,6 +304,12 @@
 
     <test:assert test="${nestedContext.children.iterator().next() != null}">parent has child #2</test:assert>
     <test:assert test="${nestedContext.children.iterator().next().parent == nestedContext}">child has correct parent</test:assert>
+
+    <j:catch var="e">
+      <spawn process="${theProcess}" async="false"/>
+    </j:catch>
+    <test:assert 
+          test="${(e != null) and (e.reason.startsWith( 'async attribute' ))}">async not allowed</test:assert>
   </test:case>
 
   <!--
