@@ -6,6 +6,8 @@
 
   <body>
     <links>
+      <item name="codehaus" href="http://codehaus.org/"/>
+      <item name="Issue Tracker" href="http://jira.codehaus.org/secure/BrowseProject.jspa?id=10011"/>
       <item name="The Werken Company" href="http://www.werken.com/"/>
     </links>
     <menu name="blissed">
