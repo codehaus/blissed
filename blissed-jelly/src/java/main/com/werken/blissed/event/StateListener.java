@@ -1,7 +1,7 @@
 package com.werken.blissed.event;
 
 /*
- $Id: PredicateTestedListener.java,v 1.1.1.1 2002-07-02 14:28:08 werken Exp $
+ $Id: StateListener.java,v 1.1 2002-07-02 16:16:40 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -46,11 +46,10 @@ package com.werken.blissed.event;
  
  */
 
-import com.werken.blissed.Predicate;
-
 import java.util.EventListener;
 
-public interface PredicateTestedListener extends EventListener
+public interface StateListener extends EventListener
 {
-    void predicateTested(PredicateTestedEvent event);
+    void stateEntered(StateEnteredEvent event);
+    void stateExited(StateExitedEvent event);
 }

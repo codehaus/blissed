@@ -1,7 +1,7 @@
 package com.werken.blissed.event;
 
 /*
- $Id: NodeEvent.java,v 1.1.1.1 2002-07-02 14:28:08 werken Exp $
+ $Id: NodeEvent.java,v 1.2 2002-07-02 16:16:40 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -47,19 +47,29 @@ package com.werken.blissed.event;
  */
 
 import com.werken.blissed.Node;
+import com.werken.blissed.WorkSlip;
 
 import java.util.EventObject;
 
 public abstract class NodeEvent extends EventObject
 {
-    public NodeEvent(Node node)
+    private WorkSlip workSlip;
+
+    public NodeEvent(Node node,
+                     WorkSlip workSlip)
     {
         super( node );
+        this.workSlip = workSlip;
     }
 
     public Node getNode()
     {
         return (Node) getSource();
+    }
+
+    public WorkSlip getWorkSlip()
+    {
+        return this.workSlip;
     }
 }
 

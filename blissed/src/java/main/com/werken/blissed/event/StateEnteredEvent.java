@@ -1,7 +1,7 @@
 package com.werken.blissed.event;
 
 /*
- $Id: StateEnteredEvent.java,v 1.1.1.1 2002-07-02 14:28:08 werken Exp $
+ $Id: StateEnteredEvent.java,v 1.2 2002-07-02 16:16:40 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -47,11 +47,14 @@ package com.werken.blissed.event;
  */
 
 import com.werken.blissed.State;
+import com.werken.blissed.WorkSlip;
 
 public class StateEnteredEvent extends StateEvent
 {
-    public StateEnteredEvent(State state)
+    public StateEnteredEvent(State state,
+                             WorkSlip workSlip)
     {
-        super( state );
+        super( state,
+               workSlip );
     }
 }

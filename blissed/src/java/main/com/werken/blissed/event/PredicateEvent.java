@@ -1,7 +1,7 @@
 package com.werken.blissed.event;
 
 /*
- $Id: PredicateTestedEvent.java,v 1.1.1.1 2002-07-02 14:28:08 werken Exp $
+ $Id: PredicateEvent.java,v 1.1 2002-07-02 16:16:40 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -51,12 +51,12 @@ import com.werken.blissed.WorkSlip;
 
 import java.util.EventObject;
 
-public abstract class PredicateTestedEvent extends EventObject
+public abstract class PredicateEvent extends EventObject
 {
     private WorkSlip workSlip;
 
-    public PredicateTestedEvent(Predicate predicate,
-                                WorkSlip workSlip)
+    public PredicateEvent(Predicate predicate,
+                          WorkSlip workSlip)
     {
         super( predicate );
         this.workSlip = workSlip;

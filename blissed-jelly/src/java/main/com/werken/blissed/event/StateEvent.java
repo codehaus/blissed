@@ -1,7 +1,7 @@
 package com.werken.blissed.event;
 
 /*
- $Id: StateEvent.java,v 1.1.1.1 2002-07-02 14:28:08 werken Exp $
+ $Id: StateEvent.java,v 1.2 2002-07-02 16:16:40 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -47,12 +47,15 @@ package com.werken.blissed.event;
  */
 
 import com.werken.blissed.State;
+import com.werken.blissed.WorkSlip;
 
 public abstract class StateEvent extends NodeEvent
 {
-    public StateEvent(State state)
+    public StateEvent(State state,
+                      WorkSlip workSlip)
     {
-        super( state );
+        super( state,
+               workSlip );
     }
 
     public State getState()
