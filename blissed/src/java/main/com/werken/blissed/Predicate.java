@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Predicate.java,v 1.3 2002-07-02 16:16:40 werken Exp $
+ $Id: Predicate.java,v 1.4 2002-07-03 04:39:32 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -152,7 +152,7 @@ public abstract class Predicate implements Described
 
     /** Add a <code>PredicateListener</code> to this predicate.
      *
-     *  @param listern The listenr to add.
+     *  @param listener The listenr to add.
      */
     public void addPredicateListener(PredicateListener listener)
     {

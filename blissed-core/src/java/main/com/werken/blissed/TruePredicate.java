@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: TruePredicate.java,v 1.2 2002-07-03 03:10:37 werken Exp $
+ $Id: TruePredicate.java,v 1.3 2002-07-03 04:39:32 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -45,12 +45,6 @@ package com.werken.blissed;
  OF THE POSSIBILITY OF SUCH DAMAGE.
  
  */
-
-
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Collections;
 
 /** A <code>Predicate</code> that always tests to <code>true</code>.
  *

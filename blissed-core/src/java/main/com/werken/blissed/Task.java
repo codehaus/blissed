@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Task.java,v 1.1.1.1 2002-07-02 14:28:07 werken Exp $
+ $Id: Task.java,v 1.2 2002-07-03 04:39:32 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -48,8 +48,8 @@ package com.werken.blissed;
 
 /** A unit of work to be performed within a state.
  *
- *  @see State
  *  @see State#setTask
+ *  @see State#getTask
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
@@ -57,9 +57,7 @@ public interface Task extends Named, Described
 {
     /** Perform this task within the context of a WorkSlip.
      *
-     *  @see WorkSlip
-     *
-     *  @param WorkSlip The WorkSlip context.
+     *  @param workSlip The WorkSlip context.
      */
     void perform(WorkSlip workSlip);
 }

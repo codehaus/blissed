@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Process.java,v 1.4 2002-07-03 03:10:37 werken Exp $
+ $Id: Process.java,v 1.5 2002-07-03 04:39:32 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -219,7 +219,7 @@ public class Process implements Named, Described
 
     /** Add a <code>ProcessListener</code> to this process.
      *
-     *  @param listern The listenr to add.
+     *  @param listener The listenr to add.
      */
     public void addProcessListener(ProcessListener listener)
     {
@@ -233,7 +233,7 @@ public class Process implements Named, Described
 
     /** Remove a <code>ProcessListener</code> from this process.
      *
-     *  @param listern The listenr to remove.
+     *  @param listener The listenr to remove.
      */
     public void removeProcessListener(ProcessListener listener)
     {
