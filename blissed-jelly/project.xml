@@ -22,6 +22,14 @@
   </description>
 
   <url>http://blissed.werken.com/</url>
+
+  <mailingLists>
+    <mailingList>
+      <name>blissed interest</name>
+      <archive>http://lists.werken.com/pipermail/blissed-interest/</archive>
+    </mailingList>
+  </mailingLists>
+
   <siteAddress>blissed.werken.com</siteAddress>
   <siteDirectory>/www/blissed.werken.com</siteDirectory>
 
