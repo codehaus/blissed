@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Node.java,v 1.2 2002-07-02 15:40:12 werken Exp $
+ $Id: Node.java,v 1.3 2002-07-02 20:32:07 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -50,7 +50,7 @@ package com.werken.blissed;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public abstract class Node implements Named, Described
+public abstract class Node implements Named, Described 
 {
     // ------------------------------------------------------------
     //     Instance members
