@@ -101,4 +101,55 @@ public class TransitionTest extends TestCase
             fail( e.getLocalizedMessage() );
         }
     }
+
+    public void testCheck_NotUnblocked()
+    {
+        try
+        {
+            this.context.enterNode( this.state2 );
+
+            assertSame( this.state2,
+                        this.context.getCurrentNode() );
+
+            this.context.check();
+
+            assertSame( this.state2,
+                        this.context.getCurrentNode() );
+        }
+        catch (InvalidMotionException e)
+        {
+            fail( e.getLocalizedMessage() );
+        }
+        catch (ActivityException e)
+        {
+            fail( e.getLocalizedMessage() );
+        }
+    }
+
+    public void testCheck_Unblocked()
+    {
+        try
+        {
+            this.context.enterNode( this.state2 );
+
+            assertSame( this.state2,
+                        this.context.getCurrentNode() );
+
+            ((Transition)this.state2.getTransitions().get( 0 )).setGuard( new BooleanGuard( true ) );
+
+            this.context.check();
+
+            assertNull( this.context.getCurrentNode() );
+
+            assertNull( this.context.getCurrentProcess() );
+        }
+        catch (InvalidMotionException e)
+        {
+            fail( e.getLocalizedMessage() );
+        }
+        catch (ActivityException e)
+        {
+            fail( e.getLocalizedMessage() );
+        }
+    }
 }
