@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: SpawnTag.java,v 1.3 2002-09-17 23:00:05 bob Exp $
+ $Id: SpawnTag.java,v 1.4 2002-09-18 15:49:17 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -51,6 +51,7 @@ import com.werken.blissed.ProcessEngine;
 import com.werken.blissed.ProcessContext;
 
 import org.apache.commons.jelly.XMLOutput;
+import org.apache.commons.jelly.JellyException;
 import org.apache.commons.jelly.MissingAttributeException;
 
 /** Spawn a new process.
@@ -68,7 +69,7 @@ import org.apache.commons.jelly.MissingAttributeException;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: SpawnTag.java,v 1.3 2002-09-17 23:00:05 bob Exp $
+ *  @version $Id: SpawnTag.java,v 1.4 2002-09-18 15:49:17 bob Exp $
  */
 public class SpawnTag extends RuntimeTagSupport 
 {
@@ -85,6 +86,9 @@ public class SpawnTag extends RuntimeTagSupport
     /** Storage variable for spawned process. */
     private String var;
 
+    /** Async spawn flag. */
+    private Boolean async;
+
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
@@ -93,7 +97,7 @@ public class SpawnTag extends RuntimeTagSupport
      */
     public SpawnTag()
     {
-        // intentionally left blank
+        this.async = null;
     }
 
     // ------------------------------------------------------------
@@ -158,6 +162,41 @@ public class SpawnTag extends RuntimeTagSupport
         return this.var;
     }
 
+    /** Set the async flag.
+     *
+     *  <p>
+     *  For top-level, non-nested spawned processes, the <code>async</code>
+     *  attribute may be specified in order to signal if the spawned process
+     *  should attempt to use the caller's thread or if it should instead
+     *  register with the process engine to operate asynchronously.
+     *  </p>
+     *
+     *  <p>
+     *  Even if spawned non-asyncly, once the process blocks, any future
+     *  work <b>will</b> occur asynchronously within the process engine's
+     *  thread.
+     *  </p>
+     *
+     *  <p>
+     *  For any process that is spawned as a child of another process,
+     *  the <code>async</code> attribute is invalid and will throw an
+     *  exception.  All nested processes are spawned asynchronously.
+     *  </p>
+     *
+     *  @param async The async flag.
+     */
+    public void setAsync(boolean async)
+    {
+        if ( async )
+        {
+            this.async = Boolean.TRUE;
+        }
+        else
+        {
+            this.async = Boolean.FALSE;
+        }
+    }
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     //     org.apache.commons.jelly.Tag
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -188,11 +227,24 @@ public class SpawnTag extends RuntimeTagSupport
                 throw new MissingAttributeException( "engine" );
             }
 
-            spawned = engine.spawn( getProcess() );
+            boolean async = false;
+
+            if ( this.async != null )
+            {
+                async = this.async.booleanValue();
+            }
+
+            spawned = engine.spawn( getProcess(),
+                                    async );
         }
         else
         {
             engine  = context.getProcessEngine();
+
+            if ( this.async != null )
+            {
+                throw new JellyException( "async attribute only via for non-nested process" );
+            }
 
             spawned = engine.spawn( getProcess(),
                                     context );

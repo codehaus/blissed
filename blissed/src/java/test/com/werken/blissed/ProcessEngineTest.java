@@ -101,7 +101,7 @@ public class ProcessEngineTest extends TestCase
         assertSame( this.state1,
                     context.getCurrentState() );
 
-        assertTrue( ! this.engine.hasContextToCheck() );
+        assertTrue( ! this.engine.hasContextToService() );
     }
 
     public void testSpawn_Root_Async() throws Exception
@@ -109,16 +109,18 @@ public class ProcessEngineTest extends TestCase
         ProcessContext context = this.engine.spawn( this.process,
                                                     true );
 
-        assertSame( this.process,
-                    context.getCurrentProcess() );
+        assertNull( context.getCurrentProcess() );
 
-        assertSame( this.state1,
-                    context.getCurrentState() );
+        assertNull( context.getCurrentState() );
 
-        assertTrue( this.engine.hasContextToCheck() );
+        assertTrue( this.engine.hasContextToService() );
+
+        QueueEntry entry = this.engine.getNextToService();
+
+        assertTrue( entry instanceof StartProcessEntry );
 
         assertSame( context,
-                    this.engine.getNextToCheck() );
+                    entry.getProcessContext() );
     }
 
     public void testServiceThread() throws Exception
@@ -126,7 +128,7 @@ public class ProcessEngineTest extends TestCase
         ProcessContext context = this.engine.spawn( this.process,
                                                     true );
 
-        assertTrue( this.engine.hasContextToCheck() );
+        assertTrue( this.engine.hasContextToService() );
 
         this.engine.start();
 
@@ -134,7 +136,7 @@ public class ProcessEngineTest extends TestCase
 
         this.engine.stop();
 
-        assertTrue( ! this.engine.hasContextToCheck() );
+        assertTrue( ! this.engine.hasContextToService() );
     }
 
     public void testThreads_GetSet()
@@ -166,17 +168,14 @@ public class ProcessEngineTest extends TestCase
         ProcessContext nested = this.engine.spawn( this.process,
                                                    context );
 
-        assertSame( this.process,
-                    nested.getCurrentProcess() );
-
-        assertSame( this.state1,
-                    nested.getCurrentState() );
+        assertNull( nested.getCurrentProcess() );
+        assertNull( nested.getCurrentState() );
 
         assertSame( context,
                     nested.getParent() );
 
         assertSame( nested,
-                    this.engine.getNextToCheck() );
+                    this.engine.peekNextToService().getProcessContext() );
 
         Set children = context.getChildren();
 
@@ -185,6 +184,16 @@ public class ProcessEngineTest extends TestCase
 
         assertSame( nested,
                     children.iterator().next() );
+
+        this.engine.start();
+
+        Thread.sleep( 1000 );
+
+        assertSame( this.process,
+                    nested.getCurrentProcess() );
+
+        assertSame( this.state1,
+                    nested.getCurrentState() );
     }
 
     public void testSpawn_MultipleNested() throws Exception
@@ -196,6 +205,15 @@ public class ProcessEngineTest extends TestCase
 
         ProcessContext nested2 = this.engine.spawn( this.process,
                                                     context );
+
+        assertNull( nested1.getCurrentProcess() );
+        assertNull( nested1.getCurrentState() );
+        assertNull( nested2.getCurrentProcess() );
+        assertNull( nested2.getCurrentState() );
+
+        this.engine.start();
+
+        Thread.sleep( 1000 );
 
         assertSame( this.process,
                     nested1.getCurrentProcess() );
@@ -214,12 +232,6 @@ public class ProcessEngineTest extends TestCase
 
         assertSame( context,
                     nested2.getParent() );
-
-        assertSame( nested1,
-                    this.engine.getNextToCheck() );
-
-        assertSame( nested2,
-                    this.engine.getNextToCheck() );
 
         Set children = context.getChildren();
 
