@@ -20,28 +20,14 @@
 
       <blockquote>
         <pre>
-            server: <b>irc.werken.com</b>
+            server: <b>irc.codehaus.org</b>
               port: <b>6667</b>
         </pre>
       </blockquote>
 
       <p>
-      You may find folks hanging out in either <a href="irc://irc.werken.com/werken">#werken</a>
-      or <a href="irc://irc.werken.com/blissed">#blissed</a>.
+      You may find folks hanging out in <a href="irc://irc.codehaus.org/blissed">#blissed</a>.
       </p>
-
-      <subsection name="Logs">
-        <p>
-        Many of the channels hosted by The Werken Company are archived
-        and available through the 
-        <a href="http://irc.werken.com/channels/">Werken IRC Archives</a>.
-        </p>
-
-        <p>
-        <a href="http://irc.werken.com/channels/blissed/">#blissed archive</a>
-        </p>
-      </subsection>
-      
 
     </section>
   </body>

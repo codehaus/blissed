@@ -11,7 +11,7 @@
         <section name="Official Builds">
             <p>
                 Official builds can be found
-                <a href="http://blissed.werken.com/dists/">in the blissed distribution directory</a>.
+                <a href="http://dist.codehaus.org/blissed/">in the blissed distribution directory</a>.
             </p>
 
             <p>
@@ -22,10 +22,10 @@
             <subsection name="Binary Distributions">
                 <ul>
                     <li>
-                        <a href="http://blissed.werken.com/dists/blissed-1.0-beta-1.zip">1.0-beta-1 in zip format.</a>
+                        <a href="http://ibiblio.org/maven/blissed/distributions/blissed-1.0-beta-1.zip">1.0-beta-1 in zip format.</a>
                     </li>
                     <li>
-                        <a href="http://blissed.werken.com/dists/blissed-1.0-beta-1.tar.gz">1.0-beta-1 in tar/gz format.</a>
+                        <a href="http://ibiblio.org/maven/blissed/distributions/blissed-1.0-beta-1.tar.gz">1.0-beta-1 in tar/gz format.</a>
                     </li>
                 </ul>
             </subsection>
@@ -40,7 +40,6 @@
                     </li>
                 </ul>
             </subsection>
-
         </section>
 
         <section name="Development Versions">
