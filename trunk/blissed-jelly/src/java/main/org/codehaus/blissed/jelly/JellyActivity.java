@@ -1,7 +1,7 @@
 package org.codehaus.blissed.jelly;
 
 /*
- $Id: JellyActivity.java,v 1.1 2003-06-04 15:15:04 proyal Exp $
+ $Id: JellyActivity.java,v 1.2 2003-06-05 19:56:08 proyal Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -58,7 +58,7 @@ import org.apache.commons.jelly.XMLOutput;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: JellyActivity.java,v 1.1 2003-06-04 15:15:04 proyal Exp $
+ *  @version $Id: JellyActivity.java,v 1.2 2003-06-05 19:56:08 proyal Exp $
  */
 public class JellyActivity implements Activity
 {
@@ -69,6 +69,8 @@ public class JellyActivity implements Activity
     /** Jellyscript. */
     private Script script;
 
+    private JellyContext parentContext;
+
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
@@ -77,9 +79,10 @@ public class JellyActivity implements Activity
      *
      *  @param script The jelly script.
      */
-    public JellyActivity(Script script)
+    public JellyActivity(Script script, JellyContext parentContext)
     {
         this.script = script;
+        this.parentContext = parentContext;
     }
 
     // ------------------------------------------------------------
@@ -107,9 +110,9 @@ public class JellyActivity implements Activity
      */
     public void perform(ProcessContext context) throws ActivityException
     {
-        JellyContext jellyContext = new JellyContext();
+        JellyContext jellyContext = new JellyContext(this.parentContext);
 
-        jellyContext.setVariable( "context",
+        jellyContext.setVariable( RuntimeTagSupport.PROCESS_CONTEXT_KEY,
                                    context );
 
         try
@@ -122,8 +125,6 @@ public class JellyActivity implements Activity
         }
         catch (Exception e)
         {
-            // e.printStackTrace();
-
             throw new ActivityException( e );
         }
     }

@@ -1,7 +1,7 @@
 package org.codehaus.blissed.jelly;
 
 /*
- $Id: ActivityTag.java,v 1.1 2003-06-04 15:15:04 proyal Exp $
+ $Id: ActivityTag.java,v 1.2 2003-06-05 19:56:08 proyal Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
 
@@ -59,7 +59,7 @@ import org.codehaus.blissed.activity.NoOpActivity;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ActivityTag.java,v 1.1 2003-06-04 15:15:04 proyal Exp $
+ *  @version $Id: ActivityTag.java,v 1.2 2003-06-05 19:56:08 proyal Exp $
  */
 public class ActivityTag extends DefinitionTagSupport
 {
@@ -143,7 +143,7 @@ public class ActivityTag extends DefinitionTagSupport
 
         Script script = getBody();
 
-        Activity activity = new JellyActivity( script );
+        Activity activity = new JellyActivity( script, getContext() );
 
         if( getVar() != null )
         {
