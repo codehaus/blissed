@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Transition.java,v 1.9 2002-07-05 04:15:04 werken Exp $
+ $Id: Transition.java,v 1.10 2002-07-05 21:06:34 uid40906 Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -78,6 +78,9 @@ public class Transition implements Described
     /** Transition event listeners. */
     private List listeners;
 
+    /** Guard which restricts transitions. */
+    private Guard guard;
+
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
@@ -88,9 +91,9 @@ public class Transition implements Described
      *  @param destination The destination of this transitional arc.
      *  @param description The description of this transition.
      */
-    public Transition(Node origin,
-                      Node destination,
-                      String description)
+    Transition(Node origin,
+               Node destination,
+               String description)
     {
         this.origin      = origin;
         this.destination = destination;
@@ -120,6 +123,26 @@ public class Transition implements Described
         return this.destination;
     }
 
+    public void setGuard(Guard guard)
+    {
+        this.guard = guard;
+    }
+
+    public Guard getGuard()
+    {
+        return this.guard;
+    }
+
+    boolean testGuard(Context context)
+    {
+        if ( getGuard() == null )
+        {
+            return true;
+        }
+
+        return getGuard().test( context );
+    }
+
     /** Test and optionally accept this transition against a context.
      *
      *  @param context The context against which to
@@ -130,6 +153,11 @@ public class Transition implements Described
      */
     boolean accept(Context context) throws InvalidMotionException, ActivityException
     {
+        if ( ! testGuard( context ) )
+        {
+            return false;
+        }
+
         getOrigin().release( context );
 
         fireTransitionFollowed( context );

@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
-  $Id: Location.java,v 1.2 2002-07-04 22:56:53 werken Exp $
+  $Id: Location.java,v 1.3 2002-07-05 21:06:33 uid40906 Exp $
 
   Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -54,15 +54,35 @@ class Location
 
     private Stack locationStack;
 
-
     Location(Context context)
     {
         this.context = context;
+        this.locationStack = new Stack();
     }
 
     Context getContext()
     {
         return this.context;
+    }
+
+    Process getCurrentProcess()
+    {
+        if ( this.locationStack.isEmpty() )
+        {
+            return null;
+        }
+
+        return ((ProcessEntry)this.locationStack.peek()).getProcess();
+    }
+
+    Node getCurrentNode()
+    {
+        if ( this.locationStack.isEmpty() )
+        {
+            return null;
+        }
+
+        return ((ProcessEntry)this.locationStack.peek()).getCurrentNode();
     }
 
     void check() throws InvalidMotionException, ActivityException

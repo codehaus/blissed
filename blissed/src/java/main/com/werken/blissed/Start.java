@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Start.java,v 1.7 2002-07-04 22:56:53 werken Exp $
+ $Id: Start.java,v 1.8 2002-07-05 21:06:34 uid40906 Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -60,8 +60,7 @@ public class Start extends Node
     //     Instance members
     // ------------------------------------------------------------
 
-    /** The initial transition. */
-    private Transition transition;
+    private Node destination;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -76,38 +75,22 @@ public class Start extends Node
         super( process,
                "blissed.start",
                "start for " + process.getName() );
-               
+
+        setDestination( process.getFinish() );
     }
 
     // ------------------------------------------------------------
     //     Instance methods
     // ------------------------------------------------------------
 
-    /** Set the initial transition.
-     *
-     *  @param transition The transition.
-     */
-    public void setTransition(Transition transition)
+    void setDestination(Node destination)
     {
-        this.transition  = transition;
+        this.destination = destination;
     }
 
-    /** Retrieve the initial transition.
-     *
-     *  @return The transition.
-     */
-    public Transition getTransition()
+    Node getDestination()
     {
-        return this.transition;
-    }
-
-    /** Attempt to transition the context out of this node.
-     *
-     *  @param context The context to attempt transitioning.
-     */
-    void attemptTransition(Context context) throws InvalidMotionException, ActivityException
-    {
-        getTransition().accept( context );
+        return this.destination;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -121,6 +104,7 @@ public class Start extends Node
     public void accept(Context context) throws InvalidMotionException, ActivityException
     {
         super.accept( context );
-        attemptTransition( context );
+
+        getDestination().accept( context ); 
     }
 }

@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
-  $Id: Context.java,v 1.3 2002-07-05 04:15:04 werken Exp $
+  $Id: Context.java,v 1.4 2002-07-05 21:06:33 uid40906 Exp $
 
   Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -140,6 +140,8 @@ public class Context implements Named
 
         this.children   = Collections.EMPTY_SET;
         this.listeners  = Collections.EMPTY_LIST;
+
+        this.location = new Location( this );
     }
 
     // ------------------------------------------------------------
@@ -278,6 +280,11 @@ public class Context implements Named
     void check() throws InvalidMotionException, ActivityException
     {
         this.location.check();
+    }
+
+    Location getLocation()
+    {
+        return this.location;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

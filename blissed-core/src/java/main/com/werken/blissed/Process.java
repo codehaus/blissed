@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Process.java,v 1.11 2002-07-05 04:15:04 werken Exp $
+ $Id: Process.java,v 1.12 2002-07-05 21:06:33 uid40906 Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -112,15 +112,10 @@ public class Process implements Named, Described, Activity
 
         this.nodes = new HashMap();
 
-        this.start  = new Start( this );
         this.finish = new Finish( this );
+        this.start  = new Start( this );
 
-        this.start.setTransition( new Transition( this.start,
-                                                  this.finish,
-                                                  "default start-finish transition" ) );
-        
         this.activeContexts = new HashSet();
-
         this.listeners = Collections.EMPTY_LIST;
     }
 

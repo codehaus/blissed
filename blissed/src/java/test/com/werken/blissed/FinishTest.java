@@ -2,9 +2,9 @@ package com.werken.blissed;
 
 import junit.framework.TestCase;
 
-public class FalsePredicateTest extends TestCase
+public class FinishTest extends TestCase
 {
-    public FalsePredicateTest(String name)
+    public FinishTest(String name)
     {
         super( name );
     }
@@ -17,8 +17,7 @@ public class FalsePredicateTest extends TestCase
     {
     }
 
-    public void testTest()
+    public void testNothing()
     {
-        assertTrue( ! FalsePredicate.INSTANCE.test( null ) );
     }
 }

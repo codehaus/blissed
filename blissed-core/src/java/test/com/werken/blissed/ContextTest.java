@@ -2,9 +2,9 @@ package com.werken.blissed;
 
 import junit.framework.TestCase;
 
-public class TruePredicateTest extends TestCase
+public class ContextTest extends TestCase
 {
-    public TruePredicateTest(String name)
+    public ContextTest(String name)
     {
         super( name );
     }
@@ -17,8 +17,7 @@ public class TruePredicateTest extends TestCase
     {
     }
 
-    public void testTest()
+    public void testNothing()
     {
-        assertTrue( TruePredicate.INSTANCE.test( null ) );
     }
 }
