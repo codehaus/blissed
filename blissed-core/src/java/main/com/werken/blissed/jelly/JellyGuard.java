@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: JellyGuard.java,v 1.2 2002-09-17 23:00:05 bob Exp $
+ $Id: JellyGuard.java,v 1.3 2002-09-18 06:04:44 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -137,7 +137,6 @@ public class JellyGuard implements Guard
             {
                 return true;
             } 
-
             else if ( t instanceof FailException )
             {
                 return false;

@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: JellyActivity.java,v 1.4 2002-09-18 04:05:32 bob Exp $
+ $Id: JellyActivity.java,v 1.5 2002-09-18 06:04:44 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -58,7 +58,7 @@ import org.apache.commons.jelly.XMLOutput;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: JellyActivity.java,v 1.4 2002-09-18 04:05:32 bob Exp $
+ *  @version $Id: JellyActivity.java,v 1.5 2002-09-18 06:04:44 bob Exp $
  */
 public class JellyActivity implements Activity
 {
@@ -122,6 +122,8 @@ public class JellyActivity implements Activity
         }
         catch (Exception e)
         {
+            // e.printStackTrace();
+
             throw new ActivityException( e );
         }
     }

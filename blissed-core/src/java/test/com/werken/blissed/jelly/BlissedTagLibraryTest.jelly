@@ -40,7 +40,6 @@
     <test:assert test="${theEngine != null}">process engine var</test:assert>
   </test:case>
 
-
   <!--
     ||     <process>
     -->
@@ -270,6 +269,94 @@
     <test:assert test="${theContext != null}"/>
   </test:case>
 
+  <test:case name="testSpawn_Nested">
+
+    <process name="theProcess" var="theProcess" start="start">
+      <state name="start" terminal="true"/>
+    </process>
+
+    <engine var="engine"/>
+
+    <spawn process="${theProcess}" engine="${engine}" var="theContext"/>
+
+    <test:assert test="${theContext != null}">root spawned</test:assert>
+
+    <j:set var="com.werken.blissed.ProcessContext.current" value="${theContext}"/>
+
+    <spawn process="${theProcess}" var="nestedContext"/>
+    <test:assert test="${nestedContext != null}">child exists</test:assert>
+
+    <test:assert test="${nestedContext.parent == theContext}">child has parent</test:assert>
+    <test:assert test="${theContext.children.iterator().next() == nestedContext}">parent has child</test:assert>
+
+    <j:set var="com.werken.blissed.ProcessContext.current" value="${nestedContext}"/>
+
+    <spawn process="${theProcess}" var="third"/>
+
+    <test:assert test="${nestedContext.children.iterator().next() != null}">parent has child #2</test:assert>
+    <test:assert test="${nestedContext.children.iterator().next().parent == nestedContext}">child has correct parent</test:assert>
+  </test:case>
+
+  <!--
+    ||     <call>
+    -->
+
+  <test:case name="testCallTag_NoProcess">
+    <j:catch var="e">
+      <call/>
+    </j:catch>
+    <test:assert 
+          test="${(e != null) and (e.missingAttribute == 'process')}">missing-attr: process</test:assert>
+  </test:case>
+
+  <test:case name="testCallTag_NoContext">
+    <process name="theProcess" var="theProcess" start="start">
+      <state name="start" terminal="true"/>
+    </process>
+    <j:catch var="e">
+      <call process="${theProcess}"/>
+    </j:catch>
+    <test:assert 
+          test="${(e != null) and (e.reason.equals( 'No process context' ))}">no process context</test:assert>
+  </test:case>
+
+  <test:case name="testCallTag_Valid">
+    <process name="processOne" start="p1.stateOne" var="processOne">
+      <state name="p1.stateOne"/>
+      <state name="p1.stateTwo"/>
+      <transition from="p1.stateOne" to="p1.stateTwo">
+        <guard>
+          <fail/>
+        </guard>
+      </transition>
+    </process>
+    <process name="processTwo" start="p2.stateOne" var="processTwo">
+      <state name="p2.stateOne"/>
+      <state name="p2.stateTwo"/>
+      <transition from="p2.stateOne" to="p2.stateTwo">
+        <guard>
+          <fail/>
+        </guard>
+      </transition>
+    </process>
+
+    <engine var="theEngine"/>
+
+    <spawn engine="${theEngine}" process="${processOne}" var="theContext"/>
+
+    <test:assert test="${theContext != null}">context exists</test:assert>
+    <test:assert test="${theContext.currentProcess == processOne}">process one</test:assert>
+    <test:assert test="${theContext.currentState == processOne.getState('p1.stateOne')}">process one, state one</test:assert>
+
+    <j:set var="com.werken.blissed.ProcessContext.current" value="${theContext}"/>
+
+    <call process="${processTwo}"/>
+
+    <test:assert test="${theContext != null}">context exists</test:assert>
+    <test:assert test="${theContext.currentProcess == processTwo}">process two</test:assert>
+    <test:assert test="${theContext.currentState == processTwo.getState('p2.stateOne')}">process two, state one</test:assert>
+
+  </test:case>
   <!--
     ||     <pass>
     -->
@@ -346,6 +433,18 @@
               test="${(e != null) and (e.reason.startsWith( 'Guard already defined' ))}">duplicate guard</test:assert>
       </transition>
     </process>
+  </test:case>
+
+  <test:case name="testGuard_DefaultPass">
+    <guard var="theGuard"/>
+    <test:assert test="${theGuard.test(null, null)}">default pass</test:assert>
+  </test:case>
+
+  <test:case name="testGuard_MiscException">
+    <guard var="theGuard">
+      <j:set/>
+    </guard>
+    <test:assert test="${!theGuard.test(null, null)}">default pass</test:assert>
   </test:case>
 
   <!--

@@ -1,7 +1,7 @@
 package com.werken.blissed.jelly;
 
 /*
- $Id: BlissedTag.java,v 1.7 2002-09-17 05:13:34 bob Exp $
+ $Id: BlissedTag.java,v 1.8 2002-09-18 06:04:44 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -49,8 +49,6 @@ package com.werken.blissed.jelly;
 import org.apache.commons.jelly.XMLOutput;
 
 /** Outtermost wrapper tag to denote a block of blissed.
- *
- *  @see ProcessLibrary
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
