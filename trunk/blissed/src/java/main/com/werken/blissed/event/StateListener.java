@@ -1,7 +1,7 @@
 package com.werken.blissed.event;
 
 /*
- $Id: StateListener.java,v 1.2 2002-07-02 20:17:37 werken Exp $
+ $Id: StateListener.java,v 1.3 2002-07-04 19:40:07 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -57,17 +57,16 @@ import java.util.EventListener;
  */
 public interface StateListener extends EventListener
 {
-    /** Receive notification of a state being
-     *  entered by a particular workslip context.
+    /** Receive notification of a context entering a state.
      *
      *  @param event The state-entered event.
      */
     void stateEntered(StateEnteredEvent event);
 
-    /** Receive notification of a state being
-     *  exited by a particular workslip context.
+    /** Receive notification of a context exiting a state.
      *
      *  @param event The state-exited event.
      */
     void stateExited(StateExitedEvent event);
+
 }

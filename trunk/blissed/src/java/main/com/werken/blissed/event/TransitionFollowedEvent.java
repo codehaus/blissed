@@ -1,7 +1,7 @@
 package com.werken.blissed.event;
 
 /*
- $Id: TransitionFollowedEvent.java,v 1.2 2002-07-03 04:39:32 werken Exp $
+ $Id: TransitionFollowedEvent.java,v 1.3 2002-07-04 19:40:07 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -47,7 +47,7 @@ package com.werken.blissed.event;
  */
 
 import com.werken.blissed.Transition;
-import com.werken.blissed.WorkSlip;
+import com.werken.blissed.Context;
 
 /** Event indicating a transition was followed by a given workslip context.
  *
@@ -55,7 +55,7 @@ import com.werken.blissed.WorkSlip;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public class TransitionFollowedEvent extends BlissedEvent
+public class TransitionFollowedEvent extends TransitionEvent 
 {
     // ------------------------------------------------------------
     //     Constructors
@@ -67,10 +67,10 @@ public class TransitionFollowedEvent extends BlissedEvent
      *  @param workSlip The workslip context.
      */
     public TransitionFollowedEvent(Transition transition,
-                                   WorkSlip workSlip)
+                                   Context context)
     {
         super( transition,
-               workSlip );
+               context );
     }
 }
 

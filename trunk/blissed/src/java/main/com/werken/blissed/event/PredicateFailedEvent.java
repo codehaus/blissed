@@ -1,7 +1,7 @@
 package com.werken.blissed.event;
 
 /*
- $Id: PredicateFailedEvent.java,v 1.3 2002-07-02 20:17:37 werken Exp $
+ $Id: PredicateFailedEvent.java,v 1.4 2002-07-04 19:40:07 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -47,7 +47,7 @@ package com.werken.blissed.event;
  */
 
 import com.werken.blissed.Predicate;
-import com.werken.blissed.WorkSlip;
+import com.werken.blissed.Context;
 
 /** Event indicating a predicate's test failed for a given
  *  workslip context.
@@ -65,12 +65,11 @@ public class PredicateFailedEvent extends PredicateEvent
     /** Construct.
      *
      *  @param predicate The predicate event source.
-     *  @param workSlip The workslip context.
      */
     public PredicateFailedEvent(Predicate predicate,
-                                WorkSlip workSlip)
+                                Context context)
     {
         super( predicate,
-               workSlip );
+               context );
     }
 }

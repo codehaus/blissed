@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: State.java,v 1.8 2002-07-03 06:07:07 werken Exp $
+ $Id: State.java,v 1.9 2002-07-04 19:40:07 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -131,40 +131,40 @@ public class State extends Node
         this.transitions.remove( transition );
     }
 
-    /** Create an exit path transition.
-     *
-     *  @param destination The destination of the transition.
-     *  @param description Description of the transition.
-     */
-    public Transition addTransition(Node destination,
-                                    String description)
-    {
-        Transition transition = new Transition( this,
-                                                destination,
-                                                description );
-
-        addTransition( transition );
-
-        return transition;
-    }
-
-    /** Create an exit path transition.
+    /** Create a predicated exit path transition.
      *
      *  @param destination The destination of the transition.
      *  @param predicate Predicate guarding the transition.
      *  @param description Description of the transition.
      */
     public Transition addTransition(Node destination,
-                                    Predicate predicate,
+                                    String description,
+                                    Predicate predicate)
+    {
+        Transition transition = new PredicatedTransition( this,
+                                                          destination,
+                                                          description,
+                                                          predicate );
+
+        addTransition( transition );
+
+        return transition;
+    }
+
+    /** Create a non-predicated exit path transition.
+     *
+     *  @param destination The destination of the transition.
+     *  @param description Description of the transition.
+     */
+    public Transition addTransition(Node destination,
                                     String description)
     {
         Transition transition = new Transition( this,
                                                 destination,
-                                                predicate,
                                                 description );
-
+        
         addTransition( transition );
-
+        
         return transition;
     }
 
@@ -203,15 +203,15 @@ public class State extends Node
     }
 
     /** Attempt to perform some transition within the
-     *  context of this state and a workslip.
+     *  context of this state and a context.
      *
-     *  @param workSlip The WorkSlip to attempt transitioning.
+     *  @param context The Context to attempt transitioning.
      *
      *  @return <code>true</code> if a transition was followed
-     *          moving the workslip to a new node, otherwise
+     *          moving the context to a new node, otherwise
      *          <code>false</code>.
      */
-    boolean attemptTransition(WorkSlip workSlip)
+    boolean attemptTransition(Context context) throws InvalidMotionException
     {
         Iterator   transIter = getTransitions().iterator();
         Transition eachTrans = null;
@@ -222,7 +222,7 @@ public class State extends Node
         {
             eachTrans = (Transition) transIter.next();
 
-            result = eachTrans.accept( workSlip );
+            result = eachTrans.accept( context );
 
             if ( result )
             {
@@ -271,7 +271,7 @@ public class State extends Node
      *
      *  @return The <code>List</code> of <code>StateListener</code>s.
      */
-    public List getProcessListeners()
+    public List getStateListeners()
     {
         return this.listeners;
     }
@@ -280,17 +280,17 @@ public class State extends Node
     //     Event firing
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-    /** Fire an event indicating that a workslip has entered 
+    /** Fire an event indicating that a context has entered 
      *  this state.
      *
-     *  @param workSlip The workslip entering this state.
+     *  @param context The context entering this state.
      */
-    void fireStateEntered(WorkSlip workSlip)
+    void fireStateEntered(Context context)
     {
         StateEnteredEvent event = new StateEnteredEvent( this,
-                                                         workSlip );
+                                                         context );
         
-        Iterator listenerIter = getProcessListeners().iterator();
+        Iterator listenerIter = getStateListeners().iterator();
         StateListener eachListener = null;
         
         while ( listenerIter.hasNext() )
@@ -301,17 +301,17 @@ public class State extends Node
         }
     }
 
-    /** Fire an event indicating that a workslip has exited 
+    /** Fire an event indicating that a context has exited 
      *  this state.
      *
-     *  @param workSlip The finished process instance context.
+     *  @param context The finished process instance context.
      */
-    void fireStateExited(WorkSlip workSlip)
+    void fireStateExited(Context context)
     {
         StateExitedEvent event = new StateExitedEvent( this,
-                                                       workSlip );
+                                                       context );
         
-        Iterator listenerIter = getProcessListeners().iterator();
+        Iterator listenerIter = getStateListeners().iterator();
         StateListener eachListener = null;
 
         while ( listenerIter.hasNext() )
@@ -326,39 +326,39 @@ public class State extends Node
     //     com.werken.blissed.Node
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-    /** Accept a workslip into this node.
+    /** Accept a context into this node.
      *
-     *  @param workSlip The workslip to accept.
+     *  @param context The context to accept.
      */
-    public void accept(WorkSlip workSlip)
+    public void accept(Context context) throws InvalidMotionException
     {
-        super.accept( workSlip );
+        super.accept( context );
 
-        fireStateEntered( workSlip );
+        fireStateEntered( context );
 
-        getTask().perform( workSlip );
+        getTask().perform( context );
 
-        check( workSlip );
+        check( context );
     }
 
-    /** Release a workslip from this node.
+    /** Release a context from this node.
      *
-     *  @param workSlip The workslip to release.
+     *  @param context The context to release.
      */
-    public void release(WorkSlip workSlip)
+    public void release(Context context) throws InvalidMotionException
     {
-        super.release( workSlip );
-        fireStateExited( workSlip );
+        super.release( context );
+        fireStateExited( context );
     }
 
-    /** Check the status of the workslip within this
+    /** Check the status of the context within this
      *  node, with a goal towards making progress.
      *
-     *  @param workSlip The workslip to check.
+     *  @param context The context to check.
      */
-    public void check(WorkSlip workSlip)
+    public void check(Context context) throws InvalidMotionException
     {
-        attemptTransition( workSlip );
+        attemptTransition( context );
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Finish.java,v 1.4 2002-07-03 04:39:32 werken Exp $
+ $Id: Finish.java,v 1.5 2002-07-04 19:40:07 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -73,14 +73,17 @@ public class Finish extends Node
     //     com.werken.blissed.Node
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-    /** Accept a workslip into this node.
+    /** Accept a context into this node.
      *
-     *  @param workSlip The workslip to accept.
+     *  @param context The context to accept.
      */
-    public void accept(WorkSlip workSlip)
+    public void accept(Context context) throws InvalidMotionException
     {
-        super.accept( workSlip );
-        getProcess().fireProcessFinished( workSlip );
+        super.accept( context );
+
+        context.finishProcess( getProcess() );
+
+        getProcess().fireProcessFinished( context );
     }
 }
 

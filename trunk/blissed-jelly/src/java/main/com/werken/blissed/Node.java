@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Node.java,v 1.6 2002-07-03 04:39:32 werken Exp $
+ $Id: Node.java,v 1.7 2002-07-04 19:40:07 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -97,30 +97,30 @@ public class Node implements Named, Described
         return this.process;
     }
 
-    /** Accept a workslip into this node.
+    /** Accept a context into this node.
      *
-     *  @param workSlip The workslip to accept.
+     *  @param context The context to accept.
      */
-    void accept(WorkSlip workSlip)
+    void accept(Context context) throws InvalidMotionException
     {
-        workSlip.setCurrentNode( this );
+        context.enterNode( this );
     }
 
-    /** Release a workslip from this node.
+    /** Release a context from this node.
      *
-     *  @param workSlip The workslip to release.
+     *  @param context The context to release.
      */
-    void release(WorkSlip workSlip)
+    void release(Context context) throws InvalidMotionException
     {
-        workSlip.setCurrentNode( null );
+        context.exitNode( this );
     }
 
-    /** Check the status of the workslip within this
+    /** Check the status of the context within this
      *  node, with a goal towards making progress.
      *
-     *  @param workSlip The workslip to check.
+     *  @param context The context to check.
      */
-    void check(WorkSlip workSlip)
+    void check(Context context) throws InvalidMotionException
     {
         // no-op
     }

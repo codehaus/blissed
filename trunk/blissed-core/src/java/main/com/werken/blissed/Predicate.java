@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Predicate.java,v 1.4 2002-07-03 04:39:32 werken Exp $
+ $Id: Predicate.java,v 1.5 2002-07-04 19:40:07 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -55,16 +55,16 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Collections;
 
-/** Boolean predicate evaluated against a <code>WorkSlip</code> context.
+/** Boolean predicate evaluated against a <code>Context</code> context.
  *
  *  <p>
  *  A <code>Predicate</code> is used to guard <code>Transition</code>s
  *  between <code>State</code>s.  A <code>Predicate</code> is evaluated
- *  against the context of a <code>WorkSlip</code>.
+ *  against the context of a <code>Context</code>.
  *  </p>
  *
  *  @see Transition
- *  @see WorkSlip
+ *  @see Context
  *  @see PredicatePassedEvent
  *  @see PredicateFailedEvent
  *  @see PredicateListener
@@ -111,36 +111,36 @@ public abstract class Predicate implements Described
         return this.description;
     }
 
-    /** Test this predicate against a <code>WorkSlip</code> context.
+    /** Test this predicate against a <code>Context</code> context.
      *
-     *  @param workSlip The context against which to evaluate.
+     *  @param context The context against which to evaluate.
      *
      *  @return <code>true</code> if this predicate passes within
-     *          the context of the <code>WorkSlip</code>, otherwise,
+     *          the context of the <code>Context</code>, otherwise,
      *          <code>false</code>.
      */
-    public abstract boolean test(WorkSlip workSlip);
+    public abstract boolean test(Context context);
 
 
     /** Perform the prediacte test, firing the appropriate events.
      *
-     *  @param workSlip the context against which to evaluate.
+     *  @param context the context against which to evaluate.
      *
      *  @return <code>true</code> if this predicate passes within
-     *          the context of the <code>WorkSlip</code>, otherwise,
+     *          the context of the <code>Context</code>, otherwise,
      *          <code>false</code>.
      */
-    boolean performTest(WorkSlip workSlip)
+    boolean performTest(Context context)
     {
-        boolean result = test( workSlip );
+        boolean result = test( context );
 
         if ( result )
         {
-            firePredicatePassed( workSlip );
+            firePredicatePassed( context );
         }
         else
         {
-            firePredicateFailed( workSlip );
+            firePredicateFailed( context );
         }
 
         return result;
@@ -200,15 +200,15 @@ public abstract class Predicate implements Described
 
 
     /** Fire an event indicating this predicate passed
-     *  within a <code>WorkSlip</code> context.
+     *  within a <code>Context</code> context.
      *
-     *  @param workSlip the context against which this predicate
+     *  @param context the context against which this predicate
      *         was evaluated to pass.
      */
-    void firePredicatePassed(WorkSlip workSlip)
+    void firePredicatePassed(Context context)
     {
         PredicatePassedEvent event = new PredicatePassedEvent( this,
-                                                                workSlip );
+                                                                context );
 
         Iterator listenerIter = getPredicateListeners().iterator();
         PredicateListener eachListener = null;
@@ -222,15 +222,15 @@ public abstract class Predicate implements Described
     }
 
     /** Fire an event indicating this predicate failed
-     *  within a <code>WorkSlip</code> context.
+     *  within a <code>Context</code> context.
      *
-     *  @param workSlip the context against which this predicate
+     *  @param context the context against which this predicate
      *         was evaluated to fail.
      */
-    void firePredicateFailed(WorkSlip workSlip)
+    void firePredicateFailed(Context context)
     {
         PredicateFailedEvent event = new PredicateFailedEvent( this,
-                                                               workSlip );
+                                                               context );
 
         Iterator listenerIter = getPredicateListeners().iterator();
         PredicateListener eachListener = null;

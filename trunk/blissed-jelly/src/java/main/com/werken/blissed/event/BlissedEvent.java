@@ -1,7 +1,7 @@
 package com.werken.blissed.event;
 
 /*
- $Id: BlissedEvent.java,v 1.1 2002-07-02 20:17:37 werken Exp $
+ $Id: BlissedEvent.java,v 1.2 2002-07-04 19:40:07 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -46,49 +46,13 @@ package com.werken.blissed.event;
  
  */
 
-import com.werken.blissed.WorkSlip;
+import com.werken.blissed.Context;
 
-import java.util.EventObject;
-
-/** Abstract class for any blissed event.
+/** Common event interface.
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  */
-public abstract class BlissedEvent extends EventObject
+public interface BlissedEvent 
 {
-    // ------------------------------------------------------------
-    //     Instance members
-    // ------------------------------------------------------------
-
-    /** The workslip. */
-    private WorkSlip workSlip;
-
-    // ------------------------------------------------------------
-    //     Constructors
-    // ------------------------------------------------------------
-
-    /** Construct.
-     *
-     *  @param source The event source.
-     *  @param workSlip The workslip context.
-     */
-    public BlissedEvent(Object source,
-                        WorkSlip workSlip)
-    {
-        super( source );
-        this.workSlip = workSlip;
-    }
-
-    // ------------------------------------------------------------
-    //     Instance methods
-    // ------------------------------------------------------------
-
-    /** Retrieve the workslip context.
-     *
-     *  @return The workslip context.
-     */
-    public WorkSlip getWorkSlip()
-    {
-        return this.workSlip;
-    }
+    Context getContext();
 }

@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: NoOpTask.java,v 1.1.1.1 2002-07-02 14:28:07 werken Exp $
+ $Id: NoOpTask.java,v 1.2 2002-07-04 19:40:07 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -91,9 +91,9 @@ public class NoOpTask implements Task
      *  returns.  Hence, it's a no-op.
      *  </p>
      *
-     *  @param workSlip The <code>WorkSlip</code> context.
+     *  @param context The <code>Context</code> context.
      */
-    public void perform(WorkSlip workSlip)
+    public void perform(Context context)
     {
         // no-op
     }
