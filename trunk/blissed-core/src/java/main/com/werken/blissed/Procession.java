@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Procession.java,v 1.2 2002-08-15 04:01:29 bob Exp $
+ $Id: Procession.java,v 1.3 2002-08-15 17:37:23 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -71,7 +71,7 @@ import java.util.Iterator;
  * 
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Procession.java,v 1.2 2002-08-15 04:01:29 bob Exp $
+ *  @version $Id: Procession.java,v 1.3 2002-08-15 17:37:23 bob Exp $
  */
 public class Procession implements Named
 {
@@ -143,6 +143,8 @@ public class Procession implements Named
         this.listeners  = Collections.EMPTY_LIST;
 
         this.location = new Location( this );
+
+        this.processData = process.createProcessData();
     }
 
     // ------------------------------------------------------------
