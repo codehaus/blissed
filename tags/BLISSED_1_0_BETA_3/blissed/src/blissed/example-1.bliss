@@ -1,0 +1,97 @@
+
+<blissed trim="true">
+
+  <process name="example.1"
+           start="1">
+
+    <state name="1">
+      <description>
+        This is state #1.
+      </description>
+      <do-activity>
+        example.1.state.1.activity
+      </do-activity>
+    </state>
+
+    <state name="2"
+           terminal="true">
+      <description>
+        This is state #2.
+      </description>
+      <do-activity>
+        example.1.state.2.activity
+      </do-activity>
+    </state>
+
+    <state name="3">
+      <description>
+        This is state #3.
+      </description>
+
+      <do-process name="example.2"/>
+
+    </state>
+
+    <state name="4" terminal="true">
+      <do-activity>
+        example.1.state.4.activity
+      </do-activity>
+    </state>
+
+    <transition from="1"
+                  to="2">
+      <description>
+        Go from #1 to #2
+      </description>
+      <guard>
+        example.1.transition.1-2
+        <fail/>
+      </guard>
+    </transition>
+
+    <transition from="1"
+                  to="3">
+      <description>
+        Go from #1 to #3
+      </description>
+      <guard>
+        example.1.transition.1-3
+      </guard>
+    </transition>
+
+    <transition from="3"
+                  to="4">
+      <guard>
+        example.1.transition.3-4
+        <pass/>
+      </guard>
+    </transition>
+  </process>
+
+  <process name="example.2"
+           start="1">
+
+    <state name="1">
+      <do-activity>
+        example.2.state.1
+      </do-activity>
+    </state>
+
+    <state name="2" terminal="true">
+      <do-activity>
+        example.2.state.2
+      </do-activity>
+    </state>
+
+    <transition from="1"
+                to="2">
+      <guard>
+        example.2.transition.1-2
+      </guard>
+    </transition>
+
+  </process>
+
+  <spawn-process name="example.1"/>
+
+</blissed>

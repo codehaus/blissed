@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project name="blissed" repository="blissed" href="http://blissed.codehaus.org">
+
+  <title>blissed: process+state framework</title>
+
+  <body>
+    <links>
+      <item name="codehaus" href="http://codehaus.org/"/>
+      <item name="Issue Tracker" href="http://jira.codehaus.org/secure/BrowseProject.jspa?id=10011"/>
+      <item name="The Werken Company" href="http://www.werken.com/"/>
+    </links>
+    <menu name="blissed">
+      <item name="Overview"            href="/index.html"/> 
+      <item name="Jelly Integration"   href="/jelly.html"/> 
+<!--
+      <item name="Usage"               href="/usage.html"/>
+      <item name="FAQ"                 href="/faq.html"/>
+-->
+      <item name="Releases"            href="/releases.html"/> 
+      <item name="CVS Access"          href="/cvs.html"/>
+      <item name="IRC"                 href="/irc.html"/>
+      <item name="Blog"                href="http://blogs.werken.com/people/bob/"/>
+<!--
+      <item name="Papers"              href="/papers.html"/>
+      <item name="Status"              href="/status.html"/>
+-->
+    </menu>
+  </body>
+
+</project>

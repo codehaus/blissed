@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+
+  <pomVersion>3</pomVersion>
+
+  <name>blissed</name>
+
+  <id>blissed</id>
+  <currentVersion>1.0-beta-3-dev</currentVersion>
+  <organization>
+    <name>codehaus</name>
+    <url>http://codehaus.org</url>
+    <logo>http://codehaus.org/codehaus.gif</logo>
+  </organization>
+  <inceptionYear>2002</inceptionYear>
+  <package>org.codehaus.blissed</package>
+  <shortDescription>blissed: Java state-machine framework</shortDescription>
+  <logo>http://images.werken.com/blissed.gif</logo>
+
+  <description>
+  </description>
+
+  <url>http://blissed.codehaus.org/</url>
+
+  <mailingLists>
+    <mailingList>
+      <name>blissed interest</name>
+      <subscribe>http://lists.codehaus.org/mailman/listinfo/blissed-interest</subscribe>
+      <unsubscribe>http://lists.codehaus.org/mailman/listinfo/blissed-interest</unsubscribe>
+      <archive>http://lists.codehaus.org/pipermail/blissed-interest/</archive>
+    </mailingList>
+    <mailingList>
+      <name>blissed cvs messages</name>
+      <subscribe>http://lists.codehaus.org/mailman/listinfo/blissed-cvs</subscribe>
+      <unsubscribe>http://lists.codehaus.org/mailman/listinfo/blissed-cvs</unsubscribe>
+      <archive>http://lists.codehaus.org/pipermail/blissed-cvs/</archive>
+    </mailingList>
+  </mailingLists>
+
+  <siteAddress>blissed.codehaus.org</siteAddress>
+  <siteDirectory>/www/blissed.codehaus.org</siteDirectory>
+  <issueTrackingUrl>http://jira.codehaus.org/secure/BrowseProject.jspa?id=10011&amp;report=roadmap</issueTrackingUrl>
+
+  <repository>
+    <connection>scm:cvs:pserver:anonymous@cvs.codehaus.org:/scm/cvspublic:blissed</connection>
+    <url>http://cvs.codehaus.org/viewcvs.cgi/blissed/?root=codehaus</url>
+  </repository>
+
+  <developers>
+    <developer>
+      <name>bob mcwhirter</name>
+      <id>bob</id>
+      <roles>
+        <role>Founder</role>
+      </roles>
+      <email>bob@eng.werken.com</email>
+      <organization>The Werken Company</organization>
+    </developer>
+    <developer>
+      <name>peter royal</name>
+      <id>proyal</id>
+      <roles>
+        <role>Project Lead</role>
+      </roles>
+      <email>peter.royal@pobox.com</email>
+      <timezone>-5</timezone>
+      <url>http://fotap.org/~osi</url>
+    </developer>
+  </developers>
+
+  <dependencies>
+
+    <dependency>
+      <id>commons-beanutils</id>
+      <version>1.4-dev</version>
+    </dependency>
+
+    <dependency>
+      <id>commons-collections</id>
+      <version>2.0</version>
+    </dependency>
+
+    <dependency>
+      <id>commons-graph</id>
+      <version>0.8</version>
+    </dependency>
+
+    <dependency>
+      <id>commons-jelly</id>
+      <version>SNAPSHOT</version>
+      <url>http://jakarta.apache.org/commons/jelly/</url>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-jelly</groupId>
+      <artifactId>commons-jelly-tags-junit</artifactId>
+      <version>SNAPSHOT</version>
+      <url>http://jakarta.apache.org/commons/jelly/</url>
+    </dependency>
+
+    <dependency>
+      <id>commons-logging</id>
+      <version>1.1-dev</version>
+      <url>http://jakarta.apache.org/commons/logging/</url>
+    </dependency>
+
+    <dependency>
+      <id>dom4j</id>
+      <version>1.4-dev-3</version>
+      <url>http://dom4j.org/</url>
+    </dependency>
+
+    <dependency>
+      <id>commons-jexl</id>
+      <version>1.0-beta-1</version>
+      <url>http://jakarta.apache.org/commons/sandbox/jexl/</url>
+    </dependency>
+
+    <dependency>
+      <id>junit</id>
+      <version>3.7</version>
+      <url>http://junit.org/</url>
+    </dependency>
+
+    <dependency>
+      <id>xerces</id>
+      <version>2.0.0</version>
+    </dependency>
+
+    <dependency>
+      <id>xml-apis</id>
+      <version>2.0.0</version>
+      <url>http://xml.apache.org/xerces2-j/</url>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <nagEmailAddress>proyal@pace2020.com</nagEmailAddress>
+    <sourceDirectory>src/java/main</sourceDirectory>
+    <unitTestSourceDirectory>src/java/test</unitTestSourceDirectory>
+    <aspectSourceDirectory/>
+
+    <unitTest>
+      <includes>
+        <include>**/*Test.java</include>
+      </includes>
+      <resources>
+        <resource>
+          <directory>src/java/test</directory>
+          <includes>
+            <include>**/*.jelly</include>
+          </includes>
+        </resource>
+      </resources>
+    </unitTest>
+
+    <resources>
+      <includes>
+        <include>log4j.properties</include>
+      </includes>
+    </resources>
+
+    <jars/>
+  </build>
+</project>

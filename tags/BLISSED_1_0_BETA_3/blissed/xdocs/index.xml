@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+
+<document>
+
+  <properties>
+    <title>blissed</title>
+    <author email="bob@eng.werken.com">bob mcwhirter</author>
+  </properties>
+
+  <body>
+
+  <section name="Overview">
+    <p>
+    <code>blissed</code> is a very small framework to assist in
+    the creation, management and execution of processes and states.
+    </p>
+
+    <p>
+    <code>blissed</code> is not intended to be useful on its own,
+    but rather may support a larger workflow system or other process-based
+    application.  To allow it to be easy to integrate with other projects, a 
+    <a href="http://jakarta.apache.org/commons/jelly/">Jelly</a>
+    tag library is provided.
+    </p>
+
+  </section>
+
+  <section name="Concepts">
+
+    <p>
+    <code>blissed</code> is effectively a state-machine framework.
+    A state-machine typically models some sort of process, from the
+    business process of approving a loan to the lower-level process
+    of matching a string of characters against a regular-expression.
+    Each state represents an activity to be performed.  Each state
+    may have multiple transitions, or directed links, to other states.
+    The transitional links may be guarded so as to only open under
+    certain circumstances.
+    </p>
+
+    <p>
+    <code>blissed</code> has direct representations of processes,
+    states and transitions by the way of the 
+    <a href="apidocs/com/werken/blissed/Process.html">Process</a>,
+    <a href="apidocs/com/werken/blissed/State.html">State</a>
+    and
+    <a href="apidocs/com/werken/blissed/Transition.html">Transition</a>
+    classes.
+    Each <code>Transition</code> may be guarded by an implementation of
+    the <a href="apidocs/com/werken/blissed/Guard.html">Guard</a>
+    interface.
+    </p>
+
+    <p>
+    There may be several instances of a process occuring simultaneously,
+    each within a different context.  A loan application may be considered
+    the context of a process instance, as might a string of characters to
+    be matched against a regular-expression.
+    <code>blissed</code> provides a 
+    <a href="apidocs/com/werken/blissed/ProcessContext.html">ProcessContext</a> 
+    class for maintaining the context of a given process instance 
+    including current state within a process and any process-specific
+    data an application associates with the process instance.
+    </p>
+
+  </section>
+
+</body>
+</document>
+
