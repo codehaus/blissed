@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+
+<document>
+
+  <properties>
+    <author email="bob@eng.werken.com">bob mcwhirter</author>
+    <title>Releases</title>
+  </properties>
+
+  <body>
+    <section name="Official Builds">
+      <p>
+      Official builds can be found <a href="http://unc.dl.sourceforge.net/sourceforge/blissed/">here</a>.
+      </p>
+
+      <p>
+      There has been no official build as of yet. 
+      </p>
+
+<!--
+      <ul>
+        <li><a href="http://unc.dl.sourceforge.net/sourceforge/drools/drools-2.0-beta-1.zip">2.0-beta-1 in zip format.</a></li>
+        <li><a href="http://unc.dl.sourceforge.net/sourceforge/drools/drools-2.0-beta-1.tar.gz">2.0-beta-1 in tar/gz format.</a></li>
+      </ul>
+-->
+    </section>
+
+    <section name="Nighly Builds">
+      <p>
+      Nighly builds have been temporarily suspended as we ramp up
+      with using <a href="http://jakarta.apache.org/turbine/maven/index.html">maven</a>.
+      </p>
+    </section>
+
+  </body>
+
+</document>
+
