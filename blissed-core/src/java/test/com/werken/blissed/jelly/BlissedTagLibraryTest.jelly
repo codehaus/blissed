@@ -291,7 +291,7 @@
 
     <j:set var="com.werken.blissed.ProcessContext.current" value="${nestedContext}"/>
 
-    <spawn process="${theProcess}" var="third"/>
+    <spawn process="${theProcess}"/>
 
     <test:assert test="${nestedContext.children.iterator().next() != null}">parent has child #2</test:assert>
     <test:assert test="${nestedContext.children.iterator().next().parent == nestedContext}">child has correct parent</test:assert>

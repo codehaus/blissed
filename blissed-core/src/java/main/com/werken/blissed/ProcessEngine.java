@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: ProcessEngine.java,v 1.6 2002-09-18 05:04:58 bob Exp $
+ $Id: ProcessEngine.java,v 1.7 2002-09-18 06:19:25 bob Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
  
@@ -54,7 +54,7 @@ import java.util.Iterator;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ProcessEngine.java,v 1.6 2002-09-18 05:04:58 bob Exp $
+ *  @version $Id: ProcessEngine.java,v 1.7 2002-09-18 06:19:25 bob Exp $
  */
 public class ProcessEngine implements Runnable
 {
@@ -91,16 +91,26 @@ public class ProcessEngine implements Runnable
     //     Instance methods
     // ------------------------------------------------------------
 
+    /** Set the number of service threads.
+     *
+     *  @param numThreads Number of service threads.
+     */
     public void setThreads(int numThreads)
     {
         this.numThreads = numThreads;
     }
 
+    /** Retrieve the number of service threads.
+     *
+     *  @return The number of service threads.
+     */
     public int getThreads()
     {
         return this.numThreads;
     }
 
+    /** Start the service threads.
+     */
     public synchronized void start()
     {
         if ( this.threads != null )
@@ -123,6 +133,11 @@ public class ProcessEngine implements Runnable
         }
     }
 
+    /** Stop the service threads.
+     *
+     *  @throws InterruptedException If the calling thread is interrupted
+     *          while waiting for service threads to terminate.
+     */
     public synchronized void stop() throws InterruptedException
     {
         if ( this.threads == null )
@@ -146,6 +161,8 @@ public class ProcessEngine implements Runnable
         this.threads = null;
     }
 
+    /** Run the service thread loop.
+     */
     public void run()
     {
         ProcessContext context = null;
@@ -234,6 +251,7 @@ public class ProcessEngine implements Runnable
      *  @return The <code>ProcessContext</code> representing the
      *          instance of the newly spawned process.
      *
+     *  @throws ActivityException If an activity causes an error.
      *  @throws InvalidMotionException If a motion error occurs while
      *          attempting to spawn the process.
      */
@@ -253,6 +271,7 @@ public class ProcessEngine implements Runnable
      *  @return The <code>ProcessContext</code> representing the
      *          instance of the newly spawned process.
      *
+     *  @throws ActivityException If an activity causes an error.
      *  @throws InvalidMotionException If a motion error occurs while
      *          attempting to spawn the process.
      */
@@ -287,6 +306,7 @@ public class ProcessEngine implements Runnable
      *  @return The <code>ProcessContext</code> representing the
      *          instance of the newly spawned process.
      *
+     *  @throws ActivityException If an activity causes an error.
      *  @throws InvalidMotionException If a motion error occurs while
      *          attempting to spawn the process.
      */
@@ -312,6 +332,7 @@ public class ProcessEngine implements Runnable
      *  @param process The process to call.
      *  @param context The process context.
      *
+     *  @throws ActivityException If an activity causes an error.
      *  @throws InvalidMotionException If a motion error occurs while
      *          attempting to spawn the process.
      */
@@ -330,6 +351,7 @@ public class ProcessEngine implements Runnable
      *  @param process The process to start.
      *  @param context The process context.
      *
+     *  @throws ActivityException If an activity causes an error.
      *  @throws InvalidMotionException If a motion error occurs while
      *          attempting to begin a process.
      */
@@ -346,6 +368,16 @@ public class ProcessEngine implements Runnable
                     context );
     }
 
+    /** Enter a <code>State</code> for a particular
+     *  <code>ProcessContext</code>.
+     *
+     *  @param state The state to enter.
+     *  @param context The process context.
+     *
+     *  @throws ActivityException If an activity causes an error.
+     *  @throws InvalidMotionException If a motion error occurs while
+     *          attempting to enter a state.
+     */
     protected void enterState(State state,
                               ProcessContext context) throws ActivityException, InvalidMotionException
     {
@@ -363,6 +395,15 @@ public class ProcessEngine implements Runnable
         activity.perform( context );
     }
 
+    /** Exit a <code>State</code> for a particular
+     *  <code>ProcessContext</code>.
+     *
+     *  @param state The state to exit.
+     *  @param context The process context.
+     *
+     *  @throws InvalidMotionException If a motion error occurs while
+     *          attempting to exit a state.
+     */
     protected void exitState(State state,
                              ProcessContext context) throws InvalidMotionException
     {
@@ -371,6 +412,15 @@ public class ProcessEngine implements Runnable
         location.exitState( state );
     }
 
+    /** Finish a <code>Process</code> for a particular
+     *  <code>ProcessContext</code>.
+     *
+     *  @param process The process to finish.
+     *  @param context The process context.
+     *
+     *  @throws InvalidMotionException If a motion error occurs while
+     *          attempting to finish a process.
+     */
     protected void finishProcess(Process process,
                                  ProcessContext context) throws InvalidMotionException
     {
@@ -386,6 +436,7 @@ public class ProcessEngine implements Runnable
      *  @return <code>true</code> if the <code>ProcessContext</code> performed
      *          motion, otherwise <code>false</code>.
      *
+     *  @throws ActivityException If an activity causes an error.
      *  @throws InvalidMotionException If the transitions of the context attempt
      *          an invalid motion.
      */
@@ -434,6 +485,7 @@ public class ProcessEngine implements Runnable
      *  @param context The process context.
      *  @param transition The passing transition.
      *
+     *  @throws ActivityException If an activity causes an error.
      *  @throws InvalidMotionException If the process context may not
      *          transition.
      */ 
