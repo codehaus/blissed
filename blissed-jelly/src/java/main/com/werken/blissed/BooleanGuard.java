@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: InvalidMotionException.java,v 1.2 2002-07-06 03:49:01 werken Exp $
+ $Id: BooleanGuard.java,v 1.1 2002-07-06 03:49:01 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -46,24 +46,28 @@ package com.werken.blissed;
  
  */
 
-/** Indicates an invalid motion through a process.
- *
- *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
- */
-public class InvalidMotionException extends BlissedException
+public class BooleanGuard implements Guard
 {
-    // ------------------------------------------------------------
-    //     Constructors
-    // ------------------------------------------------------------
+    private boolean guard;
 
-    protected InvalidMotionException()
+    public BooleanGuard(boolean guard)
     {
+        this.guard = guard;
     }
 
-    /** Construct.
-     */
-    protected InvalidMotionException(String msg)
+    public void setGuard(boolean guard)
     {
-        super( msg );
+        this.guard = guard;
+    }
+
+    public boolean getGuard()
+    {
+        return this.guard;
+    }
+
+    public boolean test(Context context)
+    {
+        return getGuard();
     }
 }
+

@@ -99,6 +99,34 @@ public class LocationTest extends TestCase
         }
     }
 
+    public void testFinishProces_Invalid_ProcessNotFinished()
+    {
+        this.location.startProcess( this.process );
+        
+        assertSame( process,
+                    this.location.getCurrentProcess() );
+
+
+        try
+        {
+            try
+            {
+                this.location.enterNode( this.state1 );
+            }
+            catch (InvalidMotionException e)
+            {
+                fail( e.getLocalizedMessage() );
+            }
+
+            this.location.finishProcess( this.process );
+            fail( "Should have thrown InvalidMotionException" );
+        }
+        catch (InvalidMotionException e)
+        {
+            // expected and correct
+        }
+    }
+
     public void testEnterNode_Valid()
     {
         this.location.startProcess( this.process );

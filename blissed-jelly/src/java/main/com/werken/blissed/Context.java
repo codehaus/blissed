@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
-  $Id: Context.java,v 1.4 2002-07-05 21:06:33 uid40906 Exp $
+  $Id: Context.java,v 1.5 2002-07-06 03:49:01 werken Exp $
 
   Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -285,6 +285,16 @@ public class Context implements Named
     Location getLocation()
     {
         return this.location;
+    }
+
+    Node getCurrentNode()
+    {
+        return getLocation().getCurrentNode();
+    }
+
+    Process getCurrentProcess()
+    {
+        return getLocation().getCurrentProcess();
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

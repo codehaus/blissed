@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Finish.java,v 1.6 2002-07-04 22:56:53 werken Exp $
+ $Id: Finish.java,v 1.7 2002-07-06 03:49:01 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -80,6 +80,8 @@ public class Finish extends Node
     public void accept(Context context) throws InvalidMotionException, ActivityException
     {
         super.accept( context );
+
+        release( context );
 
         getProcess().release( context );
     }

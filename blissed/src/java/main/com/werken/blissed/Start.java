@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Start.java,v 1.8 2002-07-05 21:06:34 uid40906 Exp $
+ $Id: Start.java,v 1.9 2002-07-06 03:49:01 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -104,6 +104,8 @@ public class Start extends Node
     public void accept(Context context) throws InvalidMotionException, ActivityException
     {
         super.accept( context );
+
+        release( context );
 
         getDestination().accept( context ); 
     }

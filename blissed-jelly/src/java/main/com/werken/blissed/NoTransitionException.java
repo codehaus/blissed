@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: InvalidMotionException.java,v 1.2 2002-07-06 03:49:01 werken Exp $
+ $Id: NoTransitionException.java,v 1.1 2002-07-06 03:49:01 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -46,24 +46,23 @@ package com.werken.blissed;
  
  */
 
-/** Indicates an invalid motion through a process.
- *
- *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
- */
-public class InvalidMotionException extends BlissedException
+public class NoTransitionException extends InvalidMotionException
 {
+    private State state;
+
     // ------------------------------------------------------------
     //     Constructors
     // ------------------------------------------------------------
 
-    protected InvalidMotionException()
-    {
-    }
-
     /** Construct.
      */
-    protected InvalidMotionException(String msg)
+    NoTransitionException(State state)
     {
-        super( msg );
+        this.state = state;
+    }
+
+    public String getMessage()
+    {
+        return state.getName() + " contains no transitions";
     }
 }

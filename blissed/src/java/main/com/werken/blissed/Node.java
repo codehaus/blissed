@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Node.java,v 1.8 2002-07-04 22:56:53 werken Exp $
+ $Id: Node.java,v 1.9 2002-07-06 03:49:01 werken Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -120,7 +120,7 @@ public class Node implements Named, Described
      *
      *  @param context The context to check.
      */
-    void check(Context context) throws InvalidMotionException, ActivityException
+    void check(Context context) throws InvalidMotionException, ActivityException, NoTransitionException
     {
         // no-op
     }
