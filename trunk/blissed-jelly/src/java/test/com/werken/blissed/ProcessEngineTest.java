@@ -357,5 +357,46 @@ public class ProcessEngineTest extends TestCase
         assertNull( context.getCurrentProcess() );
         assertNull( context.getCurrentState() );
     }
+
+    public void testEnterState() throws Exception
+    {
+        ProcessContext context = this.engine.spawn( this.process );
+
+        this.state1.setActivity( new Activity()
+            {
+                public void perform(ProcessContext context) throws ActivityException
+                {
+                    throw new ActivityException( "proof.activity.perform" );
+                }
+            }
+                                 );
+
+        this.engine.exitState( this.state1,
+                               context );
+
+        try
+        {
+            this.engine.enterState( this.state1,
+                                    context );
+        }
+        catch (ActivityException e)
+        {
+            assertEquals( "proof.activity.perform",
+                          e.getMessage() );
+        }
+    }
+
+    public void testEnterState_NullActivity() throws Exception
+    {
+        ProcessContext context = this.engine.spawn( this.process );
+
+        this.state1.setActivity( null );
+
+        this.engine.exitState( this.state1,
+                               context );
+
+        this.engine.enterState( this.state1,
+                                context );
+    }
 }
 
