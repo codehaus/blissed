@@ -1,7 +1,7 @@
 package com.werken.blissed;
 
 /*
- $Id: Procession.java,v 1.1 2002-08-14 19:36:06 bob Exp $
+ $Id: Procession.java,v 1.2 2002-08-15 04:01:29 bob Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
  
@@ -71,7 +71,7 @@ import java.util.Iterator;
  * 
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: Procession.java,v 1.1 2002-08-14 19:36:06 bob Exp $
+ *  @version $Id: Procession.java,v 1.2 2002-08-15 04:01:29 bob Exp $
  */
 public class Procession implements Named
 {
@@ -91,11 +91,11 @@ public class Procession implements Named
     /** Children Procession, if any. */
     private Set children;
 
-    /** Instance variables. */
-    private Map variables;
-
     /** Location tracking. */
     private Location location;
+
+    /** Process data. */
+    private Object processData;
 
     /** Procession listeners. */
     private List listeners;
@@ -120,7 +120,7 @@ public class Procession implements Named
      *  @param parent The parent of this Procession.
      */
     Procession(Process process,
-            Procession parent)
+               Procession parent)
     {
         String name = null;
 
@@ -138,8 +138,6 @@ public class Procession implements Named
         this.name    = name;
         this.process = process;
         this.parent  = parent;
-
-        this.variables  = new HashMap();
 
         this.children   = Collections.EMPTY_SET;
         this.listeners  = Collections.EMPTY_LIST;
@@ -179,37 +177,22 @@ public class Procession implements Named
         return this.parent;
     }
 
-    /** Retrieve an variable.
+    /** Set process-specific data.
      *
-     *  @param name The name of the variable.
-     *
-     *  @return The variable's value, or <code>null</code>
-     *          if the variable has not been set.
+     *  @param processData The process data.
      */
-    public Object getVariable(String name)
+    public void setProcessData(Object processData)
     {
-        return this.variables.get( name );
+        this.processData = processData;
     }
 
-    /** Set an variable.
+    /** Retrieve the process-specific data.
      *
-     *  @param name The name of the variable.
-     *  @param value The value of the variable.
+     *  @return The process data.
      */
-    public void setVariable(String name,
-                             Object value)
+    public Object getProcessData()
     {
-        this.variables.put( name,
-                             value );
-    }
-
-    /** Clean an variable.
-     *
-     *  @param name The name of the variable.
-     */
-    public void clearVariable(String name)
-    {
-        this.variables.remove( name );
+        return this.processData;
     }
 
     /** Signal that this procession has started a process.
