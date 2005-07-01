@@ -1,7 +1,7 @@
 package org.codehaus.blissed;
 
 /*
- $Id: ProcessEngine.java,v 1.4 2003-06-11 00:27:22 proyal Exp $
+ $Id: ProcessEngine.java,v 1.5 2005-07-01 16:10:29 proyal Exp $
 
  Copyright 2002 (C) The Werken Company. All Rights Reserved.
 
@@ -57,7 +57,7 @@ import org.apache.commons.logging.LogFactory;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ProcessEngine.java,v 1.4 2003-06-11 00:27:22 proyal Exp $
+ *  @version $Id: ProcessEngine.java,v 1.5 2005-07-01 16:10:29 proyal Exp $
  */
 public class ProcessEngine implements Runnable
 {
@@ -69,7 +69,7 @@ public class ProcessEngine implements Runnable
     // ------------------------------------------------------------
 
     /** Queue of <code>ProcessContext</code>s requiring checking. */
-    private LinkedList queue;
+    private final LinkedList queue;
 
     /** Number of service threads. */
     private int numThreads;
@@ -189,16 +189,29 @@ public class ProcessEngine implements Runnable
             try
             {
                 entry = getNextToService();
-
-                entry.service( this );
             }
             catch( InterruptedException e )
             {
                 break;
             }
+
+            try
+            {
+                entry.service( this );
+            }
             catch( Exception e )
             {
-                log.error( "Exception servicing entry", e );
+                final ProcessContext context = entry.getProcessContext();
+                final ServiceFailedListener listener = context.getServiceFailedListener();
+
+                if( null == listener )
+                {
+                    log.error( "Exception servicing entry", e );
+                }
+                else
+                {
+                    listener.serviceFailed( context, e );
+                }
             }
         }
     }
