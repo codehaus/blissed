@@ -1,7 +1,7 @@
 package org.codehaus.blissed;
 
 /*
- $Id: ProcessContext.java,v 1.1 2003-06-04 15:15:04 proyal Exp $
+ $Id: ProcessContext.java,v 1.2 2005-07-01 16:10:29 proyal Exp $
 
  Copyright 2001 (C) The Werken Company. All Rights Reserved.
 
@@ -54,7 +54,7 @@ import java.util.Set;
  *
  *  @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  *
- *  @version $Id: ProcessContext.java,v 1.1 2003-06-04 15:15:04 proyal Exp $
+ *  @version $Id: ProcessContext.java,v 1.2 2005-07-01 16:10:29 proyal Exp $
  */
 public class ProcessContext
 {
@@ -84,6 +84,7 @@ public class ProcessContext
 
     /** Process data. */
     private Object processData;
+    private ServiceFailedListener m_serviceFailedListener;
 
     // ------------------------------------------------------------
     //     Constructors
@@ -236,6 +237,16 @@ public class ProcessContext
     boolean isStatus( short status )
     {
         return getLocation().isStatus( status );
+    }
+
+    public ServiceFailedListener getServiceFailedListener()
+    {
+        return m_serviceFailedListener;
+    }
+
+    public void setServiceFailedListener( final ServiceFailedListener serviceFailedListener )
+    {
+        m_serviceFailedListener = serviceFailedListener;
     }
 }
 
